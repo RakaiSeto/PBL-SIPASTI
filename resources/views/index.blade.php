@@ -35,14 +35,14 @@
     </nav>
 
     <!-- Hero -->
-    <!-- <section class="py-16 flex items-center bg-blue-50"> -->
-    <!-- <section class="h-screen flex items-center bg-blue-50"> -->
-    <section class="py-16 min-h-[700px] flex items-center bg-blue-50">
+    {{-- <section class="py-16 flex items-center bg-blue-50"> --}}
+        <section class="h-[700px] py-16 flex items-center bg-blue-50">
+
       <div class="max-w-screen-2xl mx-auto px-4 flex flex-col md:flex-row items-center gap-16">
         <!-- Kolom kiri -->
         <div class="md:w-5/12 mb-8 md:mb-0">
-          <h1 class="text-5xl md:text-6xl font-bold mb-4 leading-relaxed">Sistem Pelaporan Sarana dan Prasarana Perbaikan<br />JTI - Polinema</h1>
-          <p class="text-gray-600 mb-6 text-justify text-lg md:text-xl">
+          <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-relaxed">Sistem Pelaporan Sarana dan Prasarana Perbaikan<br />JTI - Polinema</h1>
+          <p class="text-gray-600 mb-6 text-justify text-sm md:text-lg">
             Laporkan kerusakan fasilitas kampus dengan mudah dan cepat melalui platform terpadu yang mendorong kolaborasi antara mahasiswa, dosen, dan tendik untuk menciptakan lingkungan kampus yang lebih baik.
           </p>
           <button class="bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white px-6 py-3 rounded text-lg transition-colors duration-300">Laporkan Kerusakan</button>
