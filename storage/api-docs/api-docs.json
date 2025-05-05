@@ -1,0 +1,29 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Test API",
+        "description": "Test API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/test": {
+            "get": {
+                "tags": [
+                    "Test"
+                ],
+                "operationId": "getData",
+                "responses": {
+                    "200": {
+                        "description": "The data"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Test",
+            "description": "Test"
+        }
+    ]
+}
