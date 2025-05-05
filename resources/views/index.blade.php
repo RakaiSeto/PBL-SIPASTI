@@ -15,7 +15,7 @@
   <body class="bg-white text-gray-900">
     <!-- Navbar -->
     <nav class="bg-blue-50 sticky top-0 z-50">
-      <div class="max-w-screen-2xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="max-w-screen-xl mx-auto px-4 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-2">
             <img src="{{ asset ('assets/image/LOGO.svg') }}" alt="Logo SIPASTI" class="w-10 h-10">
           <div class="text-2xl font-bold">SIPASTI</div>
@@ -38,7 +38,7 @@
     {{-- <section class="py-16 flex items-center bg-blue-50"> --}}
         <section class="h-[700px] py-16 flex items-center bg-blue-50">
 
-      <div class="max-w-screen-2xl mx-auto px-4 flex flex-col md:flex-row items-center gap-16">
+      <div class="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center gap-16">
         <!-- Kolom kiri -->
         <div class="md:w-5/12 mb-8 md:mb-0">
           <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-relaxed">Sistem Pelaporan Sarana dan Prasarana Perbaikan<br />JTI - Polinema</h1>
@@ -60,7 +60,7 @@
 
     <!-- Benefit Section -->
     <section class="py-16">
-      <div class="max-w-screen-2xl mx-auto px-4 grid md:grid-cols-2 items-center gap-8">
+      <div class="max-w-screen-xl mx-auto px-4 grid md:grid-cols-2 items-center gap-8">
         <div>
           <img
             src="{{ asset ('assets/image/5.jpg') }}"
@@ -98,7 +98,7 @@
 
     <!-- Our Services -->
     <section class="py-16">
-      <div class="max-w-screen-2xl mx-auto px-4 text-center">
+      <div class="max-w-screen-xl mx-auto px-4 text-center">
         <h2 class="text-3xl font-bold mb-4">Layanan Kami</h2>
         <p class="text-gray-600 mb-10">Fasilitas terbaik untuk menunjang pelaporan secara cepat dan efisien.</p>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-left">
@@ -164,7 +164,7 @@
 
     <!-- Benefit Section -->
     <section class="py-16">
-      <div class="max-w-screen-2xl mx-auto px-4 grid md:grid-cols-2 items-center">
+      <div class="max-w-screen-xl mx-auto px-4 grid md:grid-cols-2 items-center">
         <div>
           <h2 class="text-3xl font-bold mb-4 text-[var(--primary)]">Platform Terpercaya</h2>
           <ul class="list-disc pl-5 text-gray-700 space-y-2">
@@ -182,7 +182,7 @@
 
     <!-- Footer -->
     <footer class="bg-gray-100 py-8">
-      <div class="max-w-screen-2xl mx-auto px-4 text-center text-sm text-gray-500">© 2025 SaranaKampus. All rights reserved.</div>
+      <div class="max-w-screen-xl mx-auto px-4 text-center text-sm text-gray-500">© 2025 SaranaKampus. All rights reserved.</div>
     </footer>
   </body>
 </html>
