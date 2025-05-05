@@ -17,7 +17,7 @@
     <nav class="bg-blue-50 sticky top-0 z-50">
       <div class="max-w-screen-2xl mx-auto px-4 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-2">
-          <img src="LOGO.svg" alt="Logo SIPASTI" class="w-10 h-10" />
+            <img src="{{ asset ('assets/image/LOGO.svg') }}" alt="Logo SIPASTI" class="w-10 h-10">
           <div class="text-2xl font-bold">SIPASTI</div>
         </div>
         <!-- <div class="text-2xl font-bold text-[var(--primary)]">SaranaKampus</div> -->
@@ -53,7 +53,7 @@
 
         <!-- Kolom kanan -->
         <div class="md:w-7/12">
-          <img src="New Website Blue Mockup Instagram - Laptop.png" alt="Ilustrasi Laporan" class="rounded" />
+          <img src="{{ asset ('assets/image/4.png') }}" alt="Ilustrasi Laporan" class="rounded" />
         </div>
       </div>
     </section>
@@ -63,7 +63,7 @@
       <div class="max-w-screen-2xl mx-auto px-4 grid md:grid-cols-2 items-center gap-8">
         <div>
           <img
-            src="portrait-asian-emgineer-male-female-technician-safty-uniform-standing-turn-around-look-camera-laugh-smile-with-cheerful-confident-machinery-factory-workplace-background.jpg"
+            src="{{ asset ('assets/image/5.jpg') }}"
             alt="Tim Kami"
             class="rounded shadow-md w-full md:w-[90%]"
           />
@@ -175,7 +175,7 @@
           <button class="mt-6 bg-[var(--primary)] text-white px-6 py-3 rounded">Pelajari Lebih Lanjut</button>
         </div>
         <div>
-          <img src="Group 400.png" alt="Tim Kerja" class="rounded" />
+          <img src="{{asset('assets/image/Group 400.png')}}" alt="Tim Kerja" class="rounded" />
         </div>
       </div>
     </section>
