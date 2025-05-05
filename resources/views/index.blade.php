@@ -14,7 +14,7 @@
   </head>
   <body class="bg-white text-gray-900">
     <!-- Navbar -->
-    <nav class="bg-white sticky top-0 z-50">
+    <nav class="bg-blue-50 sticky top-0 z-50">
       <div class="max-w-screen-2xl mx-auto px-4 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-2">
           <img src="LOGO.svg" alt="Logo SIPASTI" class="w-10 h-10" />
@@ -37,7 +37,7 @@
     <!-- Hero -->
     <!-- <section class="py-16 flex items-center bg-blue-50"> -->
     <!-- <section class="h-screen flex items-center bg-blue-50"> -->
-    <section class="py-16 min-h-[700px] flex items-center">
+    <section class="py-16 min-h-[700px] flex items-center bg-blue-50">
       <div class="max-w-screen-2xl mx-auto px-4 flex flex-col md:flex-row items-center gap-16">
         <!-- Kolom kiri -->
         <div class="md:w-5/12 mb-8 md:mb-0">
