@@ -49,7 +49,7 @@
         </form>
 
         <p class="mt-4 text-sm text-gray-600">
-            Belum punya akun? <a href="#" class="text-blue-600 hover:underline">Daftar disini</a>
+            Belum punya akun? <a href="{{ url('/register') }}" class="text-blue-600 hover:underline">Daftar disini</a>
         </p>
     </div>
 </body>
