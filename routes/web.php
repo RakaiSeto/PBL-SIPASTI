@@ -64,3 +64,11 @@ Route::get('/admin/fasilitas', function () {
 Route::get('/admin/gedung', function () {
     return view('admin.gedung.index');
 });
+
+Route::get('/civitas', function () {
+    return view('civitas.index');
+});
+
+Route::get('/civitas/laporkan', function () {
+    return view('civitas.laporkan');
+});
