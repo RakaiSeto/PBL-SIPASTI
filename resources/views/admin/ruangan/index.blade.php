@@ -17,12 +17,11 @@
         <table class="w-full table-auto text-sm text-left">
             <thead>
                 <tr class="bg-slate-100">
-                    <th class="p-3">ID Laporan</th>
-                    <th class="p-3">Nama Dosen</th>
-                    <th class="p-3">Kategori</th>
-                    <th class="p-3">Nama Pelapor</th>
-                    <th class="p-3">Due Date</th>
-                    <th class="p-3">Status</th>
+                    <th class="p-3">ID Ruangan</th>
+                    <th class="p-3">Nama Ruangan</th>
+                    <th class="p-3">Tipe Ruangan</th>
+                    <th class="p-3">Lokasi</th>
+                    <th class="p-3">Kapasitas</th>
                     <th class="p-3">Aksi</th>
                 </tr>
             </thead>
@@ -34,10 +33,10 @@
                     <td class="p-3">AC</td>
                     <td class="p-3">Febri</td>
                     <td class="p-3">2025-05-05</td>
-                    <td class="p-3">
-                        <span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded uppercase font-bold">Selesai</span>
-                    </td>
                     <td class="p-3 flex gap-2">
+                        <button class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            Melihat Fasilitas
+                          </button>                          
                         <button class="text-gray-600 hover:text-blue-600"><i class="fas fa-eye"></i></button>
                         <button class="text-gray-600 hover:text-yellow-600"><i class="fas fa-pen"></i></button>
                         <button class="text-gray-600 hover:text-red-600"><i class="fas fa-trash"></i></button>

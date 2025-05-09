@@ -19,52 +19,30 @@
               {{ Request::is('admin/dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <span class="material-icons mr-2">dashboard</span> Dashboard
     </a>
-
-    <h2 class="text-xs text-bold mt-4 mb-1 uppercase font-semibold">Manajemen Pengguna</h2>
-    <a href="{{ url('/admin/dosen') }}"
+    <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Data Pengguna</h2>
+    <a href="{{ url('/admin/datapengguna') }}"
        class="block p-3 rounded
-              {{ Request::is('admin/dosen*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-user-tie mr-2"></i> Data Dosen
+              {{ Request::is('admin/datapengguna*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-user-tie mr-2"></i> Kelola Pengguna
     </a>
-    <a href="{{ url('/admin/mahasiswa') }}"
-       class="block p-3 rounded
-              {{ Request::is('admin/mahasiswa*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-user-graduate mr-2"></i> Data Mahasiswa
-    </a>
-    <a href="{{ url('/admin/teknisi') }}"
-       class="block p-3 rounded
-              {{ Request::is('admin/teknisi*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-screwdriver-wrench mr-2"></i> Data Teknisi
-    </a>
-    <a href="{{ url('/admin/sarpras') }}"
-       class="block p-3 rounded
-              {{ Request::is('admin/sarpras*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-database mr-2"></i> Data Sarana Prasarana
-    </a>
-
-    <h2 class="text-xs mt-4 mb-1 uppercase font-semibold">Manajemen Infrastruktur</h2>
-    <a href="{{ url('/admin/gedung') }}"
-       class="block p-3 rounded
-              {{ Request::is('admin/gedung*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-building mr-2"></i> Data Gedung
-    </a>
+    <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">DATA INVENTARIS</h2>
     <a href="{{ url('/admin/fasilitas') }}"
        class="block p-3 rounded
-              {{ Request::is('admin/fasilitas*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-chair mr-2"></i> Data Fasilitas
+              {{ Request::is('admin/fasilitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+              <i class="fa-solid fa-screwdriver-wrench mr-2"></i> Kelola Fasilitas
+    </a>
+    <a href="{{ url('/admin/ruangan') }}"
+       class="block p-3 rounded
+              {{ Request::is('admin/ruangan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-chalkboard mr-2"></i> Kelola Ruang
     </a>
 
-    <h2 class="text-xs mt-4 mb-1 uppercase font-semibold">Manajemen Infrastruktur</h2>
     <a href="{{ url('/civitas/laporkan') }}"
        class="block p-3 rounded
               {{ Request::is('civitas/laporkan*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-building mr-2"></i> Laporkan
     </a>
-    <a href="{{ url('/admin/fasilitas') }}"
-       class="block p-3 rounded
-              {{ Request::is('admin/fasilitas*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-chair mr-2"></i> Data Fasilitas
-    </a>
+  
   </nav>
 </aside>
 

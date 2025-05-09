@@ -17,12 +17,12 @@
         <table class="w-full table-auto text-sm text-left">
             <thead>
                 <tr class="bg-slate-100">
-                    <th class="p-3">ID Laporan</th>
-                    <th class="p-3">Nama Fasilitass</th>
-                    <th class="p-3">Kategori</th>
-                    <th class="p-3">Nama Pelapor</th>
-                    <th class="p-3">Due Date</th>
-                    <th class="p-3">Status</th>
+                    <th class="p-3">ID Fasilitas</th>
+                    <th class="p-3">Nama Fasilitas</th>
+                    <th class="p-3">Kategori Fasilitas</th>
+                    <th class="p-3">Lantai</th>
+                    <th class="p-3">Ruangan</th>
+                    <th class="p-3">Kondisi</th>
                     <th class="p-3">Aksi</th>
                 </tr>
             </thead>
@@ -31,11 +31,15 @@
                 <tr class="hover:bg-slate-50 border-b">
                     <td class="p-3 font-semibold">LF001</td>
                     <td class="p-3">AC Mati</td>
-                    <td class="p-3">AC</td>
-                    <td class="p-3">Febri</td>
-                    <td class="p-3">2025-05-05</td>
+                    <td class="p-3">Pendingin ruangan</td>
+                    <td class="p-3">Lantai 5</td>
+                    <td class="p-3">RT01</td>
+                
                     <td class="p-3">
-                        <span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded uppercase font-bold">Selesai</span>
+                        <span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded uppercase font-bold">
+                            <i class="fas fa-check-circle mr-1"></i> Aktif
+                        </span>
+                        
                     </td>
                     <td class="p-3 flex gap-2">
                         <button class="text-gray-600 hover:text-blue-600"><i class="fas fa-eye"></i></button>
