@@ -63,3 +63,11 @@ Route::get('/civitas', function () {
 Route::get('/civitas/laporkan', function () {
     return view('civitas.laporkan');
 });
+
+Route::get('/civitas/rating', function () {
+    return view('civitas.rating');
+});
+
+Route::get('/civitas/status', function () {
+    return view('civitas.status');
+});
