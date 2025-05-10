@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,15 +11,28 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-        body { font-family: "Inter", sans-serif; }
+        body {
+            font-family: "Inter", sans-serif;
+        }
+
         :root {
             --primary: #1652b7;
             --primary-hover: #1f3f97;
         }
-        .bg-primary { background-color: var(--primary); }
-        .bg-primary:hover { background-color: var(--primary-hover); }
+
+        .bg-primary {
+            background-color: var(--primary);
+        }
+
+        .bg-primary:hover {
+            background-color: var(--primary-hover);
+        }
     </style>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 </head>
+
 <body class="bg-gray-100">
     <div class="flex min-h-screen">
         @include('layouts.sidebar')
@@ -35,4 +49,5 @@
         </main>
     </div>
 </body>
+
 </html>
