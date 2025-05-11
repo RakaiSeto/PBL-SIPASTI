@@ -42,11 +42,18 @@
       <i class="fa-solid fa-chalkboard mr-2"></i> Kelola Ruang
     </a>
 
+    <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Sidebar untuk Civitas</h2>
+    <a href="{{ url('/civitas') }}"
+        class="block p-3 rounded
+            {{ Request::is('civitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+    <i class="fa-solid fa-building mr-2"></i> Dashboard
+    </a>
     <a href="{{ url('/civitas/laporkan') }}"
        class="block p-3 rounded
               {{ Request::is('civitas/laporkan*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-building mr-2"></i> Laporkan
     </a>
+<<<<<<< HEAD
 
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">DATA PERBAIKAN</h2>
     <a href="{{ url('/teknisi/tugas') }}"
@@ -62,6 +69,19 @@
 
 
   
+=======
+    <a href="{{ url('/civitas/status') }}"
+       class="block p-3 rounded
+              {{ Request::is('civitas/status*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-building mr-2"></i> Status Laporan
+    </a>
+    <a href="{{ url('/civitas/rating') }}"
+       class="block p-3 rounded
+              {{ Request::is('civitas/rating*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-building mr-2"></i> Beri Feedback
+    </a>
+
+>>>>>>> d819fb0130c051ca76393147812e281de11030b1
   </nav>
 </aside>
 
