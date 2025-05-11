@@ -64,6 +64,14 @@ Route::get('/civitas/laporkan', function () {
     return view('civitas.laporkan');
 });
 
+Route::get('/civitas/status', function () {
+    return view('civitas.status');
+});
+
+Route::get('/civitas/rating', function () {
+    return view('civitas.rating');
+});
+
 Route::get('/teknisi/dashboard', function () {
     return view('teknisi.index');
 });
@@ -74,4 +82,4 @@ Route::get('/teknisi/tugas', function () {
 
 Route::get('/teknisi/riwayat', function () {
     return view('teknisi.riwayat');
-}); 
+});
