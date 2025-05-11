@@ -64,7 +64,6 @@ Route::get('/civitas/laporkan', function () {
     return view('civitas.laporkan');
 });
 
-<<<<<<< HEAD
 Route::get('/teknisi/dashboard', function () {
     return view('teknisi.index');
 });
@@ -75,13 +74,4 @@ Route::get('/teknisi/tugas', function () {
 
 Route::get('/teknisi/riwayat', function () {
     return view('teknisi.riwayat');
-});
-=======
-Route::get('/civitas/rating', function () {
-    return view('civitas.rating');
-});
-
-Route::get('/civitas/status', function () {
-    return view('civitas.status');
-});
->>>>>>> d819fb0130c051ca76393147812e281de11030b1
+}); 
