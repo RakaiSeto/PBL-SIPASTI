@@ -12,9 +12,4 @@ class m_fasilitas extends Model
     protected $table = 'm_fasilitas';
     protected $primaryKey = 'fasilitas_id';
     protected $fillable = ['fasilitas_nama'];
-
-    public function ruangan()
-    {
-        return $this->belongsTo(m_ruangan::class, 'ruangan_id', 'ruangan_id');
-    }
 }
