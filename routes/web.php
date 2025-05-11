@@ -63,3 +63,15 @@ Route::get('/civitas', function () {
 Route::get('/civitas/laporkan', function () {
     return view('civitas.laporkan');
 });
+
+Route::get('/teknisi/dashboard', function () {
+    return view('teknisi.index');
+});
+
+Route::get('/teknisi/tugas', function () {
+    return view('teknisi.tugas');
+});
+
+Route::get('/teknisi/riwayat', function () {
+    return view('teknisi.riwayat');
+});

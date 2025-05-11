@@ -19,6 +19,11 @@
               {{ Request::is('admin/dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <span class="material-icons mr-2">dashboard</span> Dashboard
     </a>
+    <a href="{{ url('/teknisi/dashboard') }}"
+       class="flex items-center p-3 rounded font-semibold
+              {{ Request::is('teknisi/dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <span class="material-icons mr-2">dashboard</span> Dashboard Teknisi
+    </a>
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Data Pengguna</h2>
     <a href="{{ url('/admin/datapengguna') }}"
        class="block p-3 rounded
@@ -42,6 +47,20 @@
               {{ Request::is('civitas/laporkan*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-building mr-2"></i> Laporkan
     </a>
+
+    <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">DATA PERBAIKAN</h2>
+    <a href="{{ url('/teknisi/tugas') }}"
+        class="block p-3 rounded
+          {{ Request::is('civitas/laporkan*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+        <i class="fa-solid fa-wrench mr-2"></i> Tugas Perbaikan
+    </a>
+    <a href="{{ url('/teknisi/riwayat') }}"
+        class="block p-3 rounded
+          {{ Request::is('civitas/laporkan*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+        <i class="fa-solid fa-history mr-2"></i> Riwayat Perbaikan
+    </a>
+
+
   
   </nav>
 </aside>
