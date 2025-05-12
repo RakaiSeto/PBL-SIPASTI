@@ -72,9 +72,9 @@
 
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">DATA PERBAIKAN</h2>
     <a href="{{ url('/teknisi/tugas') }}"
-        class="block p-3 rounded
-          {{ Request::is('/teknisi/tugas*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-        <i class="fa-solid fa-wrench mr-2"></i> Tugas Perbaikan
+       class="block p-3 rounded
+        {{ Request::is('teknisi/tugas*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-wrench mr-2"></i> Tugas Perbaikan
     </a>
     <a href="{{ url('/teknisi/riwayat') }}"
         class="block p-3 rounded
