@@ -28,7 +28,7 @@ Route::get('/login', function () {
 
 Route::get('/register', function () {
     return view('auth.register');
-});
+})->name('register');
 
 // Group untuk Admin
 // Route::middleware('auth.refresh')->prefix('admin')->group(function () {

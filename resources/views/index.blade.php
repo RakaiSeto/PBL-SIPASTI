@@ -123,6 +123,8 @@
       }
     }
   </style>
+
+  @vite('resources/css/app.css', 'resources/js/app.js')
 </head>
 <body class="bg-white text-gray-900" onload="AOS.init({ duration: 800, easing: 'ease-in-out', once: true })">
   <!-- Navbar -->
@@ -142,8 +144,8 @@
       </div>
       <!-- KANAN: Login/Register -->
       <div class="hidden md:flex items-center space-x-4 flex-shrink-0" data-aos="fade-left">
-        <button class="text-sm font-medium text-[var(--primary)] hover:bg-[var(--light-blue)] px-3 py-1 rounded transition-colors">Login</button>
-        <button class="bg-[var(--primary)] text-white px-5 py-2 text-sm font-medium rounded-lg hover:bg-[var(--primary-hover)] btn">Register</button>
+        <a href="{{ route('login') }}" class="w-[6.5rem] text-sm font-medium border border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white px-5 text-center py-2 rounded-lg transition-colors">Login</a>
+        <a href="{{ route('register') }}" class="w-[6.5rem] bg-[var(--primary)] border border-[var(--primary)] text-white px-5 text-center py-2 text-sm font-medium rounded-lg hover:bg-[var(--primary-hover)] btn">Register</a>
       </div>
       <!-- HAMBURGER (mobile only) -->
       <div class="md:hidden hamburger">
@@ -444,7 +446,7 @@
     <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Tentang -->
       <div data-aos="fade-up">
-        <img src="assets/logo-putih.svg" alt="Logo SIPASTI" class="h-10 mb-4">
+        <img src="{{asset('assets/image/sipasti.svg')}}" alt="Logo SIPASTI" class="h-10 mb-4">
         <p class="text-sm">
           SIPASTI untuk laporan kerusakan kampus yang mudah dan efisien.
         </p>
