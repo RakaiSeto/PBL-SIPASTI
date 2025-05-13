@@ -12,13 +12,14 @@ Route::get('/', function () {
 
 Route::get('/login', function () {
     return view('auth.login');
-});
+})->name('login');
 
 Route::get('/register', function () {
     return view('auth.register');
 });
 
 // Group untuk Admin
+// Route::middleware('auth.refresh')->prefix('admin')->group(function () {
 Route::prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.index');
