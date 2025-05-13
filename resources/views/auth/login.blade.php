@@ -13,7 +13,7 @@
             <p class="text-sm text-center text-gray-600">Silahkan masukkan detail Anda untuk masuk</p>
         </div>
 
-        <form method="POST" action="#" class="space-y-10 mt-4">
+        <form method="POST" action="/login" class="space-y-10 mt-4">
             @csrf
             <div>
                 <label for="username" class="block text-sm text-gray-700 mb-1 sr-only">Username</label>

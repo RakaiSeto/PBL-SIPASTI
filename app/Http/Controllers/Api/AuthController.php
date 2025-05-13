@@ -69,14 +69,16 @@ class AuthController extends Controller
             'username' => 'required|string',
             'password' => 'required',
         ]);
+        error_log('masuk sini');
         if ($credentials->fails()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid credentials',
             ], 401);
         }
-
+        error_log('masuk sini 2');
         if (Auth::attempt($credentials->validated())) {
+            error_log('masuk sini 3');
             $user = Auth::user();
             error_log(json_encode($user));
             $token = JWTAuth::fromUser($user);
