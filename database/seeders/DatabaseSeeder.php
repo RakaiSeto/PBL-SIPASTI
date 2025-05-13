@@ -17,11 +17,13 @@ class DatabaseSeeder extends Seeder
         DB::table('m_fasilitas')->delete();
         DB::table('m_ruangan_role')->delete();
         DB::table('m_role')->delete();
+        DB::table('m_user')->delete();
 
         $this->call([
             RoleSeeder::class,
             RuanganRoleSeeder::class,
             FasilitasSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }
