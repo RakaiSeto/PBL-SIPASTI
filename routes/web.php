@@ -4,7 +4,19 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
 //     return view('welcome');
-// });
+
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
 
 Route::get('/', function () {
     return view('index');
@@ -79,4 +91,38 @@ Route::prefix('teknisi')->group(function () {
     Route::get('/riwayat', function () {
         return view('teknisi.riwayat');
     });
+
+Route::get('/admin/fasilitas', function () {
+    return view('admin.fasilitas.index');
+});
+
+Route::get('/admin/ruanganfasilitas', function () {
+    return view('admin.ruanganfasilitas.index');
+});
+
+
+Route::get('/civitas', function () {
+    return view('civitas.index');
+});
+
+Route::get('/civitas/laporkan', function () {
+    return view('civitas.laporkan');
+
+});
+
+Route::get('/teknisi/dashboard', function () {
+    return view('teknisi.index');
+});
+
+Route::get('/teknisi/tugas', function () {
+    return view('teknisi.tugas');
+});
+
+Route::get('/teknisi/riwayat', function () {
+    return view('teknisi.riwayat');
+}); 
+
+Route::get('/admin/ruangan', function () {
+    return view('admin.ruangan.index');
+});
 });
