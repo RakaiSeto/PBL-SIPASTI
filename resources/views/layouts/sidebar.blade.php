@@ -39,15 +39,21 @@
       <i class="fa-solid fa-user-tie mr-2"></i> Kelola Pengguna
     </a>
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">DATA INVENTARIS</h2>
+    <a href="{{ url('/admin/ruangan') }}"
+       class="block p-3 rounded
+              {{ Request::is('admin/ruangan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+              <i class="fa-solid fa-building mr-2"></i> Kelola Ruangan
+    </a>
     <a href="{{ url('/admin/fasilitas') }}"
        class="block p-3 rounded
               {{ Request::is('admin/fasilitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
               <i class="fa-solid fa-screwdriver-wrench mr-2"></i> Kelola Fasilitas
     </a>
-    <a href="{{ url('/admin/ruangan') }}"
+    
+    <a href="{{ url('/admin/ruanganfasilitas') }}"
        class="block p-3 rounded
-              {{ Request::is('admin/ruangan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-chalkboard mr-2"></i> Kelola Ruang
+              {{ Request::is('admin/ruanganfasilitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-chalkboard mr-2"></i> Kelola Ruang & Fasilitas
     </a>
 
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Sidebar untuk Civitas</h2>

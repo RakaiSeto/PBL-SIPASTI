@@ -51,7 +51,7 @@
                     <th class="p-3 w-32">ID Ruangan</th>
                     <th class="p-3 w-60">Nama Ruangan</th>
                     <th class="p-3 w-40">Lokasi</th>
-                    <th class="p-3 w-32">Kapasitas</th>
+                    <th class="p-3 w-40 text-center">Fasilitas</th>
                     <th class="p-3 w-32">Aksi</th>
                 </tr>
             </thead>
@@ -61,7 +61,11 @@
                     <td class="p-3 font-semibold text-slate-800">R001</td>
                     <td class="p-3">Ruang Teori</td>
                     <td class="p-3">Lantai 5</td>
-                    <td class="p-3">30 orang</td>
+                    <td class="p-3 text-center">
+                        <button onclick="openFasilitasModal('R001')" class="text-green-600 hover:text-green-800" title="Lihat Fasilitas">
+                            <i class="fas fa-cubes"></i>
+                        </button>
+                    </td>
                     <td class="p-3">
                         <div class="flex gap-2">
                             <button class="text-gray-600 hover:text-blue-600" title="Lihat"><i class="fas fa-eye"></i></button>
@@ -70,11 +74,16 @@
                         </div>
                     </td>
                 </tr>
+
                 <tr class="border-t hover:bg-slate-50">
                     <td class="p-3 font-semibold text-slate-800">R002</td>
                     <td class="p-3">Lab Komputer</td>
                     <td class="p-3">Lantai 3</td>
-                    <td class="p-3">25 orang</td>
+                    <td class="p-3 text-center">
+                        <button onclick="openFasilitasModal('R002')" class="text-green-600 hover:text-green-800" title="Lihat Fasilitas">
+                            <i class="fas fa-cubes"></i>
+                        </button>
+                    </td>
                     <td class="p-3">
                         <div class="flex gap-2">
                             <button class="text-gray-600 hover:text-blue-600" title="Lihat"><i class="fas fa-eye"></i></button>
@@ -93,7 +102,22 @@
     </div>
 </div>
 
-<!-- Script Filter -->
+<!-- Modal Lihat Fasilitas -->
+<div id="fasilitasModal" class="fixed inset-0 z-50 bg-black/40 hidden justify-center items-center">
+    <div class="bg-white w-full max-w-md p-6 rounded shadow space-y-4">
+        <div class="flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-700">Fasilitas Ruangan</h2>
+            <button onclick="closeFasilitasModal()" class="text-slate-500 hover:text-red-500">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="fasilitasContent" class="text-sm text-slate-600 space-y-2">
+            <!-- Konten fasilitas diisi via JS -->
+        </div>
+    </div>
+</div>
+
+<!-- Script Filter & Modal -->
 <script>
     function filterTable() {
         const searchValue = document.getElementById("searchInput").value.toLowerCase();
@@ -102,11 +126,9 @@
         let visibleCount = 0;
 
         rows.forEach(row => {
-            if (row.id === "noDataRow") return; // Skip baris noDataRow
-
+            if (row.id === "noDataRow") return;
             const nama = row.children[1].textContent.toLowerCase();
             const lokasi = row.children[2].textContent.toLowerCase();
-
             const matchNama = nama.includes(searchValue);
             const matchLokasi = !lokasiValue || lokasi === lokasiValue;
 
@@ -118,7 +140,40 @@
             }
         });
 
+        // Menampilkan baris "Tidak ada data" jika tidak ada baris yang cocok
         document.getElementById("noDataRow").classList.toggle("hidden", visibleCount > 0);
+    }
+
+    function openFasilitasModal(idRuangan) {
+        const modal = document.getElementById("fasilitasModal");
+        const content = document.getElementById("fasilitasContent");
+
+        // Simulasi data fasilitas
+        const data = {
+            R001: ['Proyektor', 'Whiteboard', 'AC'],
+            R002: ['PC Lab', 'Internet', 'AC'],
+        };
+
+        const fasilitas = data[idRuangan] || [];
+
+        if (fasilitas.length > 0) {
+            content.innerHTML = `
+                <ul class="list-disc ml-5">
+                    ${fasilitas.map(item => `<li>${item}</li>`).join('')}
+                </ul>
+            `;
+        } else {
+            content.innerHTML = `<p class="text-center text-slate-500">Tidak ada fasilitas tercatat.</p>`;
+        }
+
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+    }
+
+    function closeFasilitasModal() {
+        const modal = document.getElementById("fasilitasModal");
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
     }
 </script>
 @endsection
