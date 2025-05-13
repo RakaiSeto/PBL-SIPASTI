@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('ruangan_id');
             $table->foreignId('ruangan_role_id')->references('ruangan_role_id')->on('m_ruangan_role');
             $table->string('ruangan_nama');
-            $table->string('lantai');
+            $table->string('lantai')->nullable();
             $table->timestamps();
         });
     }
