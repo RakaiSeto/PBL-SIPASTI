@@ -33,6 +33,6 @@ class AuthController extends Controller
         $cookie = cookie('jwtToken', '', -1);
         Auth::logout();
         Helper::logging(Helper::getUsername($request), 'Auth', 'Logout', 'User ' . Helper::getUsername($request) . ' logged out');
-        return redirect('/')->withCookie($cookie);
+        return redirect('/login')->withCookie($cookie);
     }
 }
