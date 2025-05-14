@@ -142,7 +142,8 @@
       </div>
       <!-- KANAN: Login/Register -->
       <div class="hidden md:flex items-center space-x-4 flex-shrink-0" data-aos="fade-left">
-        <button class="text-sm font-medium text-[var(--primary)] hover:bg-[var(--light-blue)] px-3 py-1 rounded transition-colors">Login</button>
+        <a href="{{ route('login') }}" class="text-sm font-medium text-[var(--primary)] hover:bg-[var(--light-blue)] px-3 py-1 rounded transition-colors">Login</a>
+        {{-- <button class="text-sm font-medium text-[var(--primary)] hover:bg-[var(--light-blue)] px-3 py-1 rounded transition-colors">Login</button> --}}
         <button class="bg-[var(--primary)] text-white px-5 py-2 text-sm font-medium rounded-lg hover:bg-[var(--primary-hover)] btn">Register</button>
       </div>
       <!-- HAMBURGER (mobile only) -->
@@ -158,7 +159,9 @@
       <a href="#layanan" class="block">Layanan</a>
       <a href="#tentang" class="block">Tentang</a>
       <a href="#kontak" class="block">Kontak</a>
-      <button class="block text-sm text-[var(--primary)]">Login</button>
+      <a href="{{ route('login') }}" class="block text-sm text-[var(--primary)]">Login</a>
+
+      {{-- <button href="" class="block text-sm text-[var(--primary)]">Login</button> --}}
       <button class="block w-full bg-[var(--primary)] text-white px-4 py-2 text-sm rounded-lg hover:bg-[var(--primary-hover)] btn">Register</button>
     </div>
   </nav>
@@ -184,6 +187,28 @@
       </div>
     </div>
   </section>
+
+  <section class="relative bg-gradient-to-r from-blue-50 to-blue-100 py-20">
+  <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
+    <!-- Teks -->
+    <div class="md:w-1/2" data-aos="fade-right" data-aos-delay="200">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-snug text-gray-800">
+        Sistem Pelaporan Sarana dan Prasarana<br>JTI - Polinema
+      </h1>
+      <p class="text-base md:text-lg text-gray-600 mb-8">
+        Laporkan kerusakan fasilitas kampus dengan mudah dan cepat melalui platform terpadu yang mendorong kolaborasi untuk lingkungan kampus yang lebih baik.
+      </p>
+      <a href="#" class="bg-[var(--primary)] text-white px-6 py-3 rounded-lg font-medium hover:bg-[var(--primary-hover)] btn">
+        Laporkan Kerusakan
+      </a>
+    </div>
+    <!-- Gambar -->
+    <div class="md:w-1/2" data-aos="zoom-in" data-aos-delay="400">
+      <img src="assets/image/4.png" alt="Ilustrasi Laporan" class="w-full transform hover:scale-105 transition-transform">
+    </div>
+  </div>
+</section>
+
 
   <!-- About Section -->
   <section id="tentang" class="py-16 bg-white">
