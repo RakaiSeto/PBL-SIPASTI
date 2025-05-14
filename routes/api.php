@@ -3,8 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TestController;
-use OpenApi\Attributes as OA;
-
+use App\Http\Controllers\Api\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,8 +15,12 @@ use OpenApi\Attributes as OA;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+
+Route::get('/test', TestController::class);
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth.refresh')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/test', TestController::class);
+Route::post('/logout', [AuthController::class, 'logout']);

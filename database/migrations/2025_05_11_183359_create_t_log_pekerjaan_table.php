@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('m_log_pekerjaan', function (Blueprint $table) {
+        Schema::create('t_log_pekerjaan', function (Blueprint $table) {
             $table->id('log_pekerjaan_id');
-            $table->foreignId('laporan_id')->references('laporan_id')->on('m_laporan');
+            $table->foreignId('laporan_id')->references('laporan_id')->on('t_laporan');
             $table->string('deskripsi_pekerjaan');
             $table->datetime('log_datetime');
         });
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('m_log_pekerjaan');
+        Schema::dropIfExists('t_log_pekerjaan');
     }
 };

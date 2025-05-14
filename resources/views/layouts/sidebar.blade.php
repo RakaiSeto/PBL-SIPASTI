@@ -14,23 +14,25 @@
   <!-- Menu Navigasi -->
   <nav class="space-y-2 text-sm font-medium overflow-y-auto max-h-[calc(100vh-100px)]">
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Main Menu</h2>
+    @if (Auth::user()->role->role_nama == 'Admin')
     <a href="{{ url('/admin/dashboard') }}"
        class="flex items-center p-3 rounded font-semibold
               {{ Request::is('admin/dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <span class="material-icons mr-2">dashboard</span> Dashboard
     </a>
+    @elseif (Auth::user()->role->role_nama == 'Teknisi')
     <a href="{{ url('/teknisi/dashboard') }}"
        class="flex items-center p-3 rounded font-semibold
               {{ Request::is('teknisi/dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <span class="material-icons mr-2">dashboard</span> Dashboard Teknisi
     </a>
-
+    @elseif (Auth::user()->role->role_nama == 'Civitas')
     <a href="{{ url('/civitas') }}"
         class="block p-3 rounded
             {{ Request::is('civitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
     <i class="fa-solid fa-building mr-2"></i> Dashboard Pelapor
     </a>
-
+    @endif
 
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Data Pengguna</h2>
     <a href="{{ url('/admin/datapengguna') }}"
@@ -56,8 +58,8 @@
       <i class="fa-solid fa-chalkboard mr-2"></i> Kelola Ruang & Fasilitas
     </a>
 
-    <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Sidebar untuk Civitas</h2>
-
+    {{-- <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Sidebar untuk Civitas</h2> --}}
+    @if (Auth::user()->role->role_nama == 'Civitas')
     <a href="{{ url('/civitas/laporkan') }}"
        class="block p-3 rounded
               {{ Request::is('civitas/laporkan*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
@@ -74,8 +76,9 @@
               {{ Request::is('civitas/rating*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-building mr-2"></i> Beri Feedback
     </a>
-{{-- <<<<<<< HEAD --}}
+    @endif
 
+    @if (Auth::user()->role->role_nama == 'Teknisi')
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">DATA PERBAIKAN</h2>
     <a href="{{ url('/teknisi/tugas') }}"
        class="block p-3 rounded
@@ -87,7 +90,7 @@
           {{ Request::is('/teknisi/riwayat*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
         <i class="fa-solid fa-history mr-2"></i> Riwayat Perbaikan
     </a>
-
+    @endif
   </nav>
 </aside>
 

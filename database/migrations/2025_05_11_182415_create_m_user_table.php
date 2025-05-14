@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('username');
             $table->string('fullname');
             $table->string('password');
-            $table->string('profile_picture');
-            $table->string('email');
-            $table->string('no_telp');
+            $table->string('profile_picture')->nullable();
+            $table->string('email')->nullable();
+            $table->string('no_telp')->nullable();
             $table->timestamps();
         });
     }

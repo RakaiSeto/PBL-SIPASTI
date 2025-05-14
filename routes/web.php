@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -24,14 +25,18 @@ Route::get('/', function () {
 
 Route::get('/login', function () {
     return view('auth.login');
-});
+})->name('login');
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::get('/register', function () {
     return view('auth.register');
-});
+})->name('register');
 
 // Group untuk Admin
-Route::prefix('admin')->group(function () {
+Route::middleware('auth.refresh')->prefix('admin')->group(function () {
+// Route::prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.index');
     });
@@ -91,37 +96,36 @@ Route::prefix('teknisi')->group(function () {
         return view('teknisi.riwayat');
     });
 
-Route::get('/admin/fasilitas', function () {
-    return view('admin.fasilitas.index');
-});
+    Route::get('/admin/fasilitas', function () {
+        return view('admin.fasilitas.index');
+    });
 
-Route::get('/admin/ruanganfasilitas', function () {
-    return view('admin.ruanganfasilitas.index');
-});
+    Route::get('/admin/ruanganfasilitas', function () {
+        return view('admin.ruanganfasilitas.index');
+    });
 
 
-Route::get('/civitas', function () {
-    return view('civitas.index');
-});
+    Route::get('/civitas', function () {
+        return view('civitas.index');
+    });
 
-Route::get('/civitas/laporkan', function () {
-    return view('civitas.laporkan');
+    Route::get('/civitas/laporkan', function () {
+        return view('civitas.laporkan');
+    });
 
-});
+    Route::get('/teknisi/dashboard', function () {
+        return view('teknisi.index');
+    });
 
-Route::get('/teknisi/dashboard', function () {
-    return view('teknisi.index');
-});
+    Route::get('/teknisi/tugas', function () {
+        return view('teknisi.tugas');
+    });
 
-Route::get('/teknisi/tugas', function () {
-    return view('teknisi.tugas');
-});
+    Route::get('/teknisi/riwayat', function () {
+        return view('teknisi.riwayat');
+    });
 
-Route::get('/teknisi/riwayat', function () {
-    return view('teknisi.riwayat');
-}); 
-
-Route::get('/admin/ruangan', function () {
-    return view('admin.ruangan.index');
-});
+    Route::get('/admin/ruangan', function () {
+        return view('admin.ruangan.index');
+    });
 });

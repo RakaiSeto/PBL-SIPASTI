@@ -9,4 +9,10 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
+
+    public function getToken()
+    {
+        $token = request()->cookie('jwtToken');
+        return $token;
+    }
 }

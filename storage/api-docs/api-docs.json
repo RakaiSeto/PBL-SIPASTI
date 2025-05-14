@@ -1,29 +1,95 @@
 {
-    "openapi": "3.0.0",
+    "openapi": "3.1.0",
     "info": {
-        "title": "Test API",
-        "description": "Test API",
+        "title": "PBL SIPASTI API",
+        "description": "PBL SIPASTI API",
         "version": "1.0.0"
     },
     "paths": {
-        "/api/test": {
-            "get": {
+        "/api/login": {
+            "post": {
                 "tags": [
-                    "Test"
+                    "Auth"
                 ],
-                "operationId": "getData",
+                "summary": "Login",
+                "description": "Login to the application",
+                "operationId": "222b2625838e3c57e017987f73598fda",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "The data"
+                        "description": "Login Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Login successful",
+                                    "access_token": "the_token_here",
+                                    "user": "user_object_here"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Invalid credentials"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout",
+                "description": "Logout from the application",
+                "operationId": "ad65cbbd4e9f201619eae184a5961a98",
+                "responses": {
+                    "200": {
+                        "description": "Logout successful"
                     }
                 }
             }
         }
     },
+    "components": {
+        "schemas": {
+            "LoginRequest": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "test@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "password"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
     "tags": [
         {
-            "name": "Test",
-            "description": "Test"
+            "name": "Auth",
+            "description": "Auth"
         }
     ]
 }
