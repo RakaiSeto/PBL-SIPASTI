@@ -170,11 +170,6 @@
       </div>
       <!-- KANAN: Login/Register -->
       <div class="hidden md:flex items-center space-x-4 flex-shrink-0" data-aos="fade-left">
-<<<<<<< HEAD
-        <a href="{{ route('login') }}" class="text-sm font-medium text-[var(--primary)] hover:bg-[var(--light-blue)] px-3 py-1 rounded transition-colors">Login</a>
-        {{-- <button class="text-sm font-medium text-[var(--primary)] hover:bg-[var(--light-blue)] px-3 py-1 rounded transition-colors">Login</button> --}}
-        <button class="bg-[var(--primary)] text-white px-5 py-2 text-sm font-medium rounded-lg hover:bg-[var(--primary-hover)] btn">Register</button>
-=======
       @if (Auth::check() == true)
       @include('component.profile')
       @else
@@ -183,7 +178,6 @@
         <a href="{{ route('register') }}"
           class="w-[6.5rem] bg-[var(--primary)] border border-[var(--primary)] text-white px-5 text-center py-2 text-sm font-medium rounded-lg hover:bg-[var(--primary-hover)] btn">Register</a>
       @endif
->>>>>>> d50ea04c5749843a85e821600e68ab8109759b10
       </div>
       <!-- HAMBURGER (mobile only) -->
       <div class="md:hidden hamburger">
