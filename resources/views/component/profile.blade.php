@@ -1,8 +1,8 @@
 <div class="relative">
     <button id="profileToggle" class="flex items-center focus:outline-none">
         <span class="mr-2 font-medium">{{ Auth::user()->fullname }}</span>
-        <img src="{{ Auth::user()->profile_picture ? asset('storage/profile/' . Auth::user()->profile_picture) : asset('storage/profile/default.png') }}" class="w-10 h-10 rounded-full border"
-            alt="Profile" />
+        <img src="{{ Auth::user()->profile_picture ? asset('storage/profile/' . Auth::user()->profile_picture) : asset('storage/profile/default.png') }}"
+            class="w-10 h-10 rounded-full border" alt="Profile" />
     </button>
 
     <!-- Dropdown menu -->
@@ -11,15 +11,17 @@
             $role = Auth::user()->role->role_nama;
         @endphp
         @if ($role == 'Admin')
-        <a href="/admin/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            Dashboard
-        </a>
+            <a href="/admin/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                Dashboard
+            </a>
         @endif
-        <button onclick="openModal()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            Ganti Profil
-        </button>
-        <a href="#" onclick="openModal()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ganti
-            Password</a>
+        @if (!Request::is('/'))
+            <button onclick="openModal()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                Ganti Profil
+            </button>
+            <a href="#" onclick="openModal()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ganti
+                Password</a>
+        @endif
         <a href="/logout" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Logout</a>
     </div>
 </div>

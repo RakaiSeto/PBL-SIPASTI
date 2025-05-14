@@ -10,6 +10,7 @@
   <!-- AOS untuk animasi -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <link rel="icon" href="{{ asset('assets/image/logo.svg') }}" type="image/x-icon">
   <!-- Font Poppins -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -244,26 +245,6 @@
     </div>
   </section>
 
-  <section class="relative bg-gradient-to-r from-blue-50 to-blue-100 py-20">
-  <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
-    <!-- Teks -->
-    <div class="md:w-1/2" data-aos="fade-right" data-aos-delay="200">
-      <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-snug text-gray-800">
-        Sistem Pelaporan Sarana dan Prasarana<br>JTI - Polinema
-      </h1>
-      <p class="text-base md:text-lg text-gray-600 mb-8">
-        Laporkan kerusakan fasilitas kampus dengan mudah dan cepat melalui platform terpadu yang mendorong kolaborasi untuk lingkungan kampus yang lebih baik.
-      </p>
-      <a href="#" class="bg-[var(--primary)] text-white px-6 py-3 rounded-lg font-medium hover:bg-[var(--primary-hover)] btn">
-        Laporkan Kerusakan
-      </a>
-    </div>
-    <!-- Gambar -->
-    <div class="md:w-1/2" data-aos="zoom-in" data-aos-delay="400">
-      <img src="assets/image/4.png" alt="Ilustrasi Laporan" class="w-full transform hover:scale-105 transition-transform">
-    </div>
-  </div>
-</section>
 
 
   <!-- About Section -->

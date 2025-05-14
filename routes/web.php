@@ -23,16 +23,12 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
 
-Route::post('/login', [AuthController::class, 'login']);
+// hanya jika belum login
+Route::post('/login', [AuthController::class, 'doLogin']);
+Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout']);
-
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
 
 // Group untuk Admin
 Route::middleware('auth.refresh')->prefix('admin')->group(function () {

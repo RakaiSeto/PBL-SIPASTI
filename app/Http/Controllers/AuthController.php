@@ -11,7 +11,38 @@ use App\Helper\Helper;
 
 class AuthController extends Controller
 {
+
     public function login(Request $request)
+    {
+        if (Auth::check()) {
+            if (Auth::user()->role->role_nama == 'Admin') {
+                return redirect('/admin/dashboard');
+            } else if (Auth::user()->role->role_nama == 'Teknisi') {
+                return redirect('/teknisi/dashboard');
+            } else if (Auth::user()->role->role_nama == 'Civitas') {
+                return redirect('/civitas');
+            }
+        }
+
+        return view('auth.login');
+    }
+
+    public function register(Request $request)
+    {
+        if (Auth::check()) {
+            if (Auth::user()->role->role_nama == 'Admin') {
+                return redirect('/admin/dashboard');
+            } else if (Auth::user()->role->role_nama == 'Teknisi') {
+                return redirect('/teknisi/dashboard');
+            } else if (Auth::user()->role->role_nama == 'Civitas') {
+                return redirect('/civitas');
+            }
+        }
+
+        return view('auth.register');
+    }
+
+    public function doLogin(Request $request)
     {
         $credentials = $request->validate([
             'username' => 'required|string',

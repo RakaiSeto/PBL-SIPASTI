@@ -6,10 +6,12 @@
   </div>
 
   <!-- Logo Desktop -->
+  <a href="/">
   <div class="hidden md:flex items-center mb-2 mr-3">
-    <img src="{{ asset('assets/image/LOGO.svg') }}" class="h-8 mr-1 text-center" alt="Logo" />
-    <h1 class="text-xl font-bold">SIPASTI</h1>
+      <img src="{{ asset('assets/image/LOGO.svg') }}" class="h-8 mr-1 text-center" alt="Logo" />
+      <h1 class="text-xl font-bold">SIPASTI</h1>
   </div>
+  </a>
 
   <!-- Menu Navigasi -->
   <nav class="space-y-2 text-sm font-medium overflow-y-auto max-h-[calc(100vh-100px)]">
