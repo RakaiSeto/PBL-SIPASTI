@@ -16,10 +16,10 @@
             </a>
         @endif
         @if (!Request::is('/'))
-            <button onclick="openModal()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            <button onclick="openModalProfile()" class="block px-4 w-full text-left py-2 text-sm text-gray-700 hover:bg-gray-100">
                 Ganti Profil
             </button>
-            <a href="#" onclick="openModal()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ganti
+            <a href="#" onclick="openModalProfile()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ganti
                 Password</a>
         @endif
         <a href="/logout" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Logout</a>
@@ -27,10 +27,10 @@
 </div>
 
 <div id="modalProfile" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 onclick="
-    closeModal(event)">
+    closeModalProfile(event)">
     <div class="bg-white w-full max-w-lg rounded-lg p-6 shadow-lg relative">
         <!-- Tombol Tutup -->
-        <button onclick="closeModal()"
+        <button onclick="closeModalProfile()"
             class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-lg">&times;</button>
 
         <h2 class="text-xl font-semibold mb-4">Ganti Profil</h2>
@@ -65,7 +65,7 @@
 
             <!-- Tombol Aksi -->
             <div class="flex justify-end gap-2">
-                <button type="button" onclick="closeModal()"
+                <button type="button" onclick="closeModalProfile()"
                     class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Batal</button>
                 <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Simpan</button>
             </div>
@@ -86,12 +86,12 @@
         profileMenu.classList.add("hidden");
     });
 
-    function openModal() {
+    function openModalProfile() {
         document.getElementById('modalProfile').classList.remove('hidden');
         document.getElementById('modalProfile').classList.add('flex');
     }
 
-    function closeModal() {
+    function closeModalProfile() {
         document.getElementById('modalProfile').classList.remove('flex');
         document.getElementById('modalProfile').classList.add('hidden');
     }
