@@ -37,9 +37,7 @@
                         <i class="fa-solid fa-lock text-gray-400"></i>
                      </div>
                     <input type="password" name="password" id="password" class="block w-full pl-10 pr-10 border-b-2 border-gray-300 focus:outline-none focus:border-b-blue-500" placeholder="Password">
-                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer text-gray-400" id="togglePassword">
-                        <i class="fa-solid fa-eye" id="eyeIcon"></i>
-                    </div>
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer text-gray-400" id="togglePassword"></div>
                 </div>
             </div>
 
@@ -61,7 +59,6 @@
 <script>
     const toggle = document.getElementById('togglePassword');
     const password = document.getElementById('password');
-    const eyeIcon = document.getElementById('eyeIcon');
 
     toggle.addEventListener('click', () => {
       const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
