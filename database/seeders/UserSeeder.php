@@ -21,5 +21,26 @@ class UserSeeder extends Seeder
             'email' => 'admin@admin.com',
             'password' => Hash::make('sipasti123'),
         ]);
+        m_user::create([
+            'role_id' => m_role::where('role_nama', 'Civitas')->first()->role_id,
+            'username' => 'civitas',
+            'fullname' => 'Civitas',
+            'email' => 'civitas@civitas.com',
+            'password' => Hash::make('sipasti123'),
+        ]);
+        m_user::create([
+            'role_id' => m_role::where('role_nama', 'Teknisi')->first()->role_id,
+            'username' => 'teknisi',
+            'fullname' => 'Teknisi',
+            'email' => 'teknisi@teknisi.com',
+            'password' => Hash::make('sipasti123'),
+        ]);
+        m_user::create([
+            'role_id' => m_role::where('role_nama', 'Teknisi')->first()->role_id,
+            'username' => 'teknisi',
+            'fullname' => 'Teknisi',
+            'email' => 'teknisi@teknisi.com',
+            'password' => Hash::make('sipasti123'),
+        ]);
     }
 }
