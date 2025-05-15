@@ -21,12 +21,16 @@ class AuthenticateAndRefresh
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (!Auth::check() || Auth::user() == null) {
+            return redirect('/logout');
+        }
+
         try {
             // Attempt to authenticate the user using the token from the request (e.g., from cookie)
             if (!$token = JWTAuth::setToken($request->cookie('jwtToken'))->authenticate()) {
                 // If authentication fails (token missing, invalid, etc.), redirect to login
                 Helper::logging(Helper::getUsername($request), 'Auth', 'Login', 'User ' . Helper::getUsername($request) . ' token invalid');
-                return redirect()->route('login');
+                return redirect('/logout');
             }
         } catch (TokenExpiredException $e) {
             // If the token is expired, attempt to refresh it
@@ -35,16 +39,16 @@ class AuthenticateAndRefresh
                 // Set the user on the request with the new token's user
                 $token = JWTAuth::setToken($refreshedToken)->toUser();
                 Helper::logging(Helper::getUsername($request), 'Auth', 'Login', 'User ' . Helper::getUsername($request) . ' token refreshed');
-                $request->attributes->set('user', $token); // Or $request->setUserResolver(function () use ($user) { return $user; });
+                $request->attributes->set('user', $token);
             } catch (JWTException $e) {
                 // If refresh fails (e.g., token blacklisted, invalid), redirect to login
                 Helper::logging(Helper::getUsername($request), 'Auth', 'Login', 'User ' . Helper::getUsername($request) . ' token refresh failed');
-                return redirect()->route('login');
+                return redirect('/logout');
             }
         } catch (JWTException $e) {
             // If any other JWT exception occurs (e.g., token invalid, not found), redirect to login
             Helper::logging(Helper::getUsername($request), 'Auth', 'Login', 'User ' . Helper::getUsername($request) . ' token error : ' . $e->getMessage());
-            return redirect()->route('login');
+            return redirect('/logout');
         }
 
         // If authentication was successful (either initially or after refresh), proceed

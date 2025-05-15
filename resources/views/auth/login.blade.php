@@ -4,11 +4,16 @@
     <title>Login - SIPASTI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="{{ asset('assets/image/logo.svg') }}" type="image/x-icon">
+
+    @vite('resources/css/app.css', 'resources/js/app.js')
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="w-full max-w-sm bg-white rounded-xl shadow-md p-8">
         <div class="flex flex-col items-center mb-4">
-            <img src="{{ asset('assets/image/sipasti.svg') }}" alt="Logo SIPASTI" class="h-12 mb-2">
+            <a href="/">
+                <img src="{{ asset('assets/image/sipasti.svg') }}" alt="Logo SIPASTI" class="h-12 mb-2">
+            </a>
             <div class="w-full border-t-2 border-[#1652B7] mt-1 mb-4"></div>
             <p class="text-sm text-center text-gray-600">Silahkan masukkan detail Anda untuk masuk</p>
         </div>
