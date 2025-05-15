@@ -36,10 +36,10 @@ class UserSeeder extends Seeder
             'password' => Hash::make('sipasti123'),
         ]);
         m_user::create([
-            'role_id' => m_role::where('role_nama', 'Teknisi')->first()->role_id,
-            'username' => 'teknisi',
-            'fullname' => 'Teknisi',
-            'email' => 'teknisi@teknisi.com',
+            'role_id' => m_role::where('role_nama', 'Sarpras')->first()->role_id,
+            'username' => 'sarpras',
+            'fullname' => 'Sarpras',
+            'email' => 'sarpras@sarpras.com',
             'password' => Hash::make('sipasti123'),
         ]);
     }

@@ -36,6 +36,7 @@
     </a>
     @endif
 
+    @if (Auth::user()->role->role_nama == 'Admin')
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Data Pengguna</h2>
     <a href="{{ url('/admin/datapengguna') }}"
        class="block p-3 rounded
@@ -59,7 +60,7 @@
               {{ Request::is('admin/ruanganfasilitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-chalkboard mr-2"></i> Kelola Ruang & Fasilitas
     </a>
-
+    @endif
     {{-- <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Sidebar untuk Civitas</h2> --}}
     @if (Auth::user()->role->role_nama == 'Civitas')
     <a href="{{ url('/civitas/laporkan') }}"
