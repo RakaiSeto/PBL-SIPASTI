@@ -96,9 +96,7 @@ Route::prefix('teknisi')->group(function () {
         return view('admin.fasilitas.index');
     });
 
-    Route::get('/admin/ruanganfasilitas', function () {
-        return view('admin.ruanganfasilitas.index');
-    });
+ 
 
 
     Route::get('/civitas', function () {
