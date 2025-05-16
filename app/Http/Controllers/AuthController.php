@@ -53,7 +53,15 @@ class AuthController extends Controller
             $token = JWTAuth::fromUser($user);
             Helper::logging($user->username, 'Auth', 'Login', 'User ' . $user->username . ' logged in');
             $cookie = cookie('jwtToken', $token, JWTAuth::factory()->getTTL() * 60);
-            return redirect('/admin/dashboard')->withCookie($cookie);
+            if ($user->role->role_nama == 'Admin') {
+                return redirect('/admin/dashboard')->withCookie($cookie);
+            } else if ($user->role->role_nama == 'Teknisi') {
+                return redirect('/teknisi/dashboard')->withCookie($cookie);
+            } else if ($user->role->role_nama == 'Civitas') {
+                return redirect('/civitas')->withCookie($cookie);
+            } else if ($user->role->role_nama == 'Sarpras') {
+                return redirect('/sarpras')->withCookie($cookie);
+            }
         } else {
             return redirect()->back()->withErrors(['error' => 'Invalid credentials']);
         }
@@ -62,8 +70,8 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $cookie = cookie('jwtToken', '', -1);
-        Auth::logout();
         Helper::logging(Helper::getUsername($request), 'Auth', 'Logout', 'User ' . Helper::getUsername($request) . ' logged out');
+        Auth::logout();
         return redirect('/login')->withCookie($cookie);
     }
 }

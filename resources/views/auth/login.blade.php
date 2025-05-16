@@ -41,11 +41,6 @@
                 </div>
             </div>
 
-            <div class="flex items-center">
-                <input type="checkbox" name="remember" class="mr-2">
-                <label class="text-sm text-gray-600">Remember Me</label>
-            </div>
-
             <button type="submit" class="w-full py-2 rounded-md bg-[#1652B7] text-white font-semibold hover:bg-[#143f8a] transition">
                 SIGN IN
             </button>

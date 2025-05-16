@@ -31,8 +31,7 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout']);
 
 // Group untuk Admin
-Route::middleware('auth.refresh')->prefix('admin')->group(function () {
-// Route::prefix('admin')->group(function () {
+Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', function () {
         return view('admin.index');
     });
@@ -52,6 +51,7 @@ Route::middleware('auth.refresh')->prefix('admin')->group(function () {
     Route::get('/ruangan', function () {
         return view('admin.ruangan.index');
     });
+
 });
 
 // Route tambahan menuju admin (duplikat dashboard)
@@ -60,7 +60,7 @@ Route::get('/hai', function () {
 });
 
 // Group untuk Civitas
-Route::prefix('civitas')->group(function () {
+Route::group(['middleware' => ['auth.refresh', 'role:Civitas'], 'prefix' => 'civitas'], function () {
     Route::get('/', function () {
         return view('civitas.index');
     });
@@ -78,8 +78,18 @@ Route::prefix('civitas')->group(function () {
     });
 });
 
+Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sarpras'], function () {
+    Route::get('/', function () {
+        return view('sarpras.index');
+    });
+
+    Route::get('/kelolaLaporkan', function () {
+        return view('sarpras.kelolaLaporan');
+    });
+});
+
 // Group untuk Teknisi
-Route::prefix('teknisi')->group(function () {
+Route::group(['middleware' => ['auth.refresh', 'role:Teknisi'], 'prefix' => 'teknisi'], function () {
     Route::get('/dashboard', function () {
         return view('teknisi.index');
     });
@@ -96,9 +106,7 @@ Route::prefix('teknisi')->group(function () {
         return view('admin.fasilitas.index');
     });
 
-    Route::get('/admin/ruanganfasilitas', function () {
-        return view('admin.ruanganfasilitas.index');
-    });
+ 
 
 
     Route::get('/civitas', function () {
@@ -124,4 +132,31 @@ Route::prefix('teknisi')->group(function () {
     Route::get('/admin/ruangan', function () {
         return view('admin.ruangan.index');
     });
+
+
+      Route::get('/civitas', function () {
+        return view('civitas.index');
+    });
+
+    Route::get('/sarpras/kelolaLaporan', function () {
+        return view('sarpras.kelolaLaporan');
+    });
+
+    Route::get('/teknisi/dashboard', function () {
+        return view('teknisi.index');
+    });
+
+    Route::get('/teknisi/tugas', function () {
+        return view('teknisi.tugas');
+    });
+
+    Route::get('/teknisi/riwayat', function () {
+        return view('teknisi.riwayat');
+    });
+
+    Route::get('/admin/ruangan', function () {
+        return view('admin.ruangan.index');
+    });
+
+
 });
