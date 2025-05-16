@@ -28,6 +28,12 @@
               {{ Request::is('teknisi/dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <span class="material-icons mr-2">dashboard</span> Dashboard Teknisi
     </a>
+    @elseif (Auth::user()->role->role_nama == 'Sarpras')
+    <a href="{{ url('/sarpras/dashboard') }}"
+       class="flex items-center p-3 rounded font-semibold
+              {{ Request::is('sarpras/dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <span class="material-icons mr-2">dashboard</span> Dashboard Teknisi
+    </a>
     @elseif (Auth::user()->role->role_nama == 'Civitas')
     <a href="{{ url('/civitas') }}"
         class="block p-3 rounded
@@ -54,7 +60,7 @@
               {{ Request::is('admin/fasilitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
               <i class="fa-solid fa-screwdriver-wrench mr-2"></i> Kelola Fasilitas
     </a>
-    
+
     <a href="{{ url('/admin/ruanganfasilitas') }}"
        class="block p-3 rounded
               {{ Request::is('admin/ruanganfasilitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
@@ -87,6 +93,20 @@
        class="block p-3 rounded
         {{ Request::is('teknisi/tugas*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-wrench mr-2"></i> Tugas Perbaikan
+    </a>
+    <a href="{{ url('/teknisi/riwayat') }}"
+        class="block p-3 rounded
+          {{ Request::is('/teknisi/riwayat*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+        <i class="fa-solid fa-history mr-2"></i> Riwayat Perbaikan
+    </a>
+    @endif
+
+    @if (Auth::user()->role->role_nama == 'Sarpras')
+    <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">DATA PERBAIKAN</h2>
+    <a href="{{ url('/sarpras/kelolaLaporan') }}"
+       class="block p-3 rounded
+        {{ Request::is('sarpras/kelolaLaporan*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-wrench mr-2"></i> Kelola Laporan
     </a>
     <a href="{{ url('/teknisi/riwayat') }}"
         class="block p-3 rounded

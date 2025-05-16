@@ -52,6 +52,7 @@ Route::middleware('auth.refresh')->prefix('admin')->group(function () {
     Route::get('/ruangan', function () {
         return view('admin.ruangan.index');
     });
+
 });
 
 // Route tambahan menuju admin (duplikat dashboard)
@@ -75,6 +76,16 @@ Route::prefix('civitas')->group(function () {
 
     Route::get('/rating', function () {
         return view('civitas.rating');
+    });
+});
+
+Route::prefix('sarpras')->group(function () {
+    Route::get('/', function () {
+        return view('sarpras.index');
+    });
+
+    Route::get('/kelolaLaporkan', function () {
+        return view('sarpras.kelolaLaporan');
     });
 });
 
@@ -124,4 +135,31 @@ Route::prefix('teknisi')->group(function () {
     Route::get('/admin/ruangan', function () {
         return view('admin.ruangan.index');
     });
+
+
+      Route::get('/civitas', function () {
+        return view('civitas.index');
+    });
+
+    Route::get('/sarpras/kelolaLaporan', function () {
+        return view('sarpras.kelolaLaporan');
+    });
+
+    Route::get('/teknisi/dashboard', function () {
+        return view('teknisi.index');
+    });
+
+    Route::get('/teknisi/tugas', function () {
+        return view('teknisi.tugas');
+    });
+
+    Route::get('/teknisi/riwayat', function () {
+        return view('teknisi.riwayat');
+    });
+
+    Route::get('/admin/ruangan', function () {
+        return view('admin.ruangan.index');
+    });
+
+
 });
