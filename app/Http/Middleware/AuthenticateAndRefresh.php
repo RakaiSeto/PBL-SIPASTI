@@ -52,6 +52,7 @@ class AuthenticateAndRefresh
         }
 
         // If authentication was successful (either initially or after refresh), proceed
+        Helper::logging(Helper::getUsername($request), 'Auth', 'Login', 'User ' . Helper::getUsername($request) . ' token valid');
         $response = $next($request);
 
         // If a new token was issued during refresh, set it in the cookie

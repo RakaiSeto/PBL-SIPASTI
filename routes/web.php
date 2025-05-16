@@ -31,8 +31,7 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout']);
 
 // Group untuk Admin
-Route::middleware('auth.refresh')->prefix('admin')->group(function () {
-// Route::prefix('admin')->group(function () {
+Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', function () {
         return view('admin.index');
     });
@@ -61,7 +60,7 @@ Route::get('/hai', function () {
 });
 
 // Group untuk Civitas
-Route::prefix('civitas')->group(function () {
+Route::group(['middleware' => ['auth.refresh', 'role:Civitas'], 'prefix' => 'civitas'], function () {
     Route::get('/', function () {
         return view('civitas.index');
     });
@@ -79,7 +78,7 @@ Route::prefix('civitas')->group(function () {
     });
 });
 
-Route::prefix('sarpras')->group(function () {
+Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sarpras'], function () {
     Route::get('/', function () {
         return view('sarpras.index');
     });
@@ -90,7 +89,7 @@ Route::prefix('sarpras')->group(function () {
 });
 
 // Group untuk Teknisi
-Route::prefix('teknisi')->group(function () {
+Route::group(['middleware' => ['auth.refresh', 'role:Teknisi'], 'prefix' => 'teknisi'], function () {
     Route::get('/dashboard', function () {
         return view('teknisi.index');
     });

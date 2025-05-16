@@ -29,10 +29,10 @@
       <span class="material-icons mr-2">dashboard</span> Dashboard Teknisi
     </a>
     @elseif (Auth::user()->role->role_nama == 'Sarpras')
-    <a href="{{ url('/sarpras/dashboard') }}"
+    <a href="{{ url('/sarpras') }}"
        class="flex items-center p-3 rounded font-semibold
               {{ Request::is('sarpras/dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <span class="material-icons mr-2">dashboard</span> Dashboard Teknisi
+      <span class="material-icons mr-2">dashboard</span> Dashboard Sarpras
     </a>
     @elseif (Auth::user()->role->role_nama == 'Civitas')
     <a href="{{ url('/civitas') }}"

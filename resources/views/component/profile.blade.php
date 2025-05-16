@@ -14,6 +14,18 @@
             <a href="/admin/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                 Dashboard
             </a>
+        @elseif ($role == 'Sarpras')
+            <a href="/sarpras" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                Dashboard
+            </a>
+        @elseif ($role == 'Teknisi')
+            <a href="/teknisi/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                Dashboard
+            </a>
+        @elseif ($role == 'Civitas')
+            <a href="/civitas" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                Dashboard
+            </a>
         @endif
         @if (!Request::is('/'))
             <button onclick="openModalProfile()" class="block px-4 w-full text-left py-2 text-sm text-gray-700 hover:bg-gray-100">
