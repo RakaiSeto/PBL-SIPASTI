@@ -46,6 +46,9 @@
                             <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openPerbaruiModal()">
                                 <i class="fas fa-edit"></i> Perbarui
                             </button>
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>                            
                         </td>
                     </tr>
                     <tr class="hover:bg-slate-50">
@@ -62,6 +65,9 @@
                             <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openPerbaruiModal()">
                                 <i class="fas fa-edit"></i> Perbarui
                             </button>
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>                            
                         </td>
                     </tr>
                     <tr class="hover:bg-slate-50">
@@ -78,6 +84,9 @@
                             <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openPerbaruiModal()">
                                 <i class="fas fa-edit"></i> Perbarui
                             </button>
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </button>                            
                         </td>
                     </tr>
                 </tbody>
@@ -128,6 +137,32 @@
         </div>
     </div>
 </div>
+<div id="detailModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-xl w-full max-w-md p-6 relative shadow-lg ring-1 ring-gray-200 max-h-[90vh] overflow-y-auto">
+        <button onclick="tutupDetailModal()" class="absolute top-2 right-2 text-gray-400 hover:text-black text-xl">
+            &times;
+        </button>
+        <h2 class="text-xl font-bold text-blue-700 mb-4 flex items-center gap-2">
+            <i class="fas fa-file-alt"></i> Detail Laporan
+        </h2>
+        <div class="space-y-4 text-sm">
+            <div class="bg-gray-50 p-3 rounded border">
+                <p><span class="font-semibold text-gray-600">Ruangan:</span> <span id="detailRuangan" class="text-gray-800"></span></p>
+                <p><span class="font-semibold text-gray-600">Fasilitas:</span> <span id="detailFasilitas" class="text-gray-800"></span></p>
+                <p><span class="font-semibold text-gray-600">Deskripsi:</span> <span id="detailDeskripsi" class="text-gray-800"></span></p>
+                <p><span class="font-semibold text-gray-600">Kategori:</span> <span id="detailKategori" class="text-gray-800"></span></p>
+            </div>
+            <div class="bg-gray-50 p-3 rounded border">
+                <strong class="text-gray-600">Foto:</strong><br>
+                <img id="detailFoto" src="" alt="Foto Fasilitas" class="mt-2 rounded-lg border w-full">
+            </div>
+            <div class="bg-gray-50 p-3 rounded border">
+                <strong class="text-gray-600 block mb-2">Riwayat Status:</strong>
+                <ul id="riwayatStatus" class="space-y-2"></ul>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     function searchTable() {
@@ -163,6 +198,67 @@
         alert(`Status telah diperbarui menjadi: ${status}\nCatatan: ${catatan}`);
         closeModal('perbaruiModal');
     }
-</script>
 
+    const tugasDetailData = {
+        'T001': {
+            ruangan: 'Ruang Kelas A',
+            fasilitas: 'AC',
+            deskripsi: 'AC tidak menyala dan mengeluarkan suara keras.',
+            kategori: 'Elektronik',
+            foto: "{{ asset('assets/image/6.jpg') }}",
+            riwayat: [
+                { status: 'Masuk', tanggal: '06-05-2025', icon: 'fas fa-flag', color: 'text-gray-500' },
+                { status: 'Diproses', tanggal: '06-05-2025', icon: 'fas fa-spinner', color: 'text-yellow-500' },
+            ]
+        },
+        'T002': {
+            ruangan: 'Ruang B',
+            fasilitas: 'Lampu',
+            deskripsi: 'Lampu sering mati nyala.',
+            kategori: 'Listrik',
+            foto: "{{ asset('assets/image/6.jpg') }}",
+            riwayat: [
+                { status: 'Masuk', tanggal: '06-05-2025', icon: 'fas fa-flag', color: 'text-gray-500' },
+            ]
+        },
+        'T003': {
+            ruangan: 'Ruang C',
+            fasilitas: 'Pintu',
+            deskripsi: 'Engsel pintu longgar.',
+            kategori: 'Bangunan',
+            foto: "{{ asset('assets/image/6.jpg') }}",
+            riwayat: [
+                { status: 'Masuk', tanggal: '06-05-2025', icon: 'fas fa-flag', color: 'text-gray-500' },
+                { status: 'Diproses', tanggal: '06-05-2025', icon: 'fas fa-spinner', color: 'text-yellow-500' },
+                { status: 'Selesai', tanggal: '07-05-2025', icon: 'fas fa-check-circle', color: 'text-green-600' },
+            ]
+        }
+    };
+
+    function openDetailModal(id) {
+        const data = tugasDetailData[id];
+        if (!data) return alert('Data tidak ditemukan');
+
+        document.getElementById('detailRuangan').textContent = data.ruangan;
+        document.getElementById('detailFasilitas').textContent = data.fasilitas;
+        document.getElementById('detailDeskripsi').textContent = data.deskripsi;
+        document.getElementById('detailKategori').textContent = data.kategori;
+        document.getElementById('detailFoto').src = data.foto;
+
+        const riwayatList = document.getElementById('riwayatStatus');
+        riwayatList.innerHTML = '';
+        data.riwayat.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'flex items-center gap-2';
+            li.innerHTML = `<i class="${item.icon} ${item.color} w-4"></i> <span><strong>${item.status}:</strong> ${item.tanggal}</span>`;
+            riwayatList.appendChild(li);
+        });
+
+        document.getElementById('detailModal').classList.remove('hidden');
+    }
+
+    function tutupDetailModal() {
+        document.getElementById('detailModal').classList.add('hidden');
+    }
+</script>
 @endsection

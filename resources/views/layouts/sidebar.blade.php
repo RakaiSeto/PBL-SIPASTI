@@ -24,7 +24,7 @@
     </a>
     @elseif (Auth::user()->role->role_nama == 'Teknisi')
     <a href="{{ url('/teknisi/dashboard') }}"
-       class="flex items-center p-3 rounded font-semibold
+       class="flex items-center block p-3 rounded
               {{ Request::is('teknisi/dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <span class="material-icons mr-2">dashboard</span> Dashboard Teknisi
     </a>
