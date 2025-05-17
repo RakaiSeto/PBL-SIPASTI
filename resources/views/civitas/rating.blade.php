@@ -65,6 +65,9 @@
     </div>
 
 
+    @include('component.plagination')
+
+{{--
 <!-- Pagination Minimalis -->
 <div class="flex justify-between items-center px-4 py-3">
     <span class="text-sm text-gray-500">
@@ -88,7 +91,7 @@
             ›
         </button>
     </nav>
-</div>
+</div> --}}
 
 
     <!-- Modal Feedback -->
