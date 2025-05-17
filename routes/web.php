@@ -70,6 +70,26 @@ Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sar
     Route::get('/kelolaLaporan', function () {
         return view('sarpras.kelolaLaporan');
     })->name('sarpras.kelolaLaporan');
+
+    Route::get('/statistik', function () {
+        return view('sarpras.statistik');
+    })->name('sarpras.statistik');
+
+    Route::get('/status', function () {
+        return view('sarpras.status');
+    })->name('sarpras.status');
+
+    Route::get('/tugaskan', function () {
+        return view('sarpras.tugaskan');
+    })->name('sarpras.tugaskan');
+
+    Route::get('/rekomendasi', function () {
+        return view('sarpras.rekomendasi');
+    })->name('sarpras.rekomendasi');
+
+    Route::get('/kategorisasi', function () {
+        return view('sarpras.kategorisasi');
+    })->name('sarpras.kategorisasi');
 });
 
 // Group Teknisi

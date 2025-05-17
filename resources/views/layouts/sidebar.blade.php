@@ -7,7 +7,7 @@
   </div>
 
   <!-- Logo Desktop -->
-  <a href="{{ route('home') }}">
+  <a href="#">
     <div class="hidden md:flex items-center mb-2 mr-3">
       <img src="{{ asset('assets/image/LOGO.svg') }}" class="h-8 mr-1" alt="Logo" />
       <h1 class="text-xl font-bold">SIPASTI</h1>
@@ -22,28 +22,28 @@
     <a href="{{ route('admin.dashboard') }}"
        class="flex items-center p-3 rounded font-semibold
               {{ request()->routeIs('admin.dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <span class="material-icons mr-2">dashboard</span> Dashboard
+     <i class="fas fa-home mr-2"></i> Dashboard
     </a>
 
     @elseif (Auth::user()->role->role_nama == 'Teknisi')
     <a href="{{ route('teknisi.dashboard') }}"
        class="flex items-center p-3 rounded font-semibold
               {{ request()->routeIs('teknisi.dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <span class="material-icons mr-2">dashboard</span> Dashboard Teknisi
+      <i class="fas fa-home mr-2"></i> Dashboard
     </a>
 
     @elseif (Auth::user()->role->role_nama == 'Sarpras')
     <a href="{{ route('sarpras.dashboard') }}"
-       class="flex items-center p-3 rounded font-semibold
-              {{ request()->routeIs('sarpras.dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-user-tie mr-2"></i> Dashboard
+    class="flex items-center p-3 rounded font-semibold
+    {{ request()->routeIs('sarpras.dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+     <i class="fas fa-home mr-2"></i> Dashboard
     </a>
 
     @elseif (Auth::user()->role->role_nama == 'Civitas')
     <a href="{{ route('civitas.dashboard') }}"
        class="flex items-center p-3 rounded font-semibold
               {{ request()->routeIs('civitas.dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-building mr-2"></i> Dashboard Pelapor
+      <i class="fas fa-home mr-2"></i> Dashboard
     </a>
     @endif
 
@@ -74,6 +74,8 @@
     @endif
 
     @if (Auth::user()->role->role_nama == 'Civitas')
+    <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Main Menu</h2>
+
     <a href="{{ route('civitas.laporkan') }}"
        class="block p-3 rounded font-semibold
               {{ request()->routeIs('civitas.laporkan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
@@ -112,11 +114,36 @@
               {{ request()->routeIs('sarpras.kelolaLaporan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-wrench mr-2"></i> Kelola Laporan
     </a>
-    <a href="{{ route('teknisi.riwayat') }}"
-       class="block p-3 rounded font-semibold
-              {{ request()->routeIs('teknisi.riwayat') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-history mr-2"></i> Riwayat Perbaikan
-    </a>
+    <a href="{{ route('sarpras.kategorisasi') }}"
+    class="block p-3 rounded font-semibold
+          {{ request()->routeIs('sarpras.kategorisasi') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+  <i class="fa-solid fa-list mr-2"></i> Kategorisasi Laporan
+</a>
+
+<a href="{{ route('sarpras.rekomendasi') }}"
+   class="block p-3 rounded font-semibold
+          {{ request()->routeIs('sarpras.rekomendasi') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+  <i class="fa-solid fa-lightbulb mr-2"></i> Rekomendasi Perbaikan
+</a>
+
+<a href="{{ route('sarpras.tugaskan') }}"
+   class="block p-3 rounded font-semibold
+          {{ request()->routeIs('sarpras.tugaskan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+  <i class="fa-solid fa-user-cog mr-2"></i> Tugaskan Teknisi
+</a>
+
+<a href="{{ route('sarpras.status') }}"
+   class="block p-3 rounded font-semibold
+          {{ request()->routeIs('sarpras.status') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+  <i class="fa-solid fa-circle-check mr-2"></i> Status Perbaikan
+</a>
+
+<a href="{{ route('sarpras.statistik') }}"
+   class="block p-3 rounded font-semibold
+          {{ request()->routeIs('sarpras.statistik') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+  <i class="fa-solid fa-chart-column mr-2"></i> Statistik
+</a>
+
     @endif
   </nav>
 </aside>

@@ -2,26 +2,48 @@
 
 @section('content')
 <div class="bg-white p-4 rounded shadow">
-    <div class="flex justify-between mb-3 mt-1">
-        <input
-            class="w-full max-w-sm pr-11 h-10 pl-3 py-2 text-sm border border-slate-200 rounded"
-            placeholder="Cari..."
-        />
+    <div class="flex justify-between mb-3 mt-1 items-center gap-4 flex-wrap">
+    <!-- Input Cari di kiri -->
+    <input
+        class="w-full sm:max-w-sm pr-11 h-10 pl-3 py-2 text-sm border border-slate-200 rounded"
+        placeholder="Cari..."
+    />
+
+    <!-- Dropdown Tampilkan data di kanan -->
+    <div class="flex items-center gap-2 whitespace-nowrap">
+        <label for="tampilData" class="text-sm text-slate-700">Tampilkan</label>
+        <select id="tampilData" class="border border-slate-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="5" selected>5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+        </select>
     </div>
+</div>
 
     <!-- Table -->
     <div class="overflow-auto">
         <table class="w-full table-auto text-sm text-left">
             <thead>
-                <tr class="bg-slate-100">
-                    <th class="p-3">No</th>
-                    <th class="p-3">Ruang</th>
-                    <th class="p-3">Fasilitas</th>
-                    <th class="p-3">Tanggal</th>
-                    <th class="p-3">Status</th>
-                    <th class="p-3">Aksi</th>
-                </tr>
-            </thead>
+    <tr class="bg-slate-100 border-b border-slate-300 font-bold">
+        @php
+            $headers = ['No', 'Ruang', 'Fasilitas', 'Tanggal', 'Status', 'Aksi'];
+        @endphp
+        @foreach ($headers as $header)
+        <th class="p-3 transition-colors cursor-pointer hover:bg-slate-100">
+            <p class="flex items-center justify-between gap-2 text-sm font-bold leading-none text-slate-800">
+                {{ $header }}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8.25 15L12 18.75 15.75 15M8.25 9L12 5.25 15.75 9" />
+                </svg>
+            </p>
+        </th>
+        @endforeach
+    </tr>
+</thead>
+
             <tbody>
                 <!-- Tambahkan baris data -->
                 <tr class="hover:bg-slate-50 border-b">
@@ -35,12 +57,39 @@
                         </span>
                     </td>
                         <td class="p-3 flex">
-                            <button class="bg-primary text-white rounded py-2 px-4 rounded hover:bg-blue-700 gap-x-4 " onclick="bukaModal()"><i class="fas fa-star"></i> Beri Feedback</button>
+                            <button class="bg-primary text-white rounded py-2 px-4 rounded hover:bg-blue-700 gap-x-4 " onclick="bukaModal()"> Beri Feedback</button>
                         </td>
                 </tr>
             </tbody>
         </table>
     </div>
+
+
+<!-- Pagination Minimalis -->
+<div class="flex justify-between items-center px-4 py-3">
+    <span class="text-sm text-gray-500">
+        Menampilkan <span class="font-medium text-gray-700">1-5</span> dari <span class="font-medium text-gray-700">45</span>
+    </span>
+
+    <nav class="inline-flex items-center space-x-1">
+        <button class="px-3 py-1 text-sm text-gray-500 bg-white border border-gray-300 rounded hover:bg-gray-100">
+            ‹
+        </button>
+        <button class="px-3 py-1 text-sm text-white bg-primary border border-gray-300 rounded hover:bg-slate-700">
+            1
+        </button>
+        <button class="px-3 py-1 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100">
+            2
+        </button>
+        <button class="px-3 py-1 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100">
+            3
+        </button>
+        <button class="px-3 py-1 text-sm text-gray-500 bg-white border border-gray-300 rounded hover:bg-gray-100">
+            ›
+        </button>
+    </nav>
+</div>
+
 
     <!-- Modal Feedback -->
 <div id="feedbackModal" class="fixed inset-0 bg-black bg-opacity-50 rounded flex items-center justify-center hidden z-50">
