@@ -150,19 +150,22 @@
 
 <!-- Script Sidebar -->
 <script>
-  const toggleSidebar = document.getElementById("toggleSidebar");
-  const closeSidebar = document.getElementById("closeSidebar");
-  const sidebar = document.getElementById("sidebar");
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleSidebar = document.getElementById("toggleSidebar");
+    const closeSidebar = document.getElementById("closeSidebar");
+    const sidebar = document.getElementById("sidebar");
 
-  if (toggleSidebar) {
-    toggleSidebar.addEventListener("click", () => {
-      sidebar.classList.toggle("hidden");
-    });
-  }
+    if (toggleSidebar) {
+      toggleSidebar.addEventListener("click", () => {
+        sidebar.classList.toggle("hidden");
+      });
+    }
 
-  if (closeSidebar) {
-    closeSidebar.addEventListener("click", () => {
-      sidebar.classList.add("hidden");
-    });
-  }
+    if (closeSidebar) {
+      closeSidebar.addEventListener("click", () => {
+        sidebar.classList.add("hidden");
+      });
+    }
+  });
 </script>
+
