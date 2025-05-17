@@ -11,67 +11,79 @@ use App\Helper\Helper;
 
 class AuthController extends Controller
 {
-
     public function login(Request $request)
-    {
-        if (Auth::check()) {
-            if (Auth::user()->role->role_nama == 'Admin') {
-                return redirect('/admin/dashboard');
-            } else if (Auth::user()->role->role_nama == 'Teknisi') {
-                return redirect('/teknisi/dashboard');
-            } else if (Auth::user()->role->role_nama == 'Civitas') {
-                return redirect('/civitas');
-            }
-        }
+{
+    if (Auth::check()) {
+        $role = Auth::user()->role->role_nama;
 
-        return view('auth.login');
-    }
-
-    public function register(Request $request)
-    {
-        if (Auth::check()) {
-            if (Auth::user()->role->role_nama == 'Admin') {
-                return redirect('/admin/dashboard');
-            } else if (Auth::user()->role->role_nama == 'Teknisi') {
-                return redirect('/teknisi/dashboard');
-            } else if (Auth::user()->role->role_nama == 'Civitas') {
-                return redirect('/civitas');
-            }
-        }
-
-        return view('auth.register');
-    }
-
-    public function doLogin(Request $request)
-    {
-        $credentials = $request->validate([
-            'username' => 'required|string',
-            'password' => 'required',
-        ]);
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $token = JWTAuth::fromUser($user);
-            Helper::logging($user->username, 'Auth', 'Login', 'User ' . $user->username . ' logged in');
-            $cookie = cookie('jwtToken', $token, JWTAuth::factory()->getTTL() * 60);
-            if ($user->role->role_nama == 'Admin') {
-                return redirect('/admin/dashboard')->withCookie($cookie);
-            } else if ($user->role->role_nama == 'Teknisi') {
-                return redirect('/teknisi/dashboard')->withCookie($cookie);
-            } else if ($user->role->role_nama == 'Civitas') {
-                return redirect('/civitas')->withCookie($cookie);
-            } else if ($user->role->role_nama == 'Sarpras') {
-                return redirect('/sarpras')->withCookie($cookie);
-            }
-        } else {
-            return redirect()->back()->withErrors(['error' => 'Invalid credentials']);
+        if ($role == 'Admin') {
+            return redirect()->route('admin.dashboard');
+        } else if ($role == 'Teknisi') {
+            return redirect()->route('teknisi.dashboard');
+        } else if ($role == 'Civitas') {
+            return redirect()->route('civitas.dashboard');
+        } else if ($role == 'Sarpras') {
+            return redirect()->route('sarpras.dashboard');
         }
     }
 
-    public function logout(Request $request)
-    {
-        $cookie = cookie('jwtToken', '', -1);
-        Helper::logging(Helper::getUsername($request), 'Auth', 'Logout', 'User ' . Helper::getUsername($request) . ' logged out');
-        Auth::logout();
-        return redirect('/login')->withCookie($cookie);
+    return view('auth.login');
+}
+
+public function register(Request $request)
+{
+    if (Auth::check()) {
+        $role = Auth::user()->role->role_nama;
+
+        if ($role == 'Admin') {
+            return redirect()->route('admin.dashboard');
+        } else if ($role == 'Teknisi') {
+            return redirect()->route('teknisi.dashboard');
+        } else if ($role == 'Civitas') {
+            return redirect()->route('civitas.dashboard');
+        } else if ($role == 'Sarpras') {
+            return redirect()->route('sarpras.dashboard');
+        }
     }
+
+    return view('auth.register');
+}
+
+public function doLogin(Request $request)
+{
+    $credentials = $request->validate([
+        'username' => 'required|string',
+        'password' => 'required',
+    ]);
+
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+        $token = JWTAuth::fromUser($user);
+        Helper::logging($user->username, 'Auth', 'Login', 'User ' . $user->username . ' logged in');
+        $cookie = cookie('jwtToken', $token, JWTAuth::factory()->getTTL() * 60);
+
+        $role = $user->role->role_nama;
+
+        if ($role == 'Admin') {
+            return redirect()->route('admin.dashboard')->withCookie($cookie);
+        } else if ($role == 'Teknisi') {
+            return redirect()->route('teknisi.dashboard')->withCookie($cookie);
+        } else if ($role == 'Civitas') {
+            return redirect()->route('civitas.dashboard')->withCookie($cookie);
+        } else if ($role == 'Sarpras') {
+            return redirect()->route('sarpras.dashboard')->withCookie($cookie);
+        }
+    } else {
+        return redirect()->back()->withErrors(['error' => 'Invalid credentials']);
+    }
+}
+
+public function logout(Request $request)
+{
+    $cookie = cookie('jwtToken', '', -1);
+    Helper::logging(Helper::getUsername($request), 'Auth', 'Logout', 'User ' . Helper::getUsername($request) . ' logged out');
+    Auth::logout();
+    return redirect()->route('login')->withCookie($cookie);
+}
+
 }

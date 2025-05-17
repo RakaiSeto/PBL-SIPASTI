@@ -3,160 +3,86 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-
+// Halaman utama
 Route::get('/', function () {
     return view('index');
-});
+})->name('home');
 
+// Autentikasi
 Route::get('/login', [AuthController::class, 'login'])->name('login');
-
-// hanya jika belum login
 Route::post('/login', [AuthController::class, 'doLogin']);
 Route::get('/register', [AuthController::class, 'register'])->name('register');
-Route::get('/logout', [AuthController::class, 'logout']);
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Group untuk Admin
+// Group Admin
 Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin'], function () {
-    Route::get('/dashboard', function () {
+    Route::get('/', function () {
         return view('admin.index');
-    });
+    })->name('admin.dashboard');
 
-    Route::get('/admin', function () {
+    Route::get('/mahasiswa', function () {
         return view('admin.mahasiswa.index');
-    });
+    })->name('admin.mahasiswa');
 
     Route::get('/datapengguna', function () {
         return view('admin.datapengguna.index');
-    });
+    })->name('admin.datapengguna');
 
     Route::get('/fasilitas', function () {
         return view('admin.fasilitas.index');
-    });
+    })->name('admin.fasilitas');
 
     Route::get('/ruangan', function () {
         return view('admin.ruangan.index');
-    });
-
+    })->name('admin.ruangan');
 });
 
-// Route tambahan menuju admin (duplikat dashboard)
+// Route tambahan admin (duplikat dashboard)
 Route::get('/hai', function () {
     return view('admin.index');
-});
+})->name('admin.hai');
 
-// Group untuk Civitas
+// Group Civitas
 Route::group(['middleware' => ['auth.refresh', 'role:Civitas'], 'prefix' => 'civitas'], function () {
     Route::get('/', function () {
         return view('civitas.index');
-    });
+    })->name('civitas.dashboard');
 
     Route::get('/laporkan', function () {
         return view('civitas.laporkan');
-    });
+    })->name('civitas.laporkan');
 
     Route::get('/status', function () {
         return view('civitas.status');
-    });
+    })->name('civitas.status');
 
     Route::get('/rating', function () {
         return view('civitas.rating');
-    });
+    })->name('civitas.rating');
 });
 
+// Group Sarpras
 Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sarpras'], function () {
     Route::get('/', function () {
         return view('sarpras.index');
-    });
+    })->name('sarpras.dashboard');
 
     Route::get('/kelolaLaporan', function () {
         return view('sarpras.kelolaLaporan');
-    });
+    })->name('sarpras.kelolaLaporan');
 });
 
-// Group untuk Teknisi
+// Group Teknisi
 Route::group(['middleware' => ['auth.refresh', 'role:Teknisi'], 'prefix' => 'teknisi'], function () {
-    Route::get('/dashboard', function () {
+    Route::get('/', function () {
         return view('teknisi.index');
-    });
+    })->name('teknisi.dashboard');
 
     Route::get('/tugas', function () {
         return view('teknisi.tugas');
-    });
+    })->name('teknisi.tugas');
 
     Route::get('/riwayat', function () {
         return view('teknisi.riwayat');
-    });
-
-    Route::get('/admin/fasilitas', function () {
-        return view('admin.fasilitas.index');
-    });
-
-
-
-
-    Route::get('/civitas', function () {
-        return view('civitas.index');
-    });
-
-    Route::get('/civitas/laporkan', function () {
-        return view('civitas.laporkan');
-    });
-
-    Route::get('/teknisi/dashboard', function () {
-        return view('teknisi.index');
-    });
-
-    Route::get('/teknisi/tugas', function () {
-        return view('teknisi.tugas');
-    });
-
-    Route::get('/teknisi/riwayat', function () {
-        return view('teknisi.riwayat');
-    });
-
-    Route::get('/admin/ruangan', function () {
-        return view('admin.ruangan.index');
-    });
-
-
-      Route::get('/civitas', function () {
-        return view('civitas.index');
-    });
-
-    Route::get('/sarpras/kelolaLaporan', function () {
-        return view('sarpras.kelolaLaporan');
-    });
-
-    Route::get('/teknisi/dashboard', function () {
-        return view('teknisi.index');
-    });
-
-    Route::get('/teknisi/tugas', function () {
-        return view('teknisi.tugas');
-    });
-
-    Route::get('/teknisi/riwayat', function () {
-        return view('teknisi.riwayat');
-    });
-
-    Route::get('/admin/ruangan', function () {
-        return view('admin.ruangan.index');
-    });
-
-
+    })->name('teknisi.riwayat');
 });
