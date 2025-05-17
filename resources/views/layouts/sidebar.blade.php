@@ -24,7 +24,7 @@
     </a>
     @elseif (Auth::user()->role->role_nama == 'Teknisi')
     <a href="{{ url('/teknisi/dashboard') }}"
-       class="flex items-center block p-3 rounded
+       class="flex items-center block p-3 rounded font-semibold
               {{ Request::is('teknisi/dashboard') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <span class="material-icons mr-2">dashboard</span> Dashboard Teknisi
     </a>
@@ -32,11 +32,11 @@
     <a href="{{ url('/sarpras') }}"
        class="flex items-center p-3 rounded font-semibold
               {{ Request::is('sarpras') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <span class="material-icons mr-2">dashboard</span> Dashboard Sarpras
+     <i class="fa-solid fa-user-tie mr-2"></i>  Dashboard
     </a>
     @elseif (Auth::user()->role->role_nama == 'Civitas')
     <a href="{{ url('/civitas') }}"
-        class="block p-3 rounded
+        class="block p-3 rounded font-semibold
             {{ Request::is('civitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
     <i class="fa-solid fa-building mr-2"></i> Dashboard Pelapor
     </a>
@@ -45,24 +45,24 @@
     @if (Auth::user()->role->role_nama == 'Admin')
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Data Pengguna</h2>
     <a href="{{ url('/admin/datapengguna') }}"
-       class="block p-3 rounded
+       class="block p-3 rounded font-semibold
               {{ Request::is('admin/datapengguna*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-user-tie mr-2"></i> Kelola Pengguna
     </a>
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">DATA INVENTARIS</h2>
     <a href="{{ url('/admin/ruangan') }}"
-       class="block p-3 rounded
+       class="block p-3 rounded font-semibold
               {{ Request::is('admin/ruangan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
               <i class="fa-solid fa-building mr-2"></i> Kelola Ruangan
     </a>
     <a href="{{ url('/admin/fasilitas') }}"
-       class="block p-3 rounded
+       class="block p-3 rounded font-semibold
               {{ Request::is('admin/fasilitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
               <i class="fa-solid fa-screwdriver-wrench mr-2"></i> Kelola Fasilitas
     </a>
 
     <a href="{{ url('/admin/ruanganfasilitas') }}"
-       class="block p-3 rounded
+       class="block p-3 rounded font-semibold
               {{ Request::is('admin/ruanganfasilitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-chalkboard mr-2"></i> Kelola Ruang & Fasilitas
     </a>
@@ -70,18 +70,18 @@
     {{-- <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Sidebar untuk Civitas</h2> --}}
     @if (Auth::user()->role->role_nama == 'Civitas')
     <a href="{{ url('/civitas/laporkan') }}"
-       class="block p-3 rounded
+       class="block p-3 rounded font-semibold
               {{ Request::is('civitas/laporkan*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-building mr-2"></i> Laporkan
     </a>
 
     <a href="{{ url('/civitas/status') }}"
-       class="block p-3 rounded
+       class="block p-3 rounded font-semibold
               {{ Request::is('civitas/status*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-building mr-2"></i> Status Laporan
     </a>
     <a href="{{ url('/civitas/rating') }}"
-       class="block p-3 rounded
+       class="block p-3 rounded font-semibold
               {{ Request::is('civitas/rating*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-building mr-2"></i> Beri Feedback
     </a>
@@ -90,12 +90,12 @@
     @if (Auth::user()->role->role_nama == 'Teknisi')
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">DATA PERBAIKAN</h2>
     <a href="{{ url('/teknisi/tugas') }}"
-       class="block p-3 rounded
+       class="block p-3 rounded font-semibold
         {{ Request::is('teknisi/tugas*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-wrench mr-2"></i> Tugas Perbaikan
     </a>
     <a href="{{ url('/teknisi/riwayat') }}"
-        class="block p-3 rounded
+        class="block p-3 rounded font-semibold
           {{ Request::is('/teknisi/riwayat*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
         <i class="fa-solid fa-history mr-2"></i> Riwayat Perbaikan
     </a>
@@ -104,12 +104,12 @@
     @if (Auth::user()->role->role_nama == 'Sarpras')
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">DATA PERBAIKAN</h2>
     <a href="{{ url('/sarpras/kelolaLaporan') }}"
-       class="block p-3 rounded
+       class="block p-3 rounded font-semibold
         {{ Request::is('sarpras/kelolaLaporan*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-wrench mr-2"></i> Kelola Laporan
     </a>
     <a href="{{ url('/teknisi/riwayat') }}"
-        class="block p-3 rounded
+        class="block p-3 rounded font-semibold
           {{ Request::is('/teknisi/riwayat*') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
         <i class="fa-solid fa-history mr-2"></i> Riwayat Perbaikan
     </a>
