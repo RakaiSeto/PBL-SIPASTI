@@ -83,7 +83,7 @@ Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sar
         return view('sarpras.index');
     });
 
-    Route::get('/kelolaLaporkan', function () {
+    Route::get('/kelolaLaporan', function () {
         return view('sarpras.kelolaLaporan');
     });
 });
@@ -106,7 +106,7 @@ Route::group(['middleware' => ['auth.refresh', 'role:Teknisi'], 'prefix' => 'tek
         return view('admin.fasilitas.index');
     });
 
- 
+
 
 
     Route::get('/civitas', function () {
