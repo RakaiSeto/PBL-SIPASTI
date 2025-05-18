@@ -13,7 +13,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
         body {
-            font-family: "Inter", sans-serif;
+            /* font-family: 'Comic Neue', cursive; */
+font-family: "Poppins", sans-serif;
+
+            /* font-family: "Poppins", sans-serif; */
         }
 
         :root {
@@ -28,6 +31,9 @@
         .bg-primary:hover {
             background-color: var(--primary-hover);
         }
+        #sidebar.show {
+            display: block !important;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -37,7 +43,10 @@
     <div class="flex min-h-screen">
         @include('layouts.sidebar')
 
-        <main class="flex-1 md:ml transition-all duration-300">
+        <main class="flex-1 ml-0 md:ml-64 transition-all duration-300">
+        {{-- <main class="flex-1 ml-64 overflow-y-auto max-h-screen"> --}}
+
+        {{-- <main class="flex-1 md:ml transition-all duration-300"> --}}
             @include('layouts.header')
 
             <div class="p-4">
