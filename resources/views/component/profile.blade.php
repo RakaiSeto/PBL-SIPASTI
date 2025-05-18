@@ -7,26 +7,26 @@
 
     <!-- Dropdown menu -->
     <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-md py-2 z-50 hidden">
-        {{-- @php
-            $role = Auth::user()->role->role_nama;
-        @endphp
-        @if ($role == 'Admin')
-            <a href="/admin/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                Dashboard
-            </a>
-        @elseif ($role == 'Sarpras')
-            <a href="/sarpras" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                Dashboard
-            </a>
-        @elseif ($role == 'Teknisi')
-            <a href="/teknisi/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                Dashboard
-            </a>
-        @elseif ($role == 'Civitas')
-            <a href="/civitas" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                Dashboard
-            </a>
-        @endif --}}
+            @php
+                $role = Auth::user()->role->role_nama;
+            @endphp
+            @if ($role == 'Admin')
+                <a href="/admin/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Dashboard
+                </a>
+            @elseif ($role == 'Sarpras')
+                <a href="/sarpras" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Dashboard
+                </a>
+            @elseif ($role == 'Teknisi')
+                <a href="/teknisi/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Dashboard
+                </a>
+            @elseif ($role == 'Civitas')
+                <a href="/civitas" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Dashboard
+                </a>
+            @endif
         @if (!Request::is('/'))
             <button onclick="openModalProfile()" class="block px-4 w-full text-left py-2 text-sm text-gray-700 hover:bg-gray-100">
                 Ganti Profil
