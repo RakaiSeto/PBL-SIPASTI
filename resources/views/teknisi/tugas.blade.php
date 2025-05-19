@@ -40,7 +40,7 @@
                         </td>
                         <td class="p-3">2025-05-11</td>
                         <td class="p-3 flex gap-2">
-                            <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
+                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
                                 <i class="fas fa-check-circle"></i> Terima
                             </button>
                             <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">
@@ -56,7 +56,7 @@
                         </td>
                         <td class="p-3">2025-05-12</td>
                         <td class="p-3 flex gap-2">
-                            <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
+                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
                                 <i class="fas fa-check-circle"></i> Terima
                             </button>
                             <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">
@@ -72,7 +72,7 @@
                         </td>
                         <td class="p-3">2025-05-13</td>
                         <td class="p-3 flex gap-2">
-                            <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
+                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
                                 <i class="fas fa-check-circle"></i> Terima
                             </button>
                             <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">

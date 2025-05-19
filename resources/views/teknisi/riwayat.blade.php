@@ -73,22 +73,29 @@
     </div>
 </div>
 
-<!-- Modal Detail Tugas -->
-<div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white p-8 rounded shadow-lg w-96">
-        <h3 class="text-lg font-semibold mb-4">Detail Tugas</h3>
-        <div class="mb-4">
-            <p><strong>Deskripsi Tugas:</strong> <span class="modal-description"></span></p>
-            <p><strong>Fasilitas:</strong> <span class="modal-fasilitas"></span></p>
-        </div>
-        <div class="mb-4">
-            <strong>Riwayat Status:</strong>
-            <ul class="modal-history list-disc pl-5">
-                <!-- History will be inserted here dynamically -->
-            </ul>
-        </div>
-        <div class="mt-4 flex justify-center gap-4">
-            <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded" onclick="closeModal('detailModal')">Tutup</button>
+<div id="detailModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-xl w-full max-w-md p-6 relative shadow-lg ring-1 ring-gray-200 max-h-[90vh] overflow-y-auto">
+        <button onclick="tutupDetailModal()" class="absolute top-2 right-2 text-gray-400 hover:text-black text-xl">
+            &times;
+        </button>
+        <h2 class="text-xl font-bold text-black-700 mb-4 flex items-center gap-2">
+            <i class="fas fa-file-alt"></i> Detail Laporan
+        </h2>
+        <div class="space-y-4 text-sm">
+            <div class="bg-gray-50 p-3 rounded border">
+                <p><span class="font-semibold text-gray-600">Ruangan:</span> <span id="detailRuangan" class="text-gray-800"></span></p>
+                <p><span class="font-semibold text-gray-600">Fasilitas:</span> <span id="detailFasilitas" class="text-gray-800"></span></p>
+                <p><span class="font-semibold text-gray-600">Deskripsi:</span> <span id="detailDeskripsi" class="text-gray-800"></span></p>
+                <p><span class="font-semibold text-gray-600">Kategori:</span> <span id="detailKategori" class="text-gray-800"></span></p>
+            </div>
+            <div class="bg-gray-50 p-3 rounded border">
+                <strong class="text-gray-600">Foto:</strong><br>
+                <img id="detailFoto" src="" alt="Foto Fasilitas" class="mt-2 rounded-lg border w-full">
+            </div>
+            <div class="bg-gray-50 p-3 rounded border">
+                <strong class="text-gray-600 block mb-2">Riwayat Status:</strong>
+                <ul id="riwayatStatus" class="space-y-2"></ul>
+            </div>
         </div>
     </div>
 </div>
@@ -103,63 +110,69 @@
             row.style.display = text.includes(input) ? "" : "none";
         });
     }
+     const tugasDetailData = {
+        'T001': {
+            ruangan: 'Ruang Kelas A',
+            fasilitas: 'AC',
+            deskripsi: 'AC tidak menyala dan mengeluarkan suara keras.',
+            kategori: 'Elektronik',
+            foto: "{{ asset('assets/image/6.jpg') }}",
+            riwayat: [
+                { status: 'Masuk', tanggal: '06-05-2025', icon: 'fas fa-flag', color: 'text-gray-500' },
+                { status: 'Diproses', tanggal: '06-05-2025', icon: 'fas fa-spinner', color: 'text-yellow-500' },
+                { status: 'Selesai', tanggal: '06-05-2025', icon: 'fas fa-check', color: 'text-yellow-500' },
+            ]
+        },
+        'T002': {
+            ruangan: 'Ruang B',
+            fasilitas: 'Lampu',
+            deskripsi: 'Lampu sering mati nyala.',
+            kategori: 'Listrik',
+            foto: "{{ asset('assets/image/6.jpg') }}",
+            riwayat: [
+                { status: 'Masuk', tanggal: '06-05-2025', icon: 'fas fa-flag', color: 'text-gray-500' },
+                { status: 'Diproses', tanggal: '06-05-2025', icon: 'fas fa-spinner', color: 'text-yellow-500' },
+                { status: 'Selesai', tanggal: '06-05-2025', icon: 'fas fa-check', color: 'text-yellow-500' },
+            ]
+        },
+        'T003': {
+            ruangan: 'Ruang C',
+            fasilitas: 'Pintu',
+            deskripsi: 'Engsel pintu longgar.',
+            kategori: 'Bangunan',
+            foto: "{{ asset('assets/image/6.jpg') }}",
+            riwayat: [
+                { status: 'Masuk', tanggal: '06-05-2025', icon: 'fas fa-flag', color: 'text-gray-500' },
+                { status: 'Diproses', tanggal: '06-05-2025', icon: 'fas fa-spinner', color: 'text-yellow-500' },
+                { status: 'Selesai', tanggal: '07-05-2025', icon: 'fas fa-check-circle', color: 'text-green-600' },
+            ]
+        }
+    };
 
     function openDetailModal(id) {
-        const modalContent = document.getElementById('detailModal');
-        console.log(`Opening modal for task: ${id}`); // Debugging
+        const data = tugasDetailData[id];
+        if (!data) return alert('Data tidak ditemukan');
 
-        let taskDetails = {};
+        document.getElementById('detailRuangan').textContent = data.ruangan;
+        document.getElementById('detailFasilitas').textContent = data.fasilitas;
+        document.getElementById('detailDeskripsi').textContent = data.deskripsi;
+        document.getElementById('detailKategori').textContent = data.kategori;
+        document.getElementById('detailFoto').src = data.foto;
 
-        if (id === 'T001') {
-            taskDetails = {
-                description: 'Memperbaiki AC Ruang Kelas A',
-                fasilitas: 'AC Ruang Kelas A',
-                history: [
-                    { status: 'Waktu Diterima', time: '2025-05-10 08:00' },
-                    { status: 'Waktu Dikerjakan', time: '2025-05-11 09:30' },
-                    { status: 'Waktu Selesai', time: '2025-05-11 15:00' }
-                ]
-            };
-        } else if (id === 'T002') {
-            taskDetails = {
-                description: 'Memperbaiki Lampu Ruang B',
-                fasilitas: 'Lampu Ruang B',
-                history: [
-                    { status: 'Waktu Diterima', time: '2025-05-11 08:00' },
-                    { status: 'Waktu Dikerjakan', time: '2025-05-12 09:30' },
-                    { status: 'Waktu Selesai', time: '2025-05-12 14:00' }
-                ]
-            };
-        } else if (id === 'T003') {
-            taskDetails = {
-                description: 'Memperbaiki Pintu Ruang C',
-                fasilitas: 'Pintu Ruang C',
-                history: [
-                    { status: 'Waktu Diterima', time: '2025-05-12 08:00' },
-                    { status: 'Waktu Dikerjakan', time: '2025-05-13 09:30' },
-                    { status: 'Waktu Selesai', time: '2025-05-13 16:00' }
-                ]
-            };
-        }
-
-        modalContent.querySelector('.modal-description').innerHTML = taskDetails.description;
-        modalContent.querySelector('.modal-fasilitas').innerHTML = taskDetails.fasilitas;
-
-        // Update history
-        const historyList = modalContent.querySelector('.modal-history');
-        historyList.innerHTML = '';
-        taskDetails.history.forEach(item => {
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `<strong>${item.status}:</strong> ${item.time}`;
-            historyList.appendChild(listItem);
+        const riwayatList = document.getElementById('riwayatStatus');
+        riwayatList.innerHTML = '';
+        data.riwayat.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'flex items-center gap-2';
+            li.innerHTML = `<i class="${item.icon} ${item.color} w-4"></i> <span><strong>${item.status}:</strong> ${item.tanggal}</span>`;
+            riwayatList.appendChild(li);
         });
 
-        // Show modal
         document.getElementById('detailModal').classList.remove('hidden');
     }
 
-    function closeModal(modalId) {
-        document.getElementById(modalId).classList.add('hidden');
+    function tutupDetailModal() {
+        document.getElementById('detailModal').classList.add('hidden');
     }
 </script>
 
