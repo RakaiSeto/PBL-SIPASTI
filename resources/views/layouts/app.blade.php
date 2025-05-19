@@ -5,13 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIPASTI Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
+    @filamentStyles
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="icon" href="{{ asset('assets/image/logo.svg') }}" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
+        [x-cloak] {
+            display: none !important;
+        }
         body {
             /* font-family: 'Comic Neue', cursive; */
 font-family: "Poppins", sans-serif;
@@ -35,15 +41,13 @@ font-family: "Poppins", sans-serif;
             display: block !important;
         }
     </style>
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-100">
-    <div class="flex min-h-screen">
+<body class="bg-gray-100 ">
+    <div class="flex min-h-screen overflow-x-hidden">
         @include('layouts.sidebar')
 
-        <main class="flex-1 ml-0 md:ml-64 transition-all duration-300">
+        <main class="flex-1 ml-0 md:ml-64 transition-all duration-300 min-w-0">
         {{-- <main class="flex-1 ml-64 overflow-y-auto max-h-screen"> --}}
 
         {{-- <main class="flex-1 md:ml transition-all duration-300"> --}}
@@ -57,6 +61,7 @@ font-family: "Poppins", sans-serif;
             @include('layouts.footer')
         </main>
     </div>
+    @filamentScripts
 </body>
 
 </html>

@@ -6,15 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SIPASTI - Laporan Sarana Kampus</title>
   <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
   <!-- AOS untuk animasi -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <link rel="icon" href="{{ asset('assets/image/logo.svg') }}" type="image/x-icon">
   <!-- Font Poppins -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  @vite('resources/css/app.css')
   <style>
     /* Warna utama dengan gradient */
     :root {
@@ -148,7 +149,6 @@
     }
   </style>
 
-  @vite('resources/css/app.css', 'resources/js/app.js')
 </head>
 
 <body class="bg-white text-gray-900" onload="AOS.init({ duration: 800, easing: 'ease-in-out', once: true })">
