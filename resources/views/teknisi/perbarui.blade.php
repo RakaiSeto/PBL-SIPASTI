@@ -189,6 +189,7 @@
             foto: "{{ asset('assets/image/6.jpg') }}",
             riwayat: [
                 { status: 'Masuk', tanggal: '06-05-2025', icon: 'fas fa-flag', color: 'text-gray-500' },
+                { status: 'Diproses', tanggal: '06-05-2025', icon: 'fas fa-spinner', color: 'text-yellow-500' },
             ]
         },
         'T003': {
@@ -200,7 +201,6 @@
             riwayat: [
                 { status: 'Masuk', tanggal: '06-05-2025', icon: 'fas fa-flag', color: 'text-gray-500' },
                 { status: 'Diproses', tanggal: '06-05-2025', icon: 'fas fa-spinner', color: 'text-yellow-500' },
-                { status: 'Selesai', tanggal: '07-05-2025', icon: 'fas fa-check-circle', color: 'text-green-600' },
             ]
         }
     };

@@ -112,7 +112,7 @@
         <button onclick="tutupDetailModal()" class="absolute top-2 right-2 text-gray-400 hover:text-black text-xl">
             &times;
         </button>
-        <h2 class="text-xl font-bold text-blue-700 mb-4 flex items-center gap-2">
+        <h2 class="text-xl font-bold text-black-700 mb-4 flex items-center gap-2">
             <i class="fas fa-file-alt"></i> Detail Laporan
         </h2>
         <div class="space-y-4 text-sm">
