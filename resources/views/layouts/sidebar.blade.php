@@ -107,10 +107,15 @@
               {{ request()->routeIs('teknisi.tugas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-wrench mr-2"></i> Tugas Perbaikan
     </a>
+    <a href="{{ route('teknisi.perbarui') }}"
+       class="block p-3 rounded font-semibold
+              {{ request()->routeIs('teknisi.perbarui') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-wrench mr-2"></i> Perbarui Tugas
+    </a>
     <a href="{{ route('teknisi.riwayat') }}"
        class="block p-3 rounded font-semibold
               {{ request()->routeIs('teknisi.riwayat') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-history mr-2"></i> Riwayat Perbaikan
+      <i class="fa-solid fa-history mr-2"></i> Riwayat Tugas
     </a>
     @endif
 

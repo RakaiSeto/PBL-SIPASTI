@@ -102,6 +102,10 @@ Route::group(['middleware' => ['auth.refresh', 'role:Teknisi'], 'prefix' => 'tek
         return view('teknisi.tugas');
     })->name('teknisi.tugas');
 
+    Route::get('/perbarui', function () {
+        return view('teknisi.perbarui');
+    })->name('teknisi.perbarui');
+
     Route::get('/riwayat', function () {
         return view('teknisi.riwayat');
     })->name('teknisi.riwayat');
