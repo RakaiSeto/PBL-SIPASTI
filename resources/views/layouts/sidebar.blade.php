@@ -1,18 +1,25 @@
 <!-- Sidebar -->
-<aside id="sidebar" class="w-64 bg-white p-4 shadow-md hidden md:block fixed md:static inset-y-0 left-0 z-50">
-  <!-- Tombol tutup (mobile) -->
+<aside id="sidebar" class="w-64 fixed inset-y-0 left-0 z-50 bg-white p-4 shadow-md hidden md:block">
+
   <div class="flex justify-between items-center mb-4 md:hidden">
+  <!-- Logo + Text - Diletakkan di tengah -->
+  <div class="flex items-center justify-center w-full">
+    <img src="{{ asset('assets/image/LOGO.svg') }}" class="h-8 mr-2" alt="Logo" />
     <h1 class="text-xl font-bold">SIPASTI</h1>
-    <button id="closeSidebar" class="text-2xl">✕</button>
   </div>
+
+  <!-- Tombol Tutup -->
+  <button id="closeSidebar" class="text-2xl">✕</button>
+</div>
 
   <!-- Logo Desktop -->
   <a href="#">
-    <div class="hidden md:flex items-center mb-2 mr-3">
-      <img src="{{ asset('assets/image/LOGO.svg') }}" class="h-8 mr-1" alt="Logo" />
-      <h1 class="text-xl font-bold">SIPASTI</h1>
-    </div>
-  </a>
+  <div class="hidden md:flex items-center justify-center w-full mb-2">
+    <img src="{{ asset('assets/image/LOGO.svg') }}" class="h-8 mr-2" alt="Logo" />
+    <h1 class="text-xl font-bold">SIPASTI</h1>
+  </div>
+</a>
+
 
   <!-- Menu Navigasi -->
   <nav class="space-y-2 text-sm font-medium overflow-y-auto max-h-[calc(100vh-100px)]">
@@ -106,10 +113,15 @@
               {{ request()->routeIs('teknisi.tugas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-wrench mr-2"></i> Tugas Perbaikan
     </a>
+    <a href="{{ route('teknisi.perbarui') }}"
+       class="block p-3 rounded font-semibold
+              {{ request()->routeIs('teknisi.perbarui') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-wrench mr-2"></i> Perbarui Tugas
+    </a>
     <a href="{{ route('teknisi.riwayat') }}"
        class="block p-3 rounded font-semibold
               {{ request()->routeIs('teknisi.riwayat') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-history mr-2"></i> Riwayat Perbaikan
+      <i class="fa-solid fa-history mr-2"></i> Riwayat Tugas
     </a>
     @endif
 
@@ -161,17 +173,20 @@
     const closeSidebar = document.getElementById("closeSidebar");
     const sidebar = document.getElementById("sidebar");
 
-    if (toggleSidebar) {
+    if (toggleSidebar && sidebar) {
       toggleSidebar.addEventListener("click", () => {
-        sidebar.classList.toggle("hidden");
+        sidebar.classList.add("show");
+        sidebar.classList.remove("hidden");
       });
     }
 
-    if (closeSidebar) {
+    if (closeSidebar && sidebar) {
       closeSidebar.addEventListener("click", () => {
+        sidebar.classList.remove("show");
         sidebar.classList.add("hidden");
       });
     }
   });
 </script>
+
 

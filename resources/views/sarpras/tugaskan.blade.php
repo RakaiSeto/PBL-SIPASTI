@@ -15,6 +15,7 @@
                 <thead>
                     <tr class="bg-slate-100 border-b border-slate-300 font-bold">
                         <th class="p-3">No</th>
+                        <th class="p-3">Ruang</th>
                         <th class="p-3">Fasilitas</th>
                         <th class="p-3">Skor DSS - Keterangan</th>
                         <th class="p-3">Aksi</th>
@@ -23,6 +24,7 @@
                 <tbody>
                     <tr class="border-b hover:bg-gray-50">
                         <td class="p-3">1</td>
+                        <td class="p-3">RT003</td>
                         <td class="p-3">AC</td>
                         <td class="p-3">
                             <span class="bg-red-500/20 text-red-900 text-xs px-2 py-1 rounded uppercase font-bold">
@@ -45,6 +47,7 @@
                 <thead>
                     <tr class="bg-slate-100 border-b border-slate-300 font-bold">
                         <th class="p-3">No</th>
+                        <th class="p-3">Ruang</th>
                         <th class="p-3">Fasilitas</th>
                         <th class="p-3">Skor DSS - Keterangan</th>
                         <th class="p-3">Aksi</th>
@@ -53,6 +56,7 @@
                 <tbody>
                     <tr class="border-b hover:bg-gray-50">
                         <td class="p-3">1</td>
+                        <td class="p-3">RT005</td>
                         <td class="p-3">AC</td>
                         <td class="p-3">
                             <span class="bg-yellow-400/20 text-yellow-800 text-xs px-2 py-1 rounded uppercase font-bold">

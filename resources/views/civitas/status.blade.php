@@ -38,7 +38,7 @@
    </div>
 
     <!-- Table -->
-    <div class="overflow-auto">
+    <div class="overflow-x-auto">
         <table class="w-full table-auto text-sm text-left">
             <thead>
                 <tr class="bg-slate-100 border-b border-slate-300 font-bold">
