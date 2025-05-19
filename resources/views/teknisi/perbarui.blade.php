@@ -41,7 +41,7 @@
                         <td class="p-3">2025-05-11</td>
                         <td class="p-3 flex gap-2">
                             <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
-                                <i class="fas fa-check-circle"></i> Terima
+                                <i class="fas fa-check-circle"></i> Selesai
                             </button>
                             <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">
                                 <i class="fas fa-info-circle"></i> Detail
@@ -57,7 +57,7 @@
                         <td class="p-3">2025-05-12</td>
                         <td class="p-3 flex gap-2">
                             <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
-                                <i class="fas fa-check-circle"></i> Terima
+                                <i class="fas fa-check-circle"></i> Selesai
                             </button>
                             <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">
                                 <i class="fas fa-info-circle"></i> Detail
@@ -73,7 +73,7 @@
                         <td class="p-3">2025-05-13</td>
                         <td class="p-3 flex gap-2">
                             <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
-                                <i class="fas fa-check-circle"></i> Terima
+                                <i class="fas fa-check-circle"></i> Selesai
                             </button>
                             <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">
                                 <i class="fas fa-info-circle"></i> Detail
@@ -98,10 +98,10 @@
 <!-- Modal Konfirmasi Terima -->
 <div id="terimaModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white p-8 rounded shadow-lg w-128">
-        <h3 class="text-lg font-semibold mb-4 text-center">Konfirmasi Terima Tugas</h3>
-        <p>Apakah Anda yakin ingin menerima tugas ini?</p>
+        <h3 class="text-lg font-semibold mb-4 text-center">Konfirmasi Tugas Selesai</h3>
+        <p>Apakah Anda yakin ingin mengakhiri tugas ini?</p>
         <div class="mt-4 flex justify-center gap-4">
-            <button class="px-4 py-2 bg-green-500 text-white rounded" onclick="terimaTugas()">Terima</button>
+            <button class="px-4 py-2 bg-green-500 text-white rounded" onclick="terimaTugas()">Selesai</button>
             <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded" onclick="closeModal('terimaModal')">Batal</button>
         </div>
     </div>

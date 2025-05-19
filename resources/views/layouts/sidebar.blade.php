@@ -73,10 +73,16 @@
               {{ request()->routeIs('admin.fasilitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-screwdriver-wrench mr-2"></i> Kelola Fasilitas
     </a>
-    <a href="{{ route('admin.hai') }}"
-       class="block p-3 rounded font-semibold
-              {{ request()->routeIs('admin.hai') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+    <a href="{{ route('admin.ruanganfasilitas') }}"
+      class="block p-3 rounded font-semibold
+              {{ request()->routeIs('admin.ruanganfasilitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-chalkboard mr-2"></i> Kelola Ruang & Fasilitas
+    </a>
+    <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Laporan & Data Statistik</h2>
+    <a href="{{ route('admin.laporanstatistik') }}"
+      class="block p-3 rounded font-semibold
+              {{ request()->routeIs('admin.laporanstatistik') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-chalkboard mr-2"></i> Laporan & Statistik
     </a>
     @endif
 
@@ -107,10 +113,15 @@
               {{ request()->routeIs('teknisi.tugas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-wrench mr-2"></i> Tugas Perbaikan
     </a>
+    <a href="{{ route('teknisi.perbarui') }}"
+       class="block p-3 rounded font-semibold
+              {{ request()->routeIs('teknisi.perbarui') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-wrench mr-2"></i> Perbarui Tugas
+    </a>
     <a href="{{ route('teknisi.riwayat') }}"
        class="block p-3 rounded font-semibold
               {{ request()->routeIs('teknisi.riwayat') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-history mr-2"></i> Riwayat Perbaikan
+      <i class="fa-solid fa-history mr-2"></i> Riwayat Tugas
     </a>
     @endif
 

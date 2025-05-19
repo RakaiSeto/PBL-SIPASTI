@@ -35,6 +35,15 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
     Route::get('/ruangan', function () {
         return view('admin.ruangan.index');
     })->name('admin.ruangan');
+
+     Route::get('/ruanganfasilitas', function () {
+        return view('admin.ruanganfasilitas.index');
+    })->name('admin.ruanganfasilitas');
+
+    Route::get('/laporanstatistik', function () {
+        return view('admin.laporanstatistik.index');
+    })->name('admin.laporanstatistik');
+
 });
 
 // Route tambahan admin (duplikat dashboard)
@@ -101,6 +110,10 @@ Route::group(['middleware' => ['auth.refresh', 'role:Teknisi'], 'prefix' => 'tek
     Route::get('/tugas', function () {
         return view('teknisi.tugas');
     })->name('teknisi.tugas');
+
+    Route::get('/perbarui', function () {
+        return view('teknisi.perbarui');
+    })->name('teknisi.perbarui');
 
     Route::get('/riwayat', function () {
         return view('teknisi.riwayat');
