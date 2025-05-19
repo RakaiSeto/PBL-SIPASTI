@@ -43,9 +43,6 @@
                             <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
                                 <i class="fas fa-check-circle"></i> Terima
                             </button>
-                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openPerbaruiModal()">
-                                <i class="fas fa-edit"></i> Perbarui
-                            </button>
                             <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>                            
@@ -62,9 +59,6 @@
                             <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
                                 <i class="fas fa-check-circle"></i> Terima
                             </button>
-                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openPerbaruiModal()">
-                                <i class="fas fa-edit"></i> Perbarui
-                            </button>
                             <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">
                                 <i class="fas fa-info-circle"></i> Detail
                             </button>                            
@@ -80,9 +74,6 @@
                         <td class="p-3 flex gap-2">
                             <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
                                 <i class="fas fa-check-circle"></i> Terima
-                            </button>
-                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openPerbaruiModal()">
-                                <i class="fas fa-edit"></i> Perbarui
                             </button>
                             <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">
                                 <i class="fas fa-info-circle"></i> Detail
@@ -116,33 +107,12 @@
     </div>
 </div>
 
-<!-- Modal Perbarui Status -->
-<div id="perbaruiModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white p-8 rounded shadow-lg w-96">
-        <h3 class="text-lg font-semibold mb-4">Perbarui Status Tugas</h3>
-        <div class="mb-4">
-            <label for="status" class="block">Status</label>
-            <select id="status" class="w-full border border-slate-300 rounded px-4 py-2 text-sm">
-                <option value="on-progress">Sedang Dikerjakan</option>
-                <option value="completed">Selesai</option>
-            </select>
-        </div>
-        <div class="mb-4">
-            <label for="catatan" class="block">Catatan</label>
-            <textarea id="catatan" class="w-full border border-slate-300 rounded px-4 py-2 text-sm" placeholder="Tambahkan catatan..."></textarea>
-        </div>
-        <div class="mt-4 flex justify-center gap-4">
-            <button class="px-4 py-2 bg-yellow-500 text-white rounded" onclick="perbaruiStatus()">Perbarui Status</button>
-            <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded" onclick="closeModal('perbaruiModal')">Batal</button>
-        </div>
-    </div>
-</div>
 <div id="detailModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white rounded-xl w-full max-w-md p-6 relative shadow-lg ring-1 ring-gray-200 max-h-[90vh] overflow-y-auto">
         <button onclick="tutupDetailModal()" class="absolute top-2 right-2 text-gray-400 hover:text-black text-xl">
             &times;
         </button>
-        <h2 class="text-xl font-bold text-blue-700 mb-4 flex items-center gap-2">
+        <h2 class="text-xl font-bold text-black-700 mb-4 flex items-center gap-2">
             <i class="fas fa-file-alt"></i> Detail Laporan
         </h2>
         <div class="space-y-4 text-sm">
