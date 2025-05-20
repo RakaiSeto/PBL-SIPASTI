@@ -1,7 +1,7 @@
 
 <!-- Pagination Minimalis -->
 <div class="flex justify-between items-center px-4 py-3">
-    <span class="text-sm text-gray-500">
+    <span class="text-gray-500">
         Menampilkan <span class="font-medium text-gray-700">1-5</span> dari <span class="font-medium text-gray-700">45</span>
     </span>
 

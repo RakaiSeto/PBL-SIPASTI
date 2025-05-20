@@ -41,7 +41,7 @@
     Request::is('civitas')
 )
 <div class="bg-white p-4 rounded shadow mb-4">
-    <nav class="text-sm text-gray-600" aria-label="Breadcrumb">
+    <nav class="text-base text-gray-600" aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1">
             <li>
                 <a href="{{ $dashboardUrl }}" class="text-gray-500 hover:text-blue-600">

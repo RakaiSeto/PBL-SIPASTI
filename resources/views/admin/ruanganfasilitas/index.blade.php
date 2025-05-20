@@ -37,8 +37,7 @@
         <!-- Tombol Tambah -->
         <button
             onclick="openModal('addModal')"
-            class="h-10 px-4 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-        >
+            class="btn-primary">
             Tambah Ruangan
         </button>
     </div>
@@ -118,55 +117,90 @@
 </div>
 
 <!-- Modal Tambah Ruangan -->
-<div id="addModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white p-6 rounded-xl shadow-lg w-full max-w-md animate-fadeIn">
-        <h2 class="text-lg font-semibold text-slate-800 mb-4">Tambah Ruangan</h2>
-        <form onsubmit="event.preventDefault(); showSuccess('addSuccess');">
-            <div class="space-y-3">
-                <input 
-                    type="text" 
-                    placeholder="ID Ruangan" 
-                    class="w-full px-3 py-2 border border-slate-300 rounded" 
-                    required
-                >
-                <input 
-                    type="text" 
-                    placeholder="Nama Ruangan" 
-                    class="w-full px-3 py-2 border border-slate-300 rounded"
-                >
-                <select 
-                    class="w-full px-3 py-2 border border-slate-300 rounded" 
-                    required
-                >
-                    <option value="" disabled selected>Pilih Lantai</option>
-                    <option value="Lantai 5">Lantai 5</option>
-                    <option value="Lantai 6">Lantai 6</option>
-                    <option value="Lantai 7">Lantai 7</option>
-                    <option value="Lantai 8">Lantai 8</option>
+
+<div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded shadow-lg w-full max-w-lg p-6 relative">
+        <h2 class="text-2xl font-semibold mb-4">Tambah Pengguna</h2>
+        <form onsubmit="event.preventDefault(); closeModal('addModal'); showSuccess('Data berhasil ditambahkan!');">
+            <div class="space-y-2 text-slate-900">
+                <div>
+                    <label for="addRole" class="block mb-1 font-medium">Ruang</label>
+                    <select id="addRole" class="w-full border  border-gray-200 px-3 py-2 rounded text-slate-400" required onchange="this.classList.remove('text-slate-400')">
+                    <option value="" >Pilih Role</option>
+                    <option value="Admin" class="text-slate-700">Admin</option>
+                    <option value="Sarpras" class="text-slate-700">Sarpras</option>
+                    <option value="Civitas" class="text-slate-700">Civitas</option>
+                    <option value="Teknisi" class="text-slate-700">Teknisi</option>
                 </select>
+                </div>
+                 <div>
+                    <label for="addRole" class="block mb-1 font-medium">Fsilitas</label>
+                    <select id="addRole" class="w-full border  border-gray-200 px-3 py-2 rounded text-slate-400" required onchange="this.classList.remove('text-slate-400')">
+                    <option value="" >Pilih Role</option>
+                    <option value="Admin" class="text-slate-700">Admin</option>
+                    <option value="Sarpras" class="text-slate-700">Sarpras</option>
+                    <option value="Civitas" class="text-slate-700">Civitas</option>
+                    <option value="Teknisi" class="text-slate-700">Teknisi</option>
+                </select>
+                </div>
             </div>
-            <div class="mt-4 text-right">
-                <button 
-                    type="button" 
-                    onclick="closeModal('addModal')" 
-                    class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded mr-2"
-                >
-                    Batal
-                </button>
-                <button 
-                    type="submit" 
-                    class="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded"
-                >
-                    Tambah
-                </button>
+            <div class="flex justify-end gap-2 mt-6">
+                <button type="button" onclick="closeModal('addModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Simpan</button>
             </div>
         </form>
+        <button onclick="closeModal('addModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">&times;</button>
     </div>
 </div>
+<!-- Modal Detail Laporan -->
+<div id="detailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 hidden transition-opacity duration-300">
+  <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-95 flex flex-col justify-between">
+
+    <!-- Header -->
+    <div class="relative mb-6">
+      <h2 class="text-2xl font-bold text-gray-800">Detail Laporan</h2>
+      <button class="absolute right-0 top-0 text-gray-500 hover:text-red-500 text-xl font-semibold transition duration-200" onclick="tutupDetailModal()">×</button>
+    </div>
+
+    <!-- Informasi Laporan -->
+    <div class="flex-1">
+      <div class="grid grid-cols-1 md:grid-cols-[auto,1fr] gap-4">
+        <div class="w-48 aspect-[3/4] overflow-hidden rounded">
+          <img src="{{ asset('assets/image/10.jpg') }}" alt="Foto" class="w-full h-full object-cover">
+        </div>
+        <div class="space-y-3">
+          <div>
+            <h4 class="text-base font-medium text-gray-500">Nama Lengkap</h4>
+            <p class="text-lg text-gray-800">Agung Fradiansyah</p>
+          </div>
+          <div>
+            <h4 class="text-sm font-medium text-gray-500">Username</h4>
+            <p class="text-lg text-gray-800">agungAdmin</p>
+          </div>
+          <div>
+          <h4 class="text-sm font-semibold text-gray-500">Role</h4>
+          <span class="inline-block px-3 py-1 text-sm bg-green-100 text-green-700 rounded shadow-sm">Admin</span>
+        </div>
+          <div>
+            <h4 class="text-sm font-medium text-gray-500">Email</h4>
+            <p class="text-lg text-gray-800">agung@gmail.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tombol Aksi -->
+    <div class="flex justify-end gap-2 mt-6">
+      <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Tutup</button>
+    </div>
+
+  </div>
+</div>
+
 
 <!-- Modal Detail Ruangan -->
 <div id="detailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white p-6 rounded-xl shadow-lg w-full max-w-md animate-fadeIn">
+    <div class="bg-white p-6 rounded shadow-lg w-full max-w-md animate-fadeIn">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-semibold text-slate-800">Detail Ruangan</h2>
             <button onclick="closeModal('detailModal')" class="text-slate-500 hover:text-red-500">
@@ -184,29 +218,29 @@
 
 <!-- Modal Edit Ruangan -->
 <div id="editModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white p-6 rounded-xl shadow-lg w-full max-w-md animate-fadeIn">
+    <div class="bg-white p-6 rounded shadow-lg w-full max-w-md animate-fadeIn">
         <h2 class="text-lg font-semibold text-slate-800 mb-4">Edit Ruangan</h2>
         <form id="editForm" onsubmit="event.preventDefault(); showSuccess('editSuccess');">
             <input type="hidden" id="editId" />
             <div class="space-y-3">
-                <input 
+                <input
                     id="editIdInput"
-                    type="text" 
-                    placeholder="ID Ruangan" 
-                    class="w-full px-3 py-2 border border-slate-300 rounded" 
+                    type="text"
+                    placeholder="ID Ruangan"
+                    class="w-full px-3 py-2 border border-slate-300 rounded"
                     required
                     readonly
                 >
-                <input 
+                <input
                     id="editNamaInput"
-                    type="text" 
-                    placeholder="Nama Ruangan" 
+                    type="text"
+                    placeholder="Nama Ruangan"
                     class="w-full px-3 py-2 border border-slate-300 rounded"
                     required
                 >
-                <select 
+                <select
                     id="editLokasiSelect"
-                    class="w-full px-3 py-2 border border-slate-300 rounded" 
+                    class="w-full px-3 py-2 border border-slate-300 rounded"
                     required
                 >
                     <option value="" disabled>Pilih Lantai</option>
@@ -217,15 +251,15 @@
                 </select>
             </div>
             <div class="mt-4 text-right">
-                <button 
-                    type="button" 
-                    onclick="closeModal('editModal')" 
+                <button
+                    type="button"
+                    onclick="closeModal('editModal')"
                     class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded mr-2"
                 >
                     Batal
                 </button>
-                <button 
-                    type="submit" 
+                <button
+                    type="submit"
                     class="px-4 py-2 bg-yellow-600 text-white hover:bg-yellow-700 rounded"
                 >
                     Simpan
@@ -239,7 +273,7 @@
 
 <!-- Modal Sukses Tambah -->
 <div id="addSuccess" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-30 pointer-events-none hidden">
-    <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-sm text-center animate-fadeIn pointer-events-auto">
+    <div class="bg-white p-6 rounded shadow-xl w-full max-w-sm text-center animate-fadeIn pointer-events-auto">
         <h2 class="text-green-600 text-lg font-bold mb-1">Berhasil!</h2>
         <p class="text-sm text-slate-700">Ruangan berhasil ditambahkan.</p>
     </div>
@@ -247,14 +281,14 @@
 
 <!-- Modal Sukses Edit -->
 <div id="editSuccess" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-30 pointer-events-none hidden">
-    <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-sm text-center animate-fadeIn pointer-events-auto">
+    <div class="bg-white p-6 rounded shadow-xl w-full max-w-sm text-center animate-fadeIn pointer-events-auto">
         <h2 class="text-green-600 text-lg font-bold mb-1">Berhasil!</h2>
         <p class="text-sm text-slate-700">Perubahan ruangan berhasil disimpan.</p>
     </div>
 </div>
 
 <script>
-    // Data dummy fasilitas 
+    // Data dummy fasilitas
     const fasilitasData = {
         R001: ['Proyektor', 'Whiteboard', 'AC'],
         R002: ['PC Lab', 'Internet', 'AC'],
