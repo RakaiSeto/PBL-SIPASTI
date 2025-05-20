@@ -40,6 +40,49 @@ font-family: "Poppins", sans-serif;
         #sidebar.show {
             display: block !important;
         }
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-batal {
+    background-color: #d1d5db; /
+    color: #1f2937;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-batal:hover {
+    background-color: #9ca3af;
+}
+
+
+.btn-hapus {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-hapus:hover {
+    background-color: #c82333;
+}
+
     </style>
 </head>
 
