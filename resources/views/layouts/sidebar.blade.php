@@ -23,7 +23,7 @@
 
   <!-- Menu Navigasi -->
   <nav class="space-y-2 text-sm font-medium overflow-y-auto max-h-[calc(100vh-100px)]">
-    <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Main Menu</h2>
+    <h2 class="text-xs mt-6 mb-2 uppercase text-gray-800 font-semibold">Main Menu</h2>
 
     @if (Auth::user()->role->role_nama == 'Admin')
     <a href="{{ route('admin.dashboard') }}"

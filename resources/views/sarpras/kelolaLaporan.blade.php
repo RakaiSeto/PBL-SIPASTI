@@ -4,19 +4,16 @@
 <div class="bg-white p-4 rounded shadow">
    <div class="flex justify-between mb-3 mt-1 items-center gap-4 flex-wrap">
 
-    <!-- Filter Berdasarkan Fasilitas -->
 <div class="flex items-center gap-2 whitespace-nowrap">
     <label for="filterFasilitas" class="text-sm text-slate-700">Fasilitas</label>
-    <select id="filterFasilitas" class="border border-slate-300 rounded px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <select id="filterFasilitas" class="border border-slate-300 rounded px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-50">
         <option value="">Semua</option>
         <option value="AC">AC</option>
         <option value="Proyektor">Proyektor</option>
         <option value="Kipas Angin">Kipas Angin</option>
         <option value="Lampu">Lampu</option>
-        <!-- Tambahkan opsi lain sesuai daftar fasilitas -->
     </select>
 
-    <!-- Input Cari di kiri -->
     <input
         class="w-full sm:max-w-sm pr-11 h-10 pl-3 py-2 text-sm border border-slate-200 rounded"
         placeholder="Cari..."

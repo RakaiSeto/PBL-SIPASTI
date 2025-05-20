@@ -6,7 +6,7 @@
 
         <!-- Filter Berdasarkan Fasilitas -->
     <div class="flex items-center gap-2 whitespace-nowrap">
-        <label for="filterFasilitas" class="text-sm text-slate-700">Fasilitas</label>
+        <label for="filterFasilitas" class="text-base text-slate-700">Fasilitas</label>
         <select id="filterFasilitas" class="border border-slate-300 rounded px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
             <option value="">Semua</option>
             <option value="AC">AC</option>
@@ -26,7 +26,7 @@
 
         <!-- Dropdown Tampilkan data di kanan -->
         <div class="flex items-center gap-2 whitespace-nowrap">
-            <label for="tampilData" class="text-sm text-slate-700">Tampilkan</label>
+            <label for="tampilData" class=" text-slate-700">Tampilkan</label>
             <select id="tampilData" class="border border-slate-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="5" selected>5</option>
                 <option value="10">10</option>
@@ -62,7 +62,7 @@
                 <tbody>
                     <!-- Tambahkan baris data -->
                     <tr class="hover:bg-slate-50 border-b">
-                        <td class="p-3 font-semibold">1</td>
+                        <td class="p-3">1</td>
                         <td class="p-3">RT001</td>
                         <td class="p-3">AC</td>
                         <td class="p-3">2005-02-02</td>
