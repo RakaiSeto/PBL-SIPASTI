@@ -6,7 +6,7 @@
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div class="flex items-center gap-3 flex-wrap">
             <label for="filterRole" class="text-sm font-medium text-slate-700">Filter Role:</label>
-            <select id="filterRole" onchange="filterTable()" class="border border-slate-300 text-sm h-10 rounded px-3">
+            <select id="filterRole" onchange="filterTable()" class="border border-slate-300 text-sm h-10 rounded px-3 pr-8">
                 <option value="">Semua Role</option>
                 <option value="Admin">Admin</option>
                 <option value="Sarpras">Sarpras</option>
@@ -23,7 +23,7 @@
         </div>
 
         <button onclick="openModal('addModal')"
-            class="h-10 px-4 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+            class="h-10 px-4 text-sm text-white bg-primary rounded hover:opacity-90 transition">
             Tambah Data
         </button>
     </div>
@@ -33,7 +33,7 @@
         <table class="w-full text-sm text-left table-fixed">
             <thead class="bg-slate-100 text-slate-700 font-medium">
                 <tr>
-                    <th class="p-3 w-10">ID</th>
+                    <th class="p-3 w-10">No</th>
                     <th class="p-3 w-40">Nama Lengkap</th>
                     <th class="p-3 w-32">Username</th>
                     <th class="p-3 w-32">Role</th>
@@ -69,126 +69,149 @@
 <!-- MODAL TAMBAH -->
 <div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
     <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
-        <h2 class="text-lg font-semibold mb-4">Tambah Pengguna</h2>
+        <h2 class="text-2xl font-semibold mb-4">Tambah Pengguna</h2>
         <form onsubmit="event.preventDefault(); closeModal('addModal'); showSuccess('Data berhasil ditambahkan!');">
-            <div class="space-y-3">
-                <input type="text" placeholder="Nama Lengkap" class="w-full border px-3 py-2 rounded text-sm" required>
-                <input type="text" placeholder="Username" class="w-full border px-3 py-2 rounded text-sm" required>
-                <input type="email" placeholder="Email" class="w-full border px-3 py-2 rounded text-sm" required>
-                <select class="w-full border px-3 py-2 rounded text-sm" required>
-                    <option value="">Pilih Role</option>
-                    <option value="Admin">Admin</option>
-                    <option value="Sarpras">Sarpras</option>
-                    <option value="Civitas">Civitas</option>
-                    <option value="Teknisi">Teknisi</option>
+            <div class="space-y-2 text-slate-900">
+                <div>
+                    <label for="addNama" class="block mb-1 font-medium">Nama Lengkap</label>
+                    <input id="addNama" type="text" class="w-full border-gray-200 px-3 py-2 rounded" placeholder="Masukkan Nama Lengkap" required>
+                </div>
+                <div>
+                    <label for="addUsername" class="block mb-1 font-medium">Username</label>
+                    <input id="addUsername" type="text" class="w-full border-gray-200 px-3 py-2 rounded"  placeholder="Masukkan Username">
+                </div>
+                <div>
+                    <label for="addEmail" class="block mb-1 font-medium">Email</label>
+                    <input id="addEmail" type="email" class="w-full border-gray-200 px-3 py-2 rounded" placeholder="Masukkan Email" required>
+                </div>
+                <div>
+                    <label for="addRole" class="block mb-1 font-medium">Role</label>
+                    <select id="addRole" class="w-full border-gray-200 px-3 py-2 rounded" required >
+                    <option value="" >Pilih Role</option>
+                    <option value="Admin" class="text-slate-700">Admin</option>
+                    <option value="Sarpras" class="text-slate-700">Sarpras</option>
+                    <option value="Civitas" class="text-slate-700">Civitas</option>
+                    <option value="Teknisi" class="text-slate-700">Teknisi</option>
                 </select>
+                </div>
             </div>
             <div class="flex justify-end gap-2 mt-6">
                 <button type="button" onclick="closeModal('addModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">Simpan</button>
+                <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Simpan</button>
             </div>
         </form>
         <button onclick="closeModal('addModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">&times;</button>
     </div>
 </div>
 
-<!-- MODAL EDIT -->
-<div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
-        <h2 class="text-lg font-semibold mb-4">Edit Pengguna</h2>
-        <form onsubmit="event.preventDefault(); closeModal('editModal'); showSuccess('Data berhasil diperbarui!');">
-            <div class="space-y-3">
-                <input id="editNama" type="text" class="w-full border px-3 py-2 rounded text-sm" required>
-                <input id="editUsername" type="text" class="w-full border px-3 py-2 rounded text-sm" required>
-                <input id="editEmail" type="email" class="w-full border px-3 py-2 rounded text-sm" required>
-                <select id="editRole" class="w-full border px-3 py-2 rounded text-sm" required>
-                    <option value="">Pilih Role</option>
-                    <option value="Admin">Admin</option>
-                    <option value="Sarpras">Sarpras</option>
-                    <option value="Civitas">Civitas</option>
-                    <option value="Teknisi">Teknisi</option>
-                </select>
-            </div>
-            <div class="flex justify-end gap-2 mt-6">
-                <button type="button" onclick="closeModal('editModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm">Simpan Perubahan</button>
-            </div>
-        </form>
-        <button onclick="closeModal('editModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">&times;</button>
+
+<!-- MODAL DETAIL -->
+<div id="detailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 hidden transition-opacity duration-300">
+  <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-95 flex flex-col justify-between">
+
+    <!-- Header -->
+    <div class="relative mb-6">
+      <h2 class="text-2xl font-bold text-gray-800">Detail Laporan</h2>
+      <button class="absolute right-0 top-0 text-gray-500 hover:text-red-500 text-xl font-semibold transition duration-200" onclick="closeModal('detailModal')">×</button>
     </div>
+
+    <!-- Informasi Laporan -->
+    <div class="flex-1">
+      <div class="grid grid-cols-1 md:grid-cols-[auto,1fr] gap-4">
+        <div class="w-48 aspect-[3/4] overflow-hidden rounded">
+          <img src="{{ asset('assets/image/10.jpg') }}" alt="Foto" class="w-full h-full object-cover">
+        </div>
+        <div class="space-y-3">
+          <div>
+            <h4 class="text-base font-medium text-gray-500">Nama Lengkap</h4>
+            <p class="text-lg text-gray-800">Agung Fradiansyah</p>
+          </div>
+          <div>
+            <h4 class="text-sm font-medium text-gray-500">Username</h4>
+            <p class="text-lg text-gray-800">agungAdmin</p>
+          </div>
+          <div>
+            <h4 class="text-sm font-medium text-gray-500">Role</h4>
+            <p class="text-lg text-gray-800">Admin</p>
+          </div>
+          <div>
+            <h4 class="text-sm font-medium text-gray-500">Email</h4>
+            <p class="text-lg text-gray-800">agung@gmail.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tombol Aksi -->
+    <div class="flex justify-end gap-2 mt-6">
+      <button type="button" onclick="closeModal('detailModal')" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Tutup</button>
+    </div>
+
+  </div>
 </div>
 
-<!-- MODAL HAPUS -->
+
+<div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
+    <h2 class="text-2xl font-semibold mb-4">Edit Pengguna</h2>
+
+    <form onsubmit="event.preventDefault(); closeModal('editModal'); showSuccess('Data berhasil diubah!'); ">
+      <div class="space-y-2 text-slate-800">
+        <div>
+          <label class="block mb-1 font-medium text-sm">Nama Lengkap</label>
+          <input type="text" class="w-full border-gray-200 text-sm  rounded" placeholder="Masukkan Nama Lengkap" required>
+        </div>
+        <div>
+          <label class="block mb-1 font-medium text-sm">Username</label>
+          <input type="text" class="w-full border-gray-200 text-sm rounded" placeholder="Masukkan Username">
+        </div>
+        <div>
+          <label class="block mb-1 font-medium text-sm">Email</label>
+          <input type="email" class="w-full border-gray-200 text-sm rounded" placeholder="Masukkan Email" required>
+        </div>
+        <div>
+          <label class="block mb-1 font-medium text-sm">Role</label>
+          <select class="w-full border-gray-200 px-2 py-2 text-sm rounded" required>
+            <option value="">Pilih Role</option>
+            <option value="Admin">Admin</option>
+            <option value="Sarpras">Sarpras</option>
+            <option value="Civitas">Civitas</option>
+            <option value="Teknisi">Teknisi</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 mt-6">
+        <button type="button" onclick="closeModal('editModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
+        <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Simpan</button>
+      </div>
+    </form>
+
+    <button onclick="closeModal('editModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">&times;</button>
+  </div>
+</div>
+@include('component.popsukses')
+
+<!--modalhapus-->
 <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
-        <h2 class="text-lg font-semibold text-red-600 mb-4">Konfirmasi Hapus</h2>
-        <p class="text-sm text-slate-600">Apakah Anda yakin ingin menghapus pengguna ini?</p>
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+    <h2 class="text-xl font-semibold text-slate-800 mb-4">Konfirmasi Hapus</h2>
+    <p class="text-sm text-slate-600 mb-4">Apakah Anda yakin ingin menghapus pengguna berikut ini?</p>
+
+    <div class="text-sm text-slate-700 space-y-2 mb-5">
+      <div><span class="font-medium">Nama Lengkap:</span> <span id="delNama"></span></div>
+      <div><span class="font-medium">Username:</span> <span id="delUsername"></span></div>
+      <div><span class="font-medium">Role:</span> <span id="delRole"></span></div>
+      <div><span class="font-medium">Email:</span> <span id="delEmail"></span></div>
+    </div>
         <div class="flex justify-end gap-2 mt-6">
             <button type="button" onclick="closeModal('deleteModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-            <button type="button" onclick="closeModal('deleteModal'); showSuccess('Data berhasil dihapus!');" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">Hapus</button>
+            <button type="button" onclick="closeModal('deleteModal'); showDelete('deleteSuccess');" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">Hapus</button>
         </div>
         <button onclick="closeModal('deleteModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">&times;</button>
     </div>
 </div>
-
-<!-- MODAL DETAIL -->
-<div id="detailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
-    <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 animate-fadeIn relative">
-        <!-- Header -->
-        <div class="flex items-center gap-3 mb-4">
-            <div class="bg-blue-100 text-blue-600 rounded-full p-2">
-                <i class="fas fa-user text-lg"></i>
-            </div>
-            <h3 class="text-lg font-semibold text-slate-800">Detail Pengguna</h3>
-        </div>
-
-        <!-- Isi -->
-        <div class="text-sm space-y-3 text-slate-700">
-            <div class="flex justify-between">
-                <span class="font-medium">ID:</span>
-                <span id="detailId"></span>
-            </div>
-            <div class="flex justify-between">
-                <span class="font-medium">Nama Lengkap:</span>
-                <span id="detailNama"></span>
-            </div>
-            <div class="flex justify-between">
-                <span class="font-medium">Username:</span>
-                <span id="detailUsername"></span>
-            </div>
-            <div class="flex justify-between">
-                <span class="font-medium">Email:</span>
-                <span id="detailEmail"></span>
-            </div>
-            <div class="flex justify-between">
-                <span class="font-medium">Role:</span>
-                <span id="detailRole" class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold"></span>
-            </div>
-        </div>
-
-        <!-- Tombol -->
-        <div class="flex justify-end mt-6">
-            <button onclick="closeModal('detailModal')" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-sm rounded-md">
-                Tutup
-            </button>
-        </div>
-
-        <!-- Tombol Close -->
-        <button onclick="closeModal('detailModal')" class="absolute top-3 right-4 text-slate-400 hover:text-red-500 text-xl">
-            &times;
-        </button>
-        
-    </div>
-</div>
-
-
-<!-- MODAL SUKSES -->
-<div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-    <div class="bg-white p-6 rounded-lg shadow-md text-center max-w-sm w-full">
-        <h3 class="text-green-600 font-semibold text-lg mb-2">Berhasil!</h3>
-        <p id="successMessage" class="text-sm text-slate-700"></p>
-    </div>
-</div>
+@include('component.pophapus')
 
 <script>
     function filterTable() {
@@ -224,49 +247,35 @@
         document.getElementById(id).classList.add('hidden');
     }
 
-    function showSuccess(message) {
-        document.getElementById("successMessage").textContent = message;
-        const modal = document.getElementById("successModal");
-        modal.classList.remove("hidden");
-        setTimeout(() => {
-            modal.classList.add("hidden");
-        }, 2000);
+
+    function openModal(id) {
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.add('hidden');
+}
+
+function openDetail() {
+  openModal('detailModal');
+}
+
+
+    function openModal(id) {
+        document.getElementById(id).classList.remove('hidden');
     }
 
-    // Untuk tombol lihat detail
-    function openDetail(button) {
-        const tr = button.closest('tr');
-        document.getElementById('detailNama').textContent = tr.dataset.nama;
-        document.getElementById('detailUsername').textContent = tr.dataset.username;
-        document.getElementById('detailEmail').textContent = tr.dataset.email;
-        document.getElementById('detailRole').textContent = tr.dataset.role;
-        openModal('detailModal');
+    function closeModal(id) {
+        document.getElementById(id).classList.add('hidden');
     }
 
-    // Untuk tombol edit
-    function openEdit(button) {
-        const tr = button.closest('tr');
-        document.getElementById('editNama').value = tr.dataset.nama;
-        document.getElementById('editUsername').value = tr.dataset.username;
-        document.getElementById('editEmail').value = tr.dataset.email;
-        document.getElementById('editRole').value = tr.dataset.role;
+    function openEdit() {
         openModal('editModal');
     }
 
-    // Untuk tombol hapus, sudah ada openDelete dari contoh sebelumnya, 
-    // tapi kita perlu definisikan:
     function openDelete() {
         openModal('deleteModal');
     }
-
-    function showDetail(id, nama, username, email, role) {
-    document.getElementById('detailId').textContent = id;
-    document.getElementById('detailNama').textContent = nama;
-    document.getElementById('detailUsername').textContent = username;
-    document.getElementById('detailEmail').textContent = email;
-    document.getElementById('detailRole').textContent = role;
-    openModal('detailModal');
-}
 
 </script>
 @endsection
