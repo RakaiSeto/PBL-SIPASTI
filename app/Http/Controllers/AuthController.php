@@ -83,7 +83,7 @@ public function logout(Request $request)
     $cookie = cookie('jwtToken', '', -1);
     Helper::logging(Helper::getUsername($request), 'Auth', 'Logout', 'User ' . Helper::getUsername($request) . ' logged out');
     Auth::logout();
-    return redirect()->route('login')->withCookie($cookie);
+    return redirect()->route('home')->withCookie($cookie);
 }
 
 }

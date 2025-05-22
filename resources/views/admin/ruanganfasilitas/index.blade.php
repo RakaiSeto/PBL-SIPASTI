@@ -61,15 +61,16 @@
                     <td class="p-3">Ruang Teori</td>
                     <td class="p-3">Lantai 5</td>
                     <td class="p-3 text-center">
+                        lish fasilitas
                         <button onclick="openFasilitasModal('R001')" class="text-green-600 hover:text-green-800" title="Lihat Fasilitas">
                             <i class="fas fa-cubes"></i>
                         </button>
                     </td>
                     <td class="p-3">
                         <div class="flex gap-2">
-                            <button onclick="openDetailModal(this)" class="text-gray-600 hover:text-blue-600" title="Lihat"><i class="fas fa-eye"></i></button>
-                            <button onclick="openEditModal(this)" class="text-gray-600 hover:text-yellow-600" title="Edit"><i class="fas fa-pen"></i></button>
-                            <button onclick="openDeleteModal(this)" class="text-gray-600 hover:text-red-600" title="Hapus"><i class="fas fa-trash"></i></button>
+                            <button onclick="openDetail(this)" class="text-gray-600 hover:text-blue-600" title="Lihat"><i class="fas fa-eye"></i></button>
+                            <button onclick="openEdit(this)" class="text-gray-600 hover:text-yellow-600" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button onclick="openDelete(this)" class="text-gray-600 hover:text-red-600" title="Hapus"><i class="fas fa-trash"></i></button>
                         </div>
                     </td>
                 </tr>
@@ -79,7 +80,7 @@
                     <td class="p-3">Lab Komputer</td>
                     <td class="p-3">Lantai 3</td>
                     <td class="p-3 text-center">
-                        <button onclick="openFasilitasModal('R002')" class="text-green-600 hover:text-green-800" title="Lihat Fasilitas">
+                        <button onclick="openFasilitas('R002')" class="text-green-600 hover:text-green-800" title="Lihat Fasilitas">
                             <i class="fas fa-cubes"></i>
                         </button>
                     </td>
@@ -111,31 +112,19 @@
             </button>
         </div>
         <div id="fasilitasContent" class="text-sm text-slate-600 space-y-2">
-            <!-- Konten fasilitas diisi via JS -->
         </div>
     </div>
 </div>
 
-<!-- Modal Tambah Ruangan -->
-
+<!-- MODAL TAMBAH -->
 <div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded shadow-lg w-full max-w-lg p-6 relative">
-        <h2 class="text-2xl font-semibold mb-4">Tambah Pengguna</h2>
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
+        <h2 class="text-2xl font-semibold mb-4">Tambah Ruang dan Fasilitas</h2>
         <form onsubmit="event.preventDefault(); closeModal('addModal'); showSuccess('Data berhasil ditambahkan!');">
             <div class="space-y-2 text-slate-900">
                 <div>
-                    <label for="addRole" class="block mb-1 font-medium">Ruang</label>
-                    <select id="addRole" class="w-full border  border-gray-200 px-3 py-2 rounded text-slate-400" required onchange="this.classList.remove('text-slate-400')">
-                    <option value="" >Pilih Role</option>
-                    <option value="Admin" class="text-slate-700">Admin</option>
-                    <option value="Sarpras" class="text-slate-700">Sarpras</option>
-                    <option value="Civitas" class="text-slate-700">Civitas</option>
-                    <option value="Teknisi" class="text-slate-700">Teknisi</option>
-                </select>
-                </div>
-                 <div>
-                    <label for="addRole" class="block mb-1 font-medium">Fsilitas</label>
-                    <select id="addRole" class="w-full border  border-gray-200 px-3 py-2 rounded text-slate-400" required onchange="this.classList.remove('text-slate-400')">
+                    <label for="addRole" class="block mb-1 font-medium">Role</label>
+                    <select id="addRole" class="w-full border-gray-200 px-3 py-2 rounded" required >
                     <option value="" >Pilih Role</option>
                     <option value="Admin" class="text-slate-700">Admin</option>
                     <option value="Sarpras" class="text-slate-700">Sarpras</option>
@@ -144,22 +133,38 @@
                 </select>
                 </div>
             </div>
+            <div class="space-y-2 text-slate-900">
+                <div>
+                    <label for="addFasilitas" class="block mb-1 font-medium">Fasilitas</label>
+                    <select id="addFasilitas" class="select2 w-full border-gray-200 px-3 py-2 rounded" multiple="multiple" required>
+                        <option value="AC">AC</option>
+                        <option value="Proyektor">Proyektor</option>
+                        <option value="Whiteboard">Whiteboard</option>
+                        <option value="Kursi">Kursi</option>
+                        <option value="Meja">Meja</option>
+                        <option value="PC">PC</option>
+                        <option value="LAN">LAN</option>
+                    </select>
+                </div>
+            </div>
             <div class="flex justify-end gap-2 mt-6">
                 <button type="button" onclick="closeModal('addModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Simpan</button>
+                <button type="submit" class="btn-primary">Simpan</button>
             </div>
         </form>
         <button onclick="closeModal('addModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">&times;</button>
     </div>
 </div>
-<!-- Modal Detail Laporan -->
+
+
+<!-- MODAL DETAIL -->
 <div id="detailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 hidden transition-opacity duration-300">
   <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-95 flex flex-col justify-between">
 
     <!-- Header -->
     <div class="relative mb-6">
       <h2 class="text-2xl font-bold text-gray-800">Detail Laporan</h2>
-      <button class="absolute right-0 top-0 text-gray-500 hover:text-red-500 text-xl font-semibold transition duration-200" onclick="tutupDetailModal()">×</button>
+      <button class="absolute right-0 top-0 text-gray-500 hover:text-red-500 text-xl font-semibold transition duration-200" onclick="closeModal('detailModal')">×</button>
     </div>
 
     <!-- Informasi Laporan -->
@@ -178,9 +183,9 @@
             <p class="text-lg text-gray-800">agungAdmin</p>
           </div>
           <div>
-          <h4 class="text-sm font-semibold text-gray-500">Role</h4>
-          <span class="inline-block px-3 py-1 text-sm bg-green-100 text-green-700 rounded shadow-sm">Admin</span>
-        </div>
+            <h4 class="text-sm font-medium text-gray-500">Role</h4>
+            <p class="text-lg text-gray-800">Admin</p>
+          </div>
           <div>
             <h4 class="text-sm font-medium text-gray-500">Email</h4>
             <p class="text-lg text-gray-800">agung@gmail.com</p>
@@ -191,124 +196,90 @@
 
     <!-- Tombol Aksi -->
     <div class="flex justify-end gap-2 mt-6">
-      <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Tutup</button>
+      <button type="button" onclick="closeModal('detailModal')" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Tutup</button>
     </div>
 
   </div>
 </div>
 
 
-<!-- Modal Detail Ruangan -->
-<div id="detailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white p-6 rounded shadow-lg w-full max-w-md animate-fadeIn">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-lg font-semibold text-slate-800">Detail Ruangan</h2>
-            <button onclick="closeModal('detailModal')" class="text-slate-500 hover:text-red-500">
-                <i class="fas fa-times"></i>
-            </button>
+<div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
+    <h2 class="text-2xl font-semibold mb-4">Edit Pengguna</h2>
+
+    <form onsubmit="event.preventDefault(); closeModal('editModal'); showSuccess('Data berhasil diubah!'); ">
+      <div class="space-y-2 text-slate-800">
+        <div>
+          <label class="block mb-1 font-medium text-sm">Nama Lengkap</label>
+          <input type="text" class="w-full border-gray-200 text-sm  rounded" placeholder="Masukkan Nama Lengkap" required>
         </div>
-        <div id="detailContent" class="text-sm text-slate-700 space-y-2">
-            <!-- Konten detail diisi via JS -->
+        <div>
+          <label class="block mb-1 font-medium text-sm">Username</label>
+          <input type="text" class="w-full border-gray-200 text-sm rounded" placeholder="Masukkan Username">
         </div>
-        <div class="mt-4 text-right">
-            <button onclick="closeModal('detailModal')" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded">Tutup</button>
+        <div>
+          <label class="block mb-1 font-medium text-sm">Email</label>
+          <input type="email" class="w-full border-gray-200 text-sm rounded" placeholder="Masukkan Email" required>
         </div>
+        <div>
+          <label class="block mb-1 font-medium text-sm">Role</label>
+          <select class="w-full border-gray-200 px-2 py-2 text-sm rounded" required>
+            <option value="">Pilih Role</option>
+            <option value="Admin">Admin</option>
+            <option value="Sarpras">Sarpras</option>
+            <option value="Civitas">Civitas</option>
+            <option value="Teknisi">Teknisi</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 mt-6">
+        <button type="button" onclick="closeModal('editModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
+        <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Simpan</button>
+      </div>
+    </form>
+
+    <button onclick="closeModal('editModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">&times;</button>
+  </div>
+</div>
+@include('component.popsukses')
+
+<!--modalhapus-->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+    <h2 class="text-xl font-semibold text-slate-800 mb-4">Konfirmasi Hapus</h2>
+    <p class="text-sm text-slate-600 mb-4">Apakah Anda yakin ingin menghapus pengguna berikut ini?</p>
+
+    <div class="text-sm text-slate-700 space-y-2 mb-5">
+      <div><span class="font-medium">Nama Lengkap:</span> <span id="delNama"></span></div>
+      <div><span class="font-medium">Username:</span> <span id="delUsername"></span></div>
+      <div><span class="font-medium">Role:</span> <span id="delRole"></span></div>
+      <div><span class="font-medium">Email:</span> <span id="delEmail"></span></div>
+    </div>
+        <div class="flex justify-end gap-2 mt-6">
+            <button type="button" onclick="closeModal('deleteModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
+            <button type="button" onclick="closeModal('deleteModal'); showDelete('deleteSuccess');" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">Hapus</button>
+        </div>
+        <button onclick="closeModal('deleteModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">&times;</button>
     </div>
 </div>
-
-<!-- Modal Edit Ruangan -->
-<div id="editModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white p-6 rounded shadow-lg w-full max-w-md animate-fadeIn">
-        <h2 class="text-lg font-semibold text-slate-800 mb-4">Edit Ruangan</h2>
-        <form id="editForm" onsubmit="event.preventDefault(); showSuccess('editSuccess');">
-            <input type="hidden" id="editId" />
-            <div class="space-y-3">
-                <input
-                    id="editIdInput"
-                    type="text"
-                    placeholder="ID Ruangan"
-                    class="w-full px-3 py-2 border border-slate-300 rounded"
-                    required
-                    readonly
-                >
-                <input
-                    id="editNamaInput"
-                    type="text"
-                    placeholder="Nama Ruangan"
-                    class="w-full px-3 py-2 border border-slate-300 rounded"
-                    required
-                >
-                <select
-                    id="editLokasiSelect"
-                    class="w-full px-3 py-2 border border-slate-300 rounded"
-                    required
-                >
-                    <option value="" disabled>Pilih Lantai</option>
-                    <option value="Lantai 5">Lantai 5</option>
-                    <option value="Lantai 6">Lantai 6</option>
-                    <option value="Lantai 7">Lantai 7</option>
-                    <option value="Lantai 8">Lantai 8</option>
-                </select>
-            </div>
-            <div class="mt-4 text-right">
-                <button
-                    type="button"
-                    onclick="closeModal('editModal')"
-                    class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded mr-2"
-                >
-                    Batal
-                </button>
-                <button
-                    type="submit"
-                    class="px-4 py-2 bg-yellow-600 text-white hover:bg-yellow-700 rounded"
-                >
-                    Simpan
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-
-
-<!-- Modal Sukses Tambah -->
-<div id="addSuccess" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-30 pointer-events-none hidden">
-    <div class="bg-white p-6 rounded shadow-xl w-full max-w-sm text-center animate-fadeIn pointer-events-auto">
-        <h2 class="text-green-600 text-lg font-bold mb-1">Berhasil!</h2>
-        <p class="text-sm text-slate-700">Ruangan berhasil ditambahkan.</p>
-    </div>
-</div>
-
-<!-- Modal Sukses Edit -->
-<div id="editSuccess" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-30 pointer-events-none hidden">
-    <div class="bg-white p-6 rounded shadow-xl w-full max-w-sm text-center animate-fadeIn pointer-events-auto">
-        <h2 class="text-green-600 text-lg font-bold mb-1">Berhasil!</h2>
-        <p class="text-sm text-slate-700">Perubahan ruangan berhasil disimpan.</p>
-    </div>
-</div>
-
+@include('component.pophapus')
 <script>
-    // Data dummy fasilitas
-    const fasilitasData = {
-        R001: ['Proyektor', 'Whiteboard', 'AC'],
-        R002: ['PC Lab', 'Internet', 'AC'],
-    };
-
-
     function filterTable() {
         const searchValue = document.getElementById("searchInput").value.toLowerCase();
-        const lokasiValue = document.getElementById("filterLokasi").value.toLowerCase();
-        const rows = document.querySelectorAll("#roomTable tr");
+        const roleFilter = document.getElementById("filterRole").value;
+        const rows = document.querySelectorAll("#userTable tr");
         let visibleCount = 0;
 
         rows.forEach(row => {
-            if (row.id === "noDataRow") return;
             const nama = row.children[1].textContent.toLowerCase();
-            const lokasi = row.children[2].textContent.toLowerCase();
-            const matchNama = nama.includes(searchValue);
-            const matchLokasi = !lokasiValue || lokasi === lokasiValue;
+            const username = row.children[2].textContent.toLowerCase();
+            const role = row.children[3].textContent.trim().toLowerCase();
 
-            if (matchNama && matchLokasi) {
+            const matchSearch = nama.includes(searchValue) || username.includes(searchValue);
+            const matchRole = !roleFilter || role === roleFilter.toLowerCase();
+
+            if (matchSearch && matchRole) {
                 row.style.display = '';
                 visibleCount++;
             } else {
@@ -319,81 +290,54 @@
         document.getElementById("noDataRow").classList.toggle("hidden", visibleCount > 0);
     }
 
-    function openFasilitasModal(idRuangan) {
-        const modal = document.getElementById("fasilitasModal");
-        const content = document.getElementById("fasilitasContent");
-
-        const fasilitas = fasilitasData[idRuangan] || [];
-
-        content.innerHTML = fasilitas.length > 0
-            ? `<ul class="list-disc ml-5">${fasilitas.map(item => `<li>${item}</li>`).join('')}</ul>`
-            : `<p class="text-center text-slate-500">Tidak ada fasilitas tercatat.</p>`;
-
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-    }
-
-    function closeFasilitasModal() {
-        const modal = document.getElementById("fasilitasModal");
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
-    }
-
     function openModal(id) {
-        const modal = document.getElementById(id);
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
+        document.getElementById(id).classList.remove('hidden');
     }
 
     function closeModal(id) {
-        const modal = document.getElementById(id);
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
+        document.getElementById(id).classList.add('hidden');
     }
 
-    function showSuccess(id) {
-        closeModal('addModal');
-        closeModal('editModal');
-        const modal = document.getElementById(id);
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        setTimeout(() => {
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }, 2000);
+
+    function openModal(id) {
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.add('hidden');
+}
+
+function openDetail() {
+  openModal('detailModal');
+}
+
+
+function openFasilitas() {
+  openModal('detailModal');
+}
+    function openModal(id) {
+        document.getElementById(id).classList.remove('hidden');
     }
 
-    // Buka modal detail dan isi data
-    function openDetailModal(button) {
-        const row = button.closest('tr');
-        const id = row.getAttribute('data-id');
-        const nama = row.getAttribute('data-nama');
-        const lokasi = row.getAttribute('data-lokasi');
-        const detailContent = document.getElementById('detailContent');
-
-        detailContent.innerHTML = `
-            <p><strong>ID Ruangan:</strong> ${id}</p>
-            <p><strong>Nama Ruangan:</strong> ${nama}</p>
-            <p><strong>Lokasi:</strong> ${lokasi}</p>
-        `;
-
-        openModal('detailModal');
+    function closeModal(id) {
+        document.getElementById(id).classList.add('hidden');
     }
 
-    // Buka modal edit dan isi form
-    function openEditModal(button) {
-        const row = button.closest('tr');
-        const id = row.getAttribute('data-id');
-        const nama = row.getAttribute('data-nama');
-        const lokasi = row.getAttribute('data-lokasi');
-
-        document.getElementById('editIdInput').value = id;
-        document.getElementById('editNamaInput').value = nama;
-        document.getElementById('editLokasiSelect').value = lokasi;
-
+    function openEdit() {
         openModal('editModal');
     }
 
+    function openDelete() {
+        openModal('deleteModal');
+    }
+
+    $(document).ready(function () {
+        $('#addFasilitas').select2({
+            placeholder: "Pilih Fasilitas",
+            width: '100%',
+            allowClear: true
+        });
+    });
 
 </script>
 @endsection

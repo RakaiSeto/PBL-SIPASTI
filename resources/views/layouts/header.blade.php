@@ -39,6 +39,7 @@
 
     <!-- Profil & Dropdown -->
     @include('component.profile')
+    @include('component.gantipassword')
 
   </header>
 
