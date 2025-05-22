@@ -30,7 +30,7 @@
                 <tr>
                    <th class="p-3 w-10">No</th>
                     <th class="p-3 w-40">ID Fasilitas</th>
-                    <th class="p-3 w-32">Nama Failitas</th>
+                    <th class="p-3 w-32">Nama Fasilitas</th>
                     <th class="p-3 w-32">Kategori</th>
                     <th class="p-3 w-28">Aksi</th>
                 </tr>
