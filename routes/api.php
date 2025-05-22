@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TestController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\KelolaPengguna;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,3 +25,11 @@ Route::middleware('auth.refresh')->get('/user', function (Request $request) {
 });
 
 Route::post('/logout', [AuthController::class, 'logout']);
+
+Route::group(['middleware' => ['auth.refresh.api', 'role.api:Admin']], function () {
+    Route::post('/kelola-pengguna', [KelolaPengguna::class, 'list']);
+    Route::put('/kelola-pengguna/{id}', [KelolaPengguna::class, 'update']);
+    Route::get('/kelola-pengguna/{id}', [KelolaPengguna::class, 'detail']);
+    Route::post('/kelola-pengguna/create', [KelolaPengguna::class, 'create']);
+    Route::delete('/kelola-pengguna/{id}', [KelolaPengguna::class, 'delete']);
+});

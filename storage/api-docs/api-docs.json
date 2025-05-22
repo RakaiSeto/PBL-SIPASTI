@@ -67,19 +67,375 @@
                     }
                 }
             }
+        },
+        "/api/kelola-pengguna": {
+            "post": {
+                "tags": [
+                    "Kelola Pengguna"
+                ],
+                "summary": "Get list of users",
+                "description": "Get list of users with pagination and search",
+                "operationId": "1d998384d9e63561cc992f433dd4d99b",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaPenggunaRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil diambil",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/kelola-pengguna/{id}": {
+            "get": {
+                "tags": [
+                    "Kelola Pengguna"
+                ],
+                "summary": "Get user detail",
+                "description": "Get user detail",
+                "operationId": "d184d5b4d06a998030df5360dc0776fb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil diambil",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "User not found"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Kelola Pengguna"
+                ],
+                "summary": "Update user",
+                "description": "Update user",
+                "operationId": "91ae6efae1694a97d92c43ab5ece3dba",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaPenggunaUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diubah"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Kelola Pengguna"
+                ],
+                "summary": "Delete user",
+                "description": "Delete user",
+                "operationId": "8cfb18b06b86344f2fa6ce90a62124e5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil dihapus"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/kelola-pengguna/create": {
+            "post": {
+                "tags": [
+                    "Kelola Pengguna"
+                ],
+                "summary": "Create user",
+                "description": "Create user",
+                "operationId": "8a719f6717af68be76f2a0ea86ccb92e",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaPenggunaCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil ditambahkan",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil ditambahkan",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
         }
     },
     "components": {
         "schemas": {
             "LoginRequest": {
                 "properties": {
-                    "email": {
+                    "username": {
                         "type": "string",
-                        "example": "test@example.com"
+                        "example": "admin"
                     },
                     "password": {
                         "type": "string",
-                        "example": "password"
+                        "example": "sipasti123"
+                    }
+                },
+                "type": "object"
+            },
+            "KelolaPenggunaRequest": {
+                "properties": {
+                    "role": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "search": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
+            "KelolaPenggunaCreateRequest": {
+                "properties": {
+                    "role_id": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "no_telp": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
+            "KelolaPenggunaUpdateRequest": {
+                "properties": {
+                    "role_id": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "no_telp": {
+                        "type": "string",
+                        "example": ""
                     }
                 },
                 "type": "object"
@@ -90,6 +446,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Kelola Pengguna",
+            "description": "Kelola Pengguna"
         }
     ]
 }
