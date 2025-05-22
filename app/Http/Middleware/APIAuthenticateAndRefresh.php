@@ -12,7 +12,7 @@ use App\Helper\Helper;
 use Illuminate\Support\Facades\Auth;
 use function Laravel\Prompts\error;
 
-class AuthenticateAndRefresh
+class APIAuthenticateAndRefresh
 {
     /**
      * Handle an incoming request.
@@ -22,7 +22,10 @@ class AuthenticateAndRefresh
     public function handle(Request $request, Closure $next): Response
     {
         if (!$request->cookie('jwtToken')) {
-            return redirect('/logout');
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
         }
 
         try {
@@ -30,7 +33,10 @@ class AuthenticateAndRefresh
             if (!$token = JWTAuth::setToken($request->cookie('jwtToken'))->authenticate()) {
                 // If authentication fails (token missing, invalid, etc.), redirect to login
                 Helper::logging(Helper::getUsername($request), 'Auth', 'Login', 'User ' . Helper::getUsername($request) . ' token invalid');
-                return redirect('/logout');
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized'
+                ], 401);
             }
         } catch (TokenExpiredException $e) {
             // If the token is expired, attempt to refresh it
@@ -43,12 +49,18 @@ class AuthenticateAndRefresh
             } catch (JWTException $e) {
                 // If refresh fails (e.g., token blacklisted, invalid), redirect to login
                 Helper::logging(Helper::getUsername($request), 'Auth', 'Login', 'User ' . Helper::getUsername($request) . ' token refresh failed');
-                return redirect('/logout');
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized'
+                ], 401);
             }
         } catch (JWTException $e) {
             // If any other JWT exception occurs (e.g., token invalid, not found), redirect to login
             Helper::logging(Helper::getUsername($request), 'Auth', 'Login', 'User ' . Helper::getUsername($request) . ' token error : ' . $e->getMessage());
-            return redirect('/logout');
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
         }
 
         // If authentication was successful (either initially or after refresh), proceed

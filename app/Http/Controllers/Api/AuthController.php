@@ -22,8 +22,8 @@ class AuthController extends Controller
         schema: 'LoginRequest',
         type: 'object',
         properties: [
-            new OA\Property(property: 'email', type: 'string', example: 'test@example.com'),
-            new OA\Property(property: 'password', type: 'string', example: 'password')
+            new OA\Property(property: 'username', type: 'string', example: 'admin'),
+            new OA\Property(property: 'password', type: 'string', example: 'sipasti123')
         ]
     )]
 
@@ -65,22 +65,17 @@ class AuthController extends Controller
     )]
     public function login(Request $request)
     {
-        $credentials = Validator::make($request->all(), [
+        if (!$credentials = $request->validate([
             'username' => 'required|string',
             'password' => 'required',
-        ]);
-        error_log('masuk sini');
-        if ($credentials->fails()) {
+        ])) {
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid credentials',
             ], 401);
         }
-        error_log('masuk sini 2');
-        if (Auth::attempt($credentials->validated())) {
-            error_log('masuk sini 3');
+        if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            error_log(json_encode($user));
             $token = JWTAuth::fromUser($user);
             Helper::logging($user->username, 'Auth', 'Login', 'User ' . $user->username . ' logged in');
             $cookie = cookie('jwtToken', $token, JWTAuth::factory()->getTTL() * 60);
