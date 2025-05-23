@@ -87,6 +87,10 @@ Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sar
         return view('sarpras.kelolaLaporan');
     })->name('sarpras.kelolaLaporan');
 
+    Route::get('/proses_spk', function () {
+        return view('sarpras.proses_spk');
+    })->name('sarpras.proses_spk');
+
     Route::get('/statistik', function () {
         return view('sarpras.statistik');
     })->name('sarpras.statistik');

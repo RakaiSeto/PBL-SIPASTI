@@ -143,6 +143,12 @@
   <i class="fa-solid fa-list mr-2"></i> Kategorisasi Laporan
 </a>
 
+<a href="{{ route('sarpras.proses_spk') }}"
+    class="block p-3 rounded font-semibold
+          {{ request()->routeIs('sarpras.proses_spk') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+  <i class="fa-solid fa-list mr-2"></i> Proses SPK
+</a>
+
 <a href="{{ route('sarpras.rekomendasi') }}"
    class="block p-3 rounded font-semibold
           {{ request()->routeIs('sarpras.rekomendasi') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
