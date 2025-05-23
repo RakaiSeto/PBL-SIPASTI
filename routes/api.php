@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TestController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\KelolaPengguna;
+use App\Http\Controllers\Api\KelolaRole;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,4 +33,12 @@ Route::group(['middleware' => ['auth.refresh.api', 'role.api:Admin']], function 
     Route::get('/kelola-pengguna/{id}', [KelolaPengguna::class, 'detail']);
     Route::post('/kelola-pengguna/create', [KelolaPengguna::class, 'create']);
     Route::delete('/kelola-pengguna/{id}', [KelolaPengguna::class, 'delete']);
+});
+
+Route::group(['middleware' => ['auth.refresh.api', 'role.api:Admin']], function () {
+    Route::post('/kelola-role', [KelolaRole::class, 'list']);
+    Route::put('/kelola-role/{id}', [KelolaRole::class, 'update']);
+    Route::get('/kelola-role/{id}', [KelolaRole::class, 'detail']);
+    Route::post('/kelola-role/create', [KelolaRole::class, 'create']);
+    Route::delete('/kelola-role/{id}', [KelolaRole::class, 'delete']);
 });
