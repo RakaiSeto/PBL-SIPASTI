@@ -187,6 +187,12 @@ class KelolaPengguna extends Controller
     public function detail(Request $request)
     {
         $user = User::find($request->id);
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
         return response()->json([
             'success' => true,
             'message' => 'Data berhasil diambil',
@@ -311,6 +317,12 @@ class KelolaPengguna extends Controller
             'no_telp' => 'required',
         ]);
         $user = User::find($request->id);
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
         $user->update($validated);
         $user->save();
         return response()->json([
@@ -357,6 +369,12 @@ class KelolaPengguna extends Controller
     public function delete(Request $request)
     {
         $user = User::find($request->id);
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
         $user->delete();
         return response()->json([
             'success' => true,
