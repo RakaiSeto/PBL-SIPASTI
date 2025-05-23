@@ -200,13 +200,7 @@
 @include('component.popsukses')
 @include('component.pophapus')
 <!-- SCRIPT -->
-<script>
-// FILTER TABLE
-function filterTable() {
-    const searchValue = document.getElementById("searchInput").value.toLowerCase();
-    const roleFilter = document.getElementById("filterRole").value.toLowerCase();
-    table.ajax.reload();
-}
+<script> 
 
 // MODAL HANDLING
 function openModal(id) {
@@ -277,9 +271,6 @@ $(document).ready(function () {
                 d.role = $('#filterRole').val();
                 d.search = $('#searchInput').val();
             },
-            // dataSrc: function(json) {
-            //     return json.data.data;
-            // }
         },
         columns: [
             {
@@ -325,7 +316,6 @@ $(document).ready(function () {
 // TAMBAH DATA
 const roleMapping = { admin: 1, sarpras: 2, civitas: 3, teknisi: 4 };
 
-
 document.getElementById('submitAddForm').addEventListener('click', async function () {
     const fullname = document.getElementById('addNama').value;
     const username = document.getElementById('addUsername').value;
@@ -365,9 +355,7 @@ document.getElementById('submitAddForm').addEventListener('click', async functio
         alert('Terjadi kesalahan saat mengirim data');
     }
 });
-</script>
 
-<script>
 // EDIT DATA
 const reverseRoleMapping = { admin: 1, sarpras: 2, civitas: 3, teknisi: 4 };
 
@@ -406,9 +394,7 @@ document.getElementById('editForm').addEventListener('submit', function (e) {
         alert('Terjadi kesalahan saat update.');
     });
 });
-</script>
 
-<script>
 // DELETE DATA
 function deleteUser(id) {
     if (confirm('Apakah kamu yakin ingin menghapus data ini?')) {
