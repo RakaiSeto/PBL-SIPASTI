@@ -56,6 +56,11 @@
 
     @if (Auth::user()->role->role_nama == 'Admin')
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Data Pengguna</h2>
+    <a href="{{ route('admin.datarole') }}"
+       class="block p-3 rounded font-semibold
+              {{ request()->routeIs('admin.datarole') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-user-tie mr-2"></i> Kelola Role
+    </a>
     <a href="{{ route('admin.datapengguna') }}"
        class="block p-3 rounded font-semibold
               {{ request()->routeIs('admin.datapengguna') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">

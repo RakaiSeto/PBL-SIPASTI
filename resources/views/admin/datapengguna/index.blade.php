@@ -31,9 +31,16 @@
                 class="w-full md:w-64 h-10 text-sm border border-slate-300 rounded px-3">
         </div>
 
-        <button onclick="openModal('addModal')" class="h-10 px-4 text-sm text-white bg-primary rounded hover:opacity-90 transition">
-            Tambah data
-        </button>
+        <div class="flex gap-2">
+    <a href="{{ route('admin.datapengguna.export_pdf') }}"
+   class="h-10 px-4 text-sm text-white bg-red-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
+  Export PDF
+</a>
+
+    <button onclick="openModal('addModal')" class="h-10 px-4 text-sm text-white bg-primary rounded hover:opacity-90 transition">
+      Tambah data
+    </button>
+  </div>
     </div>
 
     <!-- TABEL -->
@@ -280,7 +287,7 @@ function openDelete(id) {
 $(document).ready(function () {
     const table = $('#userTable').DataTable({
         searching: false,
-        lengthChange: false,
+        lengthChange: true,
         processing: true,
         serverSide: true,
         ajax: {
