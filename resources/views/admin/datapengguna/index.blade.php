@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- jQuery (required by DataTables) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables CSS & JS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
 <div class="bg-white p-6 rounded shadow space-y-4">
 
     <!-- Filter dan Tombol -->
@@ -25,7 +32,20 @@
 
     <!-- TABEL -->
     <div class="overflow-auto rounded border border-slate-200">
-        <table class="w-full text-sm text-left table-fixed">
+        <table id="userTable" class="w-full text-sm text-left table-fixed">
+            <thead class="bg-slate-100 text-slate-700 font-medium">
+                <tr>
+                    <th class="p-3 w-10">No</th>
+                    <th class="p-3 w-40">Nama Lengkap</th>
+                    <th class="p-3 w-32">Username</th>
+                    <th class="p-3 w-32">Role</th>
+                    <th class="p-3 w-32">Email</th>
+                    <th class="p-3 w-28">Aksi</th>
+                </tr>
+            </thead>
+        </table>
+
+        {{-- <table class="w-full text-sm text-left table-fixed">
             <thead class="bg-slate-100 text-slate-700 font-medium">
                 <tr>
                     <th class="p-3 w-10">No</th>
@@ -59,7 +79,7 @@
                 </tr>
 
             </tbody>
-        </table>
+        </table> --}}
     </div>
 </div>
 
@@ -91,7 +111,7 @@
                         <option value="teknisi">Teknisi</option>
                     </select>
                 </div>
-                
+
             </div>
 
             <div class="flex justify-end gap-2 mt-6">
@@ -171,7 +191,7 @@
                         <option value="teknisi">Teknisi</option>
                     </select>
                 </div>
-                
+
             </div>
 
             <div class="flex justify-end gap-2 mt-6">
@@ -248,4 +268,59 @@ function openDelete() {
     openModal('deleteModal');
 }
 </script>
+
+<script>
+$(document).ready(function () {
+    const table = $('#userTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            type: "POST",
+            url: '{{ url("/api/kelola-pengguna") }}',
+            data: function (d) {
+                d.role = $('#filterRole').val();
+                d.search = $('#searchInput').val();
+            },
+            dataSrc: function(json) {
+                return json.data.data; // nested from response
+            }
+        },
+        columns: [
+            {
+                data: null,
+                name: 'no',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            { data: 'fullname', name: 'name' },
+            { data: 'username', name: 'username' },
+            {
+                data: 'role.role_nama',
+                name: 'role.role_nama',
+                defaultContent: '-'
+            },
+            { data: 'email', name: 'email' },
+            {
+                data: null,
+                render: function (data) {
+                    return `
+                        <div class="flex gap-2">
+                            <button onclick="openDetail()" title="Lihat" class="text-gray-600 hover:text-blue-600"><i class="fas fa-eye"></i></button>
+                            <button onclick="openEdit()" title="Edit" class="text-gray-600 hover:text-yellow-600"><i class="fas fa-pen"></i></button>
+                            <button onclick="openDelete()" title="Hapus" class="text-gray-600 hover:text-red-600"><i class="fas fa-trash"></i></button>
+                        </div>`;
+                },
+                orderable: false,
+                searchable: false
+            }
+        ]
+    });
+
+    $('#filterRole, #searchInput').on('change keyup', function () {
+        table.ajax.reload();
+    });
+});
+</script>
+
 @endsection
