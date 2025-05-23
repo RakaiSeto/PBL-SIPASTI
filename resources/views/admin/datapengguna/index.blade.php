@@ -205,27 +205,7 @@
 function filterTable() {
     const searchValue = document.getElementById("searchInput").value.toLowerCase();
     const roleFilter = document.getElementById("filterRole").value.toLowerCase();
-    const rows = document.querySelectorAll("#roomTable tr");
-    let visibleCount = 0;
-
-    rows.forEach(row => {
-        if (row.id === "noDataRow") return;
-
-        const namaLengkap = row.children[1].textContent.toLowerCase();
-        const role = row.children[3].textContent.toLowerCase();
-
-        const matchSearch = namaLengkap.includes(searchValue);
-        const matchRole = !roleFilter || role === roleFilter;
-
-        if (matchSearch && matchRole) {
-            row.style.display = '';
-            visibleCount++;
-        } else {
-            row.style.display = 'none';
-        }
-    });
-
-    document.getElementById("noDataRow").classList.toggle("hidden", visibleCount > 0);
+    table.ajax.reload();
 }
 
 // MODAL HANDLING
@@ -297,9 +277,9 @@ $(document).ready(function () {
                 d.role = $('#filterRole').val();
                 d.search = $('#searchInput').val();
             },
-            dataSrc: function(json) {
-                return json.data.data;
-            }
+            // dataSrc: function(json) {
+            //     return json.data.data;
+            // }
         },
         columns: [
             {
@@ -309,7 +289,7 @@ $(document).ready(function () {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
-            { data: 'fullname', name: 'name' },
+            { data: 'fullname', name: 'name', searchable: true },
             { data: 'username', name: 'username' },
             { data: 'role.role_nama', name: 'role.role_nama', defaultContent: '-' },
             { data: 'email', name: 'email' },

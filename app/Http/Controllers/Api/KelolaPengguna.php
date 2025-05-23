@@ -109,7 +109,7 @@ class KelolaPengguna extends Controller
         }
 
         $data = [
-            'draw' => $request->input('draw'),
+            'draw' => intval($request->input('draw')),
             'recordsTotal' => $dataTotal,
             'recordsFiltered' => $query->count(),
             'data' => $query->get()
@@ -119,7 +119,10 @@ class KelolaPengguna extends Controller
             [
                 'success' => true,
                 'message' => 'Data berhasil diambil',
-                'data' => $data
+                'draw' => intval($request->input('draw')),
+                'recordsTotal' => $dataTotal,
+                'recordsFiltered' => $query->count(),
+                'data' => $query->get()
             ]
         );
     }
@@ -381,6 +384,4 @@ class KelolaPengguna extends Controller
             'message' => 'Data berhasil dihapus',
         ]);
     }
-
-
 }
