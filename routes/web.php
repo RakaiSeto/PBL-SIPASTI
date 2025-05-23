@@ -43,6 +43,10 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
         return view('admin.ruangan.index');
     })->name('admin.ruangan');
 
+    Route::get('/roleruangan', function () {
+        return view('admin.roleruangan.index');
+    })->name('admin.roleruangan');
+
      Route::get('/ruanganfasilitas', function () {
         return view('admin.ruanganfasilitas.index');
     })->name('admin.ruanganfasilitas');

@@ -83,6 +83,11 @@
               {{ request()->routeIs('admin.ruanganfasilitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-chalkboard mr-2"></i> Kelola Ruang & Fasilitas
     </a>
+    <a href="{{ route('admin.roleruangan') }}"
+      class="block p-3 rounded font-semibold
+              {{ request()->routeIs('admin.roleruangan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-chalkboard mr-2"></i> Kelola Role Ruangan
+    </a>
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Laporan & Data Statistik</h2>
     <a href="{{ route('admin.laporanstatistik') }}"
       class="block p-3 rounded font-semibold
