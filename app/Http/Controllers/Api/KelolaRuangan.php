@@ -98,14 +98,19 @@ class KelolaRuangan extends Controller
         if ($request->search != '') {
             $query->where('ruangan_nama', 'like', '%' . $request->search . '%');
         }
-        
+
+        $dataFiltered = $query->count();
+
+        $query->offset($request->start);
+        $query->limit($request->length);
+
         return response()->json(
             [
                 'success' => true,
                 'message' => 'Data berhasil diambil',
                 'draw' => intval($request->input('draw')),
                 'recordsTotal' => $dataTotal,
-                'recordsFiltered' => $query->count(),
+                'recordsFiltered' => $dataFiltered,
                 'data' => $query->get()
             ]
         );

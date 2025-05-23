@@ -95,13 +95,17 @@ class KelolaRuanganRole extends Controller
             $query->where('ruangan_role_nama', 'like', '%' . $request->search . '%');
         }
 
+        $dataFiltered = $query->count();
+        $query->offset($request->start);
+        $query->limit($request->length);
+
         return response()->json(
             [
                 'success' => true,
                 'message' => 'Data berhasil diambil',
                 'draw' => intval($request->input('draw')),
                 'recordsTotal' => $dataTotal,
-                'recordsFiltered' => $query->count(),
+                'recordsFiltered' => $dataFiltered,
                 'data' => $query->get()
             ]
         );
