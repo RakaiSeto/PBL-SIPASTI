@@ -1,6 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- jQuery (required by DataTables) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables CSS & JS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<style>
+.dataTables_length {
+    margin: 1rem;
+}
+</style>
+
+
 <div class="bg-white p-6 rounded shadow space-y-4">
 
     <!-- Filter dan Tombol -->
@@ -18,14 +31,21 @@
                 class="w-full md:w-64 h-10 text-sm border border-slate-300 rounded px-3">
         </div>
 
-        <button onclick="openModal('addModal')" class="h-10 px-4 text-sm text-white bg-primary rounded hover:opacity-90 transition">
-            Tambah data
-        </button>
+        <div class="flex gap-2">
+    <a href="{{ route('admin.datapengguna.export_pdf') }}"
+   class="h-10 px-4 text-sm text-white bg-red-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
+  Export PDF
+</a>
+
+    <button onclick="openModal('addModal')" class="h-10 px-4 text-sm text-white bg-primary rounded hover:opacity-90 transition">
+      Tambah data
+    </button>
+  </div>
     </div>
 
     <!-- TABEL -->
-    <div class="overflow-auto rounded border border-slate-200">
-        <table class="w-full text-sm text-left table-fixed">
+    <div class="overflow-auto rounded border border-slate-50">
+        <table id="userTable" class="w-full text-sm text-left table-fixed">
             <thead class="bg-slate-100 text-slate-700 font-medium">
                 <tr>
                     <th class="p-3 w-10">No</th>
@@ -36,29 +56,6 @@
                     <th class="p-3 w-28">Aksi</th>
                 </tr>
             </thead>
-            <tbody id="roomTable">
-                <tr class="hover:bg-slate-50 border-t border-slate-200">
-                    <td class="p-3 font-semibold text-slate-700">1</td>
-                    <td class="p-3">Pebriiiiii</td>
-                    <td class="p-3">peb</td>
-                    <td class="p-3">Admin</td>
-                    <td class="p-3">peb@gmail</td>
-                    <td class="p-3">
-                        <div class="flex items-center gap-2">
-                            <button onclick="openDetail(this)" class="text-gray-600 hover:text-blue-600" title="Lihat"><i class="fas fa-eye"></i></button>
-                            <button onclick="openEdit()" class="text-gray-600 hover:text-yellow-600" title="Edit"><i class="fas fa-pen"></i></button>
-                            <button onclick="openDelete()" class="text-gray-600 hover:text-red-600" title="Hapus"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr id="noDataRow" class="hidden border-t border-slate-200">
-                    <td class="p-3 text-center text-slate-500" colspan="6">
-                        Tidak ada data yang sesuai.
-                    </td>
-                </tr>
-
-            </tbody>
         </table>
     </div>
 </div>
@@ -91,12 +88,12 @@
                         <option value="teknisi">Teknisi</option>
                     </select>
                 </div>
-                
+
             </div>
 
             <div class="flex justify-end gap-2 mt-6">
                 <button type="button" onclick="closeModal('addModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Simpan</button>
+                <button type="submit" id="submitAddForm" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Simpan</button>
             </div>
         </form>
 
@@ -122,20 +119,20 @@
                 </div>
                 <div class="space-y-3">
                     <div>
-                        <h4 class="text-base font-medium text-gray-500">Nama Lengkap</h4>
-                        <p class="text-lg text-gray-800">Agung Fradiansyah</p>
+                        <h4 class="text-base font-medium text-gray-500 ">Nama Lengkap</h4>
+                        <p class="text-lg text-gray-800 fullname" >Agung Fradiansyah</p>
                     </div>
                     <div>
                         <h4 class="text-sm font-medium text-gray-500">Username</h4>
-                        <p class="text-lg text-gray-800">agungAdmin</p>
+                        <p class="text-lg text-gray-800 username">agungAdmin</p>
                     </div>
                     <div>
                         <h4 class="text-sm font-medium text-gray-500">Role</h4>
-                        <p class="text-lg text-gray-800">Admin</p>
+                        <p class="text-lg text-gray-800 role">Admin</p>
                     </div>
                     <div>
                         <h4 class="text-sm font-medium text-gray-500">Email</h4>
-                        <p class="text-lg text-gray-800">agung@gmail.com</p>
+                        <p class="text-lg text-gray-800 email">agung@gmail.com</p>
                     </div>
                 </div>
             </div>
@@ -147,7 +144,10 @@
 <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
     <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
         <h2 class="text-2xl font-semibold mb-4">Edit Pengguna</h2>
-        <form onsubmit="event.preventDefault(); closeModal('editModal'); showSuccess('Data berhasil diubah!');">
+        <form id="editForm">
+
+        {{-- <form onsubmit="event.preventDefault(); closeModal('editModal'); showSuccess('Data berhasil diubah!');"> --}}
+            <input type="hidden" id="editUserId">
             <div class="space-y-4 text-slate-900">
                 <div>
                     <label for="editNama" class="block mb-1 font-medium">Nama Lengkap</label>
@@ -171,7 +171,7 @@
                         <option value="teknisi">Teknisi</option>
                     </select>
                 </div>
-                
+
             </div>
 
             <div class="flex justify-end gap-2 mt-6">
@@ -187,21 +187,21 @@
 <!-- MODAL HAPUS -->
 <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
     <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+        <input type="hidden" id="deleteUserId">
         <h2 class="text-xl font-semibold text-slate-800 mb-4">Konfirmasi Hapus</h2>
         <p class="text-sm text-slate-600 mb-4">Apakah Anda yakin ingin menghapus pengguna berikut ini?</p>
         <div class="flex justify-end gap-2 mt-6">
             <button type="button" onclick="closeModal('deleteModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-            <button type="button" onclick="closeModal('deleteModal'); showDelete('deleteSuccess');" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">Hapus</button>
+        <button type="button" onclick="confirmDelete()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">Hapus</button>
         </div>
-        <button onclick="closeModal('deleteModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">&times;</button>
     </div>
 </div>
 
 @include('component.popsukses')
 @include('component.pophapus')
-
 <!-- SCRIPT -->
 <script>
+// FILTER TABLE
 function filterTable() {
     const searchValue = document.getElementById("searchInput").value.toLowerCase();
     const roleFilter = document.getElementById("filterRole").value.toLowerCase();
@@ -228,6 +228,7 @@ function filterTable() {
     document.getElementById("noDataRow").classList.toggle("hidden", visibleCount > 0);
 }
 
+// MODAL HANDLING
 function openModal(id) {
     document.getElementById(id).classList.remove('hidden');
 }
@@ -236,16 +237,247 @@ function closeModal(id) {
     document.getElementById(id).classList.add('hidden');
 }
 
-function openDetail() {
-    openModal('detailModal');
+function openDetail(id) {
+    console.log("ID yang dikirim:", id);
+    fetch(`/api/kelola-pengguna/${id}`)
+        .then(res => res.json())
+        .then(response => {
+            if (response.success) {
+                const data = response.data;
+                openModal('detailModal');
+                document.querySelector('.fullname').textContent = data.fullname;
+                document.querySelector('.username').textContent = data.username;
+                document.querySelector('.role').textContent = data.role.role_name;
+                document.querySelector('.email').textContent = data.email;
+            } else {
+                alert("Data tidak ditemukan");
+            }
+        })
+        .catch(error => {
+            console.error("Gagal ambil data:", error);
+        });
 }
 
-function openEdit() {
-    openModal('editModal');
+function openEdit(id) {
+    fetch(`/api/kelola-pengguna/${id}`)
+        .then(res => res.json())
+        .then(result => {
+            const data = result.data;
+            document.getElementById('editUserId').value = id;
+            document.getElementById('editNama').value = data.fullname;
+            document.getElementById('editUsername').value = data.username;
+            document.getElementById('editEmail').value = data.email;
+            document.getElementById('editRole').value = roleMapping[data.role_id];
+            openModal('editModal');
+        })
+        .catch(error => {
+            console.error('Gagal ambil data:', error);
+            alert('Gagal mengambil data pengguna.');
+        });
 }
 
-function openDelete() {
+function openDelete(id) {
+    document.getElementById('deleteUserId').value = id;
     openModal('deleteModal');
 }
 </script>
+
+<script>
+// DATA TABLE INITIALIZATION
+$(document).ready(function () {
+    const table = $('#userTable').DataTable({
+        searching: false,
+        lengthChange: true,
+        processing: true,
+        serverSide: true,
+        ajax: {
+            type: "POST",
+            url: '{{ url("/api/kelola-pengguna") }}',
+            data: function (d) {
+                d.role = $('#filterRole').val();
+                d.search = $('#searchInput').val();
+            },
+            dataSrc: function(json) {
+                return json.data.data;
+            }
+        },
+        columns: [
+            {
+                data: null,
+                name: 'no',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            { data: 'fullname', name: 'name' },
+            { data: 'username', name: 'username' },
+            { data: 'role.role_nama', name: 'role.role_nama', defaultContent: '-' },
+            { data: 'email', name: 'email' },
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function (data) {
+                    return `
+                        <div class="flex gap-2">
+                            <button onclick="openDetail(${data.user_id})" title="Lihat" class="text-gray-600 hover:text-blue-600">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="openEdit(${data.user_id})" title="Edit" class="text-gray-600 hover:text-yellow-600">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <button onclick="openDelete(${data.user_id})" title="Hapus" class="text-gray-600 hover:text-red-600">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>`;
+                }
+            }
+        ]
+    });
+
+    $('#filterRole, #searchInput').on('change keyup', function () {
+        table.ajax.reload();
+    });
+});
+</script>
+
+<script>
+// TAMBAH DATA
+const roleMapping = { admin: 1, sarpras: 2, civitas: 3, teknisi: 4 };
+
+
+document.getElementById('submitAddForm').addEventListener('click', async function () {
+    const fullname = document.getElementById('addNama').value;
+    const username = document.getElementById('addUsername').value;
+    const email = document.getElementById('addEmail').value;
+    const role = document.getElementById('addRole').value;
+
+    const data = {
+        fullname,
+        username,
+        email,
+        role_id: roleMapping[role],
+        password: '12345678',
+        no_telp: '0000000000'
+    };
+
+    try {
+        const response = await fetch('/api/kelola-pengguna/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            closeModal('addModal');
+            showSuccess('Data berhasil ditambahkan!');
+            location.reload();
+        } else {
+            alert('Gagal menambahkan data: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat mengirim data');
+    }
+});
+</script>
+
+<script>
+// EDIT DATA
+const reverseRoleMapping = { admin: 1, sarpras: 2, civitas: 3, teknisi: 4 };
+
+document.getElementById('editForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const id = document.getElementById('editUserId').value;
+    const data = {
+        fullname: document.getElementById('editNama').value,
+        username: document.getElementById('editUsername').value,
+        email: document.getElementById('editEmail').value,
+        role_id: reverseRoleMapping[document.getElementById('editRole').value],
+        no_telp: '0000000000'
+    };
+
+    fetch(`/api/kelola-pengguna/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(result => {
+        if (result.success) {
+            closeModal('editModal');
+            showSuccess('Data berhasil diubah!');
+            location.reload();
+        } else {
+            alert('Gagal update: ' + result.message);
+        }
+    })
+    .catch(error => {
+        console.error('Gagal update:', error);
+        alert('Terjadi kesalahan saat update.');
+    });
+});
+</script>
+
+<script>
+// DELETE DATA
+function deleteUser(id) {
+    if (confirm('Apakah kamu yakin ingin menghapus data ini?')) {
+        fetch(`/api/kelola-pengguna/${id}`, {
+            method: 'DELETE',
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(res => res.json())
+        .then(result => {
+            if (result.success) {
+                showSuccess('Data berhasil dihapus!');
+                location.reload();
+            } else {
+                alert('Gagal menghapus data: ' + result.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error saat hapus:', error);
+            alert('Terjadi kesalahan saat menghapus data.');
+        });
+    }
+}
+
+function confirmDelete() {
+    const id = document.getElementById('deleteUserId').value;
+
+    fetch(`/api/kelola-pengguna/${id}`, {
+        method: 'DELETE',
+        headers: { 'Accept': 'application/json' }
+    })
+    .then(res => res.json())
+    .then(result => {
+        if (result.success) {
+            closeModal('deleteModal');
+            showDelete('Data berhasil dihapus!');
+            location.reload();
+        } else {
+            alert('Gagal menghapus data: ' + result.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error delete:', error);
+        alert('Terjadi kesalahan saat menghapus data.');
+    });
+}
+
+function showDelete(message) {
+    alert(message);
+}
+</script>
+
 @endsection

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\UserController;
 // Halaman utama
 Route::get('/', function () {
     return view('index');
@@ -27,6 +27,13 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
     Route::get('/datapengguna', function () {
         return view('admin.datapengguna.index');
     })->name('admin.datapengguna');
+
+    Route::get('/datarole', function () {
+        return view('admin.datarole.index');
+    })->name('admin.datarole');
+
+
+    Route::get('export_pdf', [UserController::class, 'exportPDF'])->name('admin.datapengguna.export_pdf');
 
     Route::get('/fasilitas', function () {
         return view('admin.fasilitas.index');

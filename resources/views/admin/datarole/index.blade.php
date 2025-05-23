@@ -8,19 +8,35 @@
         <div class="flex items-center gap-3 flex-wrap">
             <label for="filterRole" class="text-sm font-medium text-slate-700">Filter :</label>
             <select id="filterRole" onchange="filterTable()" class="border border-slate-300 text-sm h-10 rounded px-3 pr-8">
-                <option value="">Semua Kategori</option>
+                <option value="">Semua Role</option>
                 <option value="Elektronik">Elektronik</option>
                 <option value="Furniture">Furniture</option>
                 <option value="Jaringan">Jaringan</option>
                 <option value="Perlengkapan Kelas">Perlengkapan Kelas</option>
             </select>
-            <input type="text" id="searchInput" placeholder="Cari Fasilitas..." onkeyup="filterTable()"
+            <input type="text" id="searchInput" placeholder="Cari Role..." onkeyup="filterTable()"
                 class="w-full md:w-64 h-10 text-sm border border-slate-300 rounded px-3">
         </div>
 
-        <button onclick="openModal('addModal')" class="h-10 px-4 text-sm text-white bg-primary rounded hover:opacity-90 transition">
-            Tambah Fasilitas
+        {{-- <button onclick="openModal('addModal')" class="h-10 px-4 text-sm text-white bg-primary rounded hover:opacity-90 transition">
+            Tambah Role
+        </button> --}}
+
+        <div class="flex gap-2">
+             <a href="{{ route('admin.datapengguna.export_pdf') }}"
+   class="h-10 px-4 text-sm text-white bg-green-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
+  Export PDF
+</a>
+
+    <a href="{{ route('admin.datapengguna.export_pdf') }}"
+   class="h-10 px-4 text-sm text-white bg-red-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
+  Export PDF
+</a>
+
+    <button onclick="openModal('addModal')" class="h-10 px-4 text-sm text-white bg-primary rounded hover:opacity-90 transition">
+            Tambah Role
         </button>
+  </div>
     </div>
 
     <!-- TABEL -->
@@ -29,18 +45,16 @@
             <thead class="bg-slate-100 text-slate-700 font-medium">
                 <tr>
                    <th class="p-3 w-10">No</th>
-                    <th class="p-3 w-40">ID Fasilitas</th>
-                    <th class="p-3 w-32">Nama Fasilitas</th>
-                    <th class="p-3 w-32">Kategori</th>
+                    <th class="p-3 w-40">ID Role</th>
+                    <th class="p-3 w-32">Nama Role</th>
                     <th class="p-3 w-28">Aksi</th>
                 </tr>
             </thead>
             <tbody id="facilityTable">
     <tr class="hover:bg-slate-50 border-t border-slate-200">
         <td class="p-3 ">1</td>
-        <td class="p-3">F001</td>   
+        <td class="p-3">F001</td>
         <td class="p-3">Ac</td>
-        <td class="p-3">Elektronik</td>
         <td class="p-3">
             <div class="flex items-center gap-2">
                 <button onclick="openEdit()" class="text-gray-600 hover:text-yellow-600" title="Edit"><i class="fas fa-pen"></i></button>
@@ -62,16 +76,16 @@
 <!-- MODAL TAMBAH -->
 <div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
     <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
-        <h2 class="text-2xl font-semibold mb-4">Tambah Fasilitas</h2>
-        <form onsubmit="event.preventDefault(); closeModal('addModal'); showSuccess('Fasilitas berhasil ditambahkan!');">
+        <h2 class="text-2xl font-semibold mb-4">Tambah Role</h2>
+        <form onsubmit="event.preventDefault(); closeModal('addModal'); showSuccess('Role berhasil ditambahkan!');">
             <div class="space-y-2 text-slate-900">
                 <div>
-                    <label for="addId" class="block mb-1 font-medium">ID Fasilitas</label>
-                    <input id="addId" type="text" class="w-full border-gray-200 px-3 py-2 rounded" placeholder="Masukkan ID fasilitas" required>
+                    <label for="addId" class="block mb-1 font-medium">ID Role</label>
+                    <input id="addId" type="text" class="w-full border-gray-200 px-3 py-2 rounded" placeholder="Masukkan ID Role" required>
                 </div>
                 <div>
-                    <label for="addNama" class="block mb-1 font-medium">Nama Fasilitas</label>
-                    <input id="addNama" type="text" class="w-full border-gray-200 px-3 py-2 rounded" placeholder="Masukkan nama fasilitas" required>
+                    <label for="addNama" class="block mb-1 font-medium">Nama Role</label>
+                    <input id="addNama" type="text" class="w-full border-gray-200 px-3 py-2 rounded" placeholder="Masukkan nama Role" required>
                 </div>
                 <div>
                     <label for="addKategori" class="block mb-1 font-medium">Kategori</label>
@@ -96,16 +110,16 @@
 <!-- MODAL EDIT -->
 <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
     <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
-        <h2 class="text-2xl font-semibold mb-4">Edit Fasilitas</h2>
-        <form onsubmit="event.preventDefault(); closeModal('editModal'); showSuccess('Fasilitas berhasil diubah!');">
+        <h2 class="text-2xl font-semibold mb-4">Edit Role</h2>
+        <form onsubmit="event.preventDefault(); closeModal('editModal'); showSuccess('Role berhasil diubah!');">
             <div class="space-y-2 text-slate-800">
                 <div>
-                    <label class="block mb-1 font-medium text-sm">ID Fasilitas</label>
-                    <input type="text" class="w-full border-gray-200 text-sm rounded" placeholder="Masukkan ID fasilitas" required>
+                    <label class="block mb-1 font-medium text-sm">ID Role</label>
+                    <input type="text" class="w-full border-gray-200 text-sm rounded" placeholder="Masukkan ID Role" required>
                 </div>
                 <div>
-                    <label class="block mb-1 font-medium text-sm">Nama Fasilitas</label>
-                    <input type="text" class="w-full border-gray-200 text-sm rounded" placeholder="Masukkan nama fasilitas">
+                    <label class="block mb-1 font-medium text-sm">Nama Role</label>
+                    <input type="text" class="w-full border-gray-200 text-sm rounded" placeholder="Masukkan nama Role">
                 </div>
                 <div>
                     <label class="block mb-1 font-medium text-sm">Kategori</label>

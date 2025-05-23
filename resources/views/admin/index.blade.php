@@ -2,13 +2,14 @@
 @section('content')
 {{-- <div class="p-4"> --}}
     <!-- Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
       <!-- Card 1 -->
       <div class="bg-white p-4 rounded shadow">
         <div class="flex justify-between items-center">
           <div>
-            <h3 class="text-sm text-gray-500">Total Kerusakan</h3>
-            <p class="text-lg font-bold">173</p>
+            <h3 class="text-sm text-gray-500">Total Pengguna</h3>
+            {{-- <p class="text-lg font-bold">173</p> --}}
+            <p id="jumlahPengguna" class="text-lg font-bold">0</p>
           </div>
           <div class="bg-primary text-white p-2 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -21,7 +22,21 @@
       <div class="bg-white p-4 rounded shadow">
         <div class="flex justify-between items-center">
           <div>
-            <h3 class="text-sm text-gray-500">Total Reports</h3>
+            <h3 class="text-sm text-gray-500">Total Fsilitas</h3>
+            <p class="text-lg font-bold">1,240</p>
+          </div>
+          <div class="bg-primary text-white p-2 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 114 0v2m4 4H7a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded shadow">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="text-sm text-gray-500">Total Laporan</h3>
             <p class="text-lg font-bold">1,240</p>
           </div>
           <div class="bg-primary text-white p-2 rounded-full">
@@ -35,7 +50,7 @@
       <div class="bg-white p-4 rounded shadow">
         <div class="flex justify-between items-center">
           <div>
-            <h3 class="text-sm text-gray-500">Pending Issues</h3>
+            <h3 class="text-sm text-gray-500"> Fasilitas diperbaiki</h3>
             <p class="text-lg font-bold">15</p>
           </div>
           <div class="bg-primary text-white p-2 rounded-full">
@@ -252,6 +267,21 @@
   </div>
 
   <script>
+$(document).ready(function () {
+    $.ajax({
+        type: "POST",
+        url: '{{ url("/api/kelola-pengguna") }}',
+        data: {
+            role: '',
+            search: ''
+        },
+        success: function(response) {
+            const jumlah = response.data.total || response.data.data.length || 0;
+            $('#jumlahPengguna').text(jumlah);
+        }
+    });
+});
+
     // Multiple Bar Chart (Income)
     const incomeCtx = document.createElement("canvas");
     document.getElementById("hs-multiple-bar-charts").appendChild(incomeCtx);
