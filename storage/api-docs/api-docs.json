@@ -645,6 +645,584 @@
                     }
                 ]
             }
+        },
+        "/api/kelola-ruangan": {
+            "post": {
+                "tags": [
+                    "Kelola Ruangan"
+                ],
+                "summary": "Get list of ruangan",
+                "description": "Get list of ruangan with pagination and search",
+                "operationId": "9fed300265a61f552bdacb8ffb69c5c0",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaRuanganRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil diambil",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/kelola-ruangan/{id}": {
+            "get": {
+                "tags": [
+                    "Kelola Ruangan"
+                ],
+                "summary": "Get ruangan detail",
+                "description": "Get ruangan detail",
+                "operationId": "e37a7fc118d96839e556e5f124c4b436",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ruangan ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil diambil",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "User not found"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Kelola Ruangan"
+                ],
+                "summary": "Update ruangan",
+                "description": "Update ruangan",
+                "operationId": "9e1140895bdac91103419617ef7cd33d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ruangan ID",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaRuanganUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diubah"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Kelola Ruangan"
+                ],
+                "summary": "Delete ruangan",
+                "description": "Delete ruangan",
+                "operationId": "c8e5142a09379aebe7192ae27c669e89",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil dihapus"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/kelola-ruangan/create": {
+            "post": {
+                "tags": [
+                    "Kelola Ruangan"
+                ],
+                "summary": "Create ruangan",
+                "description": "Create ruangan",
+                "operationId": "7fdee0224fa38d0ce57385e3333179f6",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaRuanganCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil ditambahkan",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil ditambahkan",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/kelola-ruangan-role": {
+            "post": {
+                "tags": [
+                    "Kelola Ruangan Role"
+                ],
+                "summary": "Get list of ruangan role",
+                "description": "Get list of ruangan role with pagination and search",
+                "operationId": "416c5487d57e738c4e6cee2e32012f83",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaRuanganRoleRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil diambil",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/kelola-ruangan-role/{id}": {
+            "get": {
+                "tags": [
+                    "Kelola Ruangan Role"
+                ],
+                "summary": "Get ruangan role detail",
+                "description": "Get ruangan role detail",
+                "operationId": "b041e6a9665cd2db71d0e376b37f7f4c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ruangan Role ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil diambil",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ruangan Role not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Ruangan Role not found"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Kelola Ruangan Role"
+                ],
+                "summary": "Update ruangan role",
+                "description": "Update ruangan role",
+                "operationId": "0d9a0ecd10dbfd73ce650edf590f0981",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaRuanganRoleUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diubah"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Kelola Ruangan Role"
+                ],
+                "summary": "Delete ruangan role",
+                "description": "Delete ruangan role",
+                "operationId": "31b561cde431c3c96f037364cd361408",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil dihapus"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/kelola-ruangan-role/create": {
+            "post": {
+                "tags": [
+                    "Kelola Ruangan Role"
+                ],
+                "summary": "Create ruangan role",
+                "description": "Create ruangan role",
+                "operationId": "e600ce08b5200e19d131c68f678fa034",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaRuanganRoleCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil ditambahkan",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil ditambahkan",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -755,6 +1333,80 @@
                     }
                 },
                 "type": "object"
+            },
+            "KelolaRuanganRequest": {
+                "properties": {
+                    "lantai": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "search": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
+            "KelolaRuanganCreateRequest": {
+                "properties": {
+                    "ruangan_role": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "ruangan_nama": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "lantai": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
+            "KelolaRuanganUpdateRequest": {
+                "properties": {
+                    "ruangan_role": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "ruangan_nama": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "lantai": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
+            "KelolaRuanganRoleRequest": {
+                "properties": {
+                    "search": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
+            "KelolaRuanganRoleCreateRequest": {
+                "properties": {
+                    "ruangan_role_nama": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
+            "KelolaRuanganRoleUpdateRequest": {
+                "properties": {
+                    "ruangan_role_nama": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
             }
         }
     },
@@ -770,6 +1422,14 @@
         {
             "name": "Kelola Role",
             "description": "Kelola Role"
+        },
+        {
+            "name": "Kelola Ruangan",
+            "description": "Kelola Ruangan"
+        },
+        {
+            "name": "Kelola Ruangan Role",
+            "description": "Kelola Ruangan Role"
         }
     ]
 }

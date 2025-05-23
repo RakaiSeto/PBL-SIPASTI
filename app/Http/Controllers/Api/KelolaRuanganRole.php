@@ -4,57 +4,46 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
-use App\Models\m_user as User;
+use App\Models\m_ruangan_role as RuanganRole;
 use OpenApi\Attributes as OA;
 use Illuminate\Support\Facades\Hash;
 
-class KelolaPengguna extends Controller
+class KelolaRuanganRole extends Controller
 {
     #[OA\Schema(
-        schema: 'KelolaPenggunaRequest',
+        schema: 'KelolaRuanganRoleRequest',
         type: 'object',
         properties: [
-            new OA\Property(property: 'role', type: 'string', example: ''),
             new OA\Property(property: 'search', type: 'string', example: '')
         ]
     )]
 
     #[OA\Schema(
-        schema: 'KelolaPenggunaCreateRequest',
+        schema: 'KelolaRuanganRoleCreateRequest',
         type: 'object',
         properties: [
-            new OA\Property(property: 'role_id', type: 'string', example: ''),
-            new OA\Property(property: 'username', type: 'string', example: ''),
-            new OA\Property(property: 'fullname', type: 'string', example: ''),
-            new OA\Property(property: 'password', type: 'string', example: ''),
-            new OA\Property(property: 'email', type: 'string', example: ''),
-            new OA\Property(property: 'no_telp', type: 'string', example: ''),
+            new OA\Property(property: 'ruangan_role_nama', type: 'string', example: ''),
         ]
     )]
 
     #[OA\Schema(
-        schema: 'KelolaPenggunaUpdateRequest',
+        schema: 'KelolaRuanganRoleUpdateRequest',
         type: 'object',
         properties: [
-            new OA\Property(property: 'role_id', type: 'string', example: ''),
-            new OA\Property(property: 'username', type: 'string', example: ''),
-            new OA\Property(property: 'fullname', type: 'string', example: ''),
-            new OA\Property(property: 'email', type: 'string', example: ''),
-            new OA\Property(property: 'no_telp', type: 'string', example: ''),
+            new OA\Property(property: 'ruangan_role_nama', type: 'string', example: ''),
         ],
     )]
 
     #[OA\Post(
-        path: '/api/kelola-pengguna',
-        summary: 'Get list of users',
-        description: 'Get list of users with pagination and search',
-        tags: ['Kelola Pengguna'],
+        path: '/api/kelola-ruangan-role',
+        summary: 'Get list of ruangan role',
+        description: 'Get list of ruangan role with pagination and search',
+        tags: ['Kelola Ruangan Role'],
         security: [['cookieAuth' => ['jwtToken']]],
         requestBody: new OA\RequestBody(
             content: new OA\MediaType(
                 mediaType: 'application/json',
-                schema: new OA\Schema(ref: '#/components/schemas/KelolaPenggunaRequest')
+                schema: new OA\Schema(ref: '#/components/schemas/KelolaRuanganRoleRequest')
             )
         ),
         responses: [
@@ -95,17 +84,15 @@ class KelolaPengguna extends Controller
 
     public function list(Request $request)
     {
-        $query = User::with('role');
+        $query = RuanganRole::with('ruangan');
         $dataTotal = $query->count();
 
-        if ($request->role != '') {
-            $query->whereHas('role', function ($q) use ($request) {
-                $q->where('role_nama', $request->role);
-            });
+        if ($request->ruangan_role_nama != '') {
+            $query->where('ruangan_role_nama', $request->ruangan_role_nama);
         }
 
         if ($request->search != '') {
-            $query->where('username', 'like', '%' . $request->search . '%');
+            $query->where('ruangan_role_nama', 'like', '%' . $request->search . '%');
         }
 
         return response()->json(
@@ -121,17 +108,17 @@ class KelolaPengguna extends Controller
     }
 
     #[OA\Get(
-        path: '/api/kelola-pengguna/{id}',
-        summary: 'Get user detail',
-        description: 'Get user detail',
-        tags: ['Kelola Pengguna'],
+        path: '/api/kelola-ruangan-role/{id}',
+        summary: 'Get ruangan role detail',
+        description: 'Get ruangan role detail',
+        tags: ['Kelola Ruangan Role'],
         security: [['cookieAuth' => ['jwtToken']]],
         parameters: [
             new OA\Parameter(
                 name: 'id',
                 in: 'path',
                 required: true,
-                description: 'User ID'
+                description: 'Ruangan Role ID'
             )
         ],
         responses: [
@@ -168,11 +155,11 @@ class KelolaPengguna extends Controller
             ),
             new OA\Response(
                 response: '404',
-                description: 'User not found',
+                description: 'Ruangan Role not found',
                 content: new OA\JsonContent(
                     example: [
                         'success' => false,
-                        'message' => 'User not found'
+                        'message' => 'Ruangan Role not found'
                     ]
                 )
             )
@@ -182,30 +169,30 @@ class KelolaPengguna extends Controller
 
     public function detail(Request $request)
     {
-        $user = User::find($request->id);
-        if (!$user) {
+        $ruanganRole = RuanganRole::find($request->id);
+        if (!$ruanganRole) {
             return response()->json([
                 'success' => false,
-                'message' => 'User not found'
+                'message' => 'Ruangan Role not found'
             ], 404);
         }
         return response()->json([
             'success' => true,
             'message' => 'Data berhasil diambil',
-            'data' => $user
+            'data' => $ruanganRole
         ]);
     }
 
     #[OA\Post(
-        path: '/api/kelola-pengguna/create',
-        summary: 'Create user',
-        description: 'Create user',
-        tags: ['Kelola Pengguna'],
+        path: '/api/kelola-ruangan-role/create',
+        summary: 'Create ruangan role',
+        description: 'Create ruangan role',
+        tags: ['Kelola Ruangan Role'],
         security: [['cookieAuth' => ['jwtToken']]],
         requestBody: new OA\RequestBody(
             content: new OA\MediaType(
                 mediaType: 'application/json',
-                schema: new OA\Schema(ref: '#/components/schemas/KelolaPenggunaCreateRequest')
+                schema: new OA\Schema(ref: '#/components/schemas/KelolaRuanganRoleCreateRequest')
             )
         ),
         responses: [
@@ -246,29 +233,22 @@ class KelolaPengguna extends Controller
     public function create(Request $request)
     {
         $validatedData = $request->validate([
-            'role_id' => 'required',
-            'username' => 'required',
-            'fullname' => 'required',
-            'password' => 'required',
-            'email' => 'required',
-            'no_telp' => 'required',
+            'ruangan_role_nama' => 'required',
         ]);
         $validatedData['created_at'] = now();
-        $hashedPassword = Hash::make($request->password);
-        $validatedData['password'] = $hashedPassword;
-        $user = User::create($validatedData);
+        $ruanganRole = RuanganRole::create($validatedData);
         return response()->json([
             'success' => true,
             'message' => 'Data berhasil ditambahkan',
-            'data' => $user
+            'data' => $ruanganRole
         ]);
     }
 
     #[OA\Put(
-        path: '/api/kelola-pengguna/{id}',
-        summary: 'Update user',
-        description: 'Update user',
-        tags: ['Kelola Pengguna'],
+        path: '/api/kelola-ruangan-role/{id}',
+        summary: 'Update ruangan role',
+        description: 'Update ruangan role',
+        tags: ['Kelola Ruangan Role'],
         security: [['cookieAuth' => ['jwtToken']]],
         parameters: [
             new OA\Parameter(
@@ -281,7 +261,7 @@ class KelolaPengguna extends Controller
         requestBody: new OA\RequestBody(
             content: new OA\MediaType(
                 mediaType: 'application/json',
-                schema: new OA\Schema(ref: '#/components/schemas/KelolaPenggunaUpdateRequest')
+                schema: new OA\Schema(ref: '#/components/schemas/KelolaRuanganRoleUpdateRequest')
             )
         ),
         responses: [
@@ -307,33 +287,29 @@ class KelolaPengguna extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'role_id' => 'required',
-            'username' => 'required',
-            'fullname' => 'required',
-            'email' => 'required',
-            'no_telp' => 'required',
+            'ruangan_role_nama' => 'required',
         ]);
-        $user = User::find($request->id);
-        if (!$user) {
+        $ruanganRole = RuanganRole::find($request->id);
+        if (!$ruanganRole) {
             return response()->json([
                 'success' => false,
-                'message' => 'User not found'
+                'message' => 'Ruangan Role not found'
             ], 404);
         }
-        $user->update($validated);
-        $user->save();
+        $ruanganRole->update($validated);
+        $ruanganRole->save();
         return response()->json([
             'success' => true,
             'message' => 'Data berhasil diubah',
-            'data' => $user
+            'data' => $ruanganRole
         ]);
     }
 
     #[OA\Delete(
-        path: '/api/kelola-pengguna/{id}',
-        summary: 'Delete user',
-        description: 'Delete user',
-        tags: ['Kelola Pengguna'],
+        path: '/api/kelola-ruangan-role/{id}',
+        summary: 'Delete ruangan role',
+        description: 'Delete ruangan role',
+        tags: ['Kelola Ruangan Role'],
         security: [['cookieAuth' => ['jwtToken']]],
         parameters: [
             new OA\Parameter(
@@ -365,14 +341,14 @@ class KelolaPengguna extends Controller
 
     public function delete(Request $request)
     {
-        $user = User::find($request->id);
-        if (!$user) {
+        $ruanganRole = RuanganRole::find($request->id);
+        if (!$ruanganRole) {
             return response()->json([
                 'success' => false,
-                'message' => 'User not found'
+                'message' => 'Ruangan Role not found'
             ], 404);
         }
-        $user->delete();
+        $ruanganRole->delete();
         return response()->json([
             'success' => true,
             'message' => 'Data berhasil dihapus',
