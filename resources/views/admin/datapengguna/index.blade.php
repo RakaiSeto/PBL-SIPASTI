@@ -7,12 +7,13 @@
 <!-- DataTables CSS & JS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
 .dataTables_length {
     margin: 1rem;
 }
 </style>
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <div class="bg-white p-6 rounded shadow space-y-4">
 
@@ -64,7 +65,7 @@
 <div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
     <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
         <h2 class="text-2xl font-semibold mb-4">Tambah Pengguna</h2>
-        <form onsubmit="event.preventDefault(); closeModal('addModal'); showSuccess('Data berhasil ditambahkan!');">
+        <form id="addForm" >
             <div class="space-y-4 text-slate-900">
                 <div>
                     <label for="addNama" class="block mb-1 font-medium">Nama Lengkap</label>
@@ -202,6 +203,7 @@
 <!-- SCRIPT -->
 <script>
 
+
 // MODAL HANDLING
 function openModal(id) {
     document.getElementById(id).classList.remove('hidden');
@@ -254,6 +256,8 @@ function openDelete(id) {
     document.getElementById('deleteUserId').value = id;
     openModal('deleteModal');
 }
+
+
 </script>
 
 <script>
@@ -313,10 +317,41 @@ $(document).ready(function () {
 </script>
 
 <script>
+
+    function showSuccess(message) {
+    Swal.fire({
+        icon: 'success',
+        title: 'Sukses',
+        text: message,
+        timer: 2000,
+        showConfirmButton: false
+    });
+}
+
+function showError(message) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Kesalahan',
+        text: message,
+        timer: 3000,
+        showConfirmButton: true
+    });
+}
+
+function showDelete(message) {
+    Swal.fire({
+        icon: 'success',
+        title: 'Sukses',
+        text: message,
+        timer: 2000,
+        showConfirmButton: false
+    });
+}
 // TAMBAH DATA
 const roleMapping = { admin: 1, sarpras: 2, civitas: 3, teknisi: 4 };
 
-document.getElementById('submitAddForm').addEventListener('click', async function () {
+document.getElementById('addForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
     const fullname = document.getElementById('addNama').value;
     const username = document.getElementById('addUsername').value;
     const email = document.getElementById('addEmail').value;
@@ -336,7 +371,8 @@ document.getElementById('submitAddForm').addEventListener('click', async functio
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
             },
             body: JSON.stringify(data)
         });
@@ -346,13 +382,14 @@ document.getElementById('submitAddForm').addEventListener('click', async functio
         if (result.success) {
             closeModal('addModal');
             showSuccess('Data berhasil ditambahkan!');
-            location.reload();
+            document.getElementById('addForm').reset(); // Kosongkan form
+            $('#userTable').DataTable().ajax.reload();
         } else {
-            alert('Gagal menambahkan data: ' + result.message);
+            showError('Gagal menambahkan data: ' + result.message);
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Terjadi kesalahan saat mengirim data');
+        showError('Terjadi kesalahan saat mengirim data');
     }
 });
 
@@ -375,7 +412,8 @@ document.getElementById('editForm').addEventListener('submit', function (e) {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
         },
         body: JSON.stringify(data)
     })
@@ -384,65 +422,42 @@ document.getElementById('editForm').addEventListener('submit', function (e) {
         if (result.success) {
             closeModal('editModal');
             showSuccess('Data berhasil diubah!');
-            location.reload();
+            $('#userTable').DataTable().ajax.reload();
         } else {
-            alert('Gagal update: ' + result.message);
+            showError('Gagal update: ' + result.message);
         }
     })
     .catch(error => {
         console.error('Gagal update:', error);
-        alert('Terjadi kesalahan saat update.');
+        showError('Terjadi kesalahan saat update');
     });
 });
 
 // DELETE DATA
-function deleteUser(id) {
-    if (confirm('Apakah kamu yakin ingin menghapus data ini?')) {
-        fetch(`/api/kelola-pengguna/${id}`, {
-            method: 'DELETE',
-            headers: { 'Accept': 'application/json' }
-        })
-        .then(res => res.json())
-        .then(result => {
-            if (result.success) {
-                showSuccess('Data berhasil dihapus!');
-                location.reload();
-            } else {
-                alert('Gagal menghapus data: ' + result.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error saat hapus:', error);
-            alert('Terjadi kesalahan saat menghapus data.');
-        });
-    }
-}
-
 function confirmDelete() {
     const id = document.getElementById('deleteUserId').value;
 
     fetch(`/api/kelola-pengguna/${id}`, {
         method: 'DELETE',
-        headers: { 'Accept': 'application/json' }
+        headers: {
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
     })
     .then(res => res.json())
     .then(result => {
         if (result.success) {
             closeModal('deleteModal');
             showDelete('Data berhasil dihapus!');
-            location.reload();
+            $('#userTable').DataTable().ajax.reload();
         } else {
-            alert('Gagal menghapus data: ' + result.message);
+            showError('Gagal menghapus data: ' + result.message);
         }
     })
     .catch(error => {
         console.error('Error delete:', error);
-        alert('Terjadi kesalahan saat menghapus data.');
+        showError('Terjadi kesalahan saat menghapus data');
     });
-}
-
-function showDelete(message) {
-    alert(message);
 }
 </script>
 
