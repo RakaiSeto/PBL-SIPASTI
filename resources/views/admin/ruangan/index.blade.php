@@ -2,6 +2,10 @@
 
 @section('content')
 <div class="bg-white p-6 rounded shadow space-y-4">
+    <!-- DataTables CSS & JS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Filter dan Tombol -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -25,36 +29,16 @@
 
     <!-- TABEL -->
     <div class="overflow-auto rounded border border-slate-200">
-        <table class="w-full text-sm text-left table-fixed">
+        <table id="ruanganTable" class="w-full text-sm text-left table-fixed">
             <thead class="bg-slate-100 text-slate-700 font-medium">
                 <tr>
                     <th class="p-3 w-10">No</th>
-                    <th class="p-3 w-40">Kode Ruangan</th>
-                    <th class="p-3 w-32">Nama Ruangan</th>
-                    <th class="p-3 w-32">Lokasi</th>
+                    <th class="p-3 w-40">Ruangan Role id</th>
+                    <th class="p-3 w-32">nama Ruangan</th>
+                    <th class="p-3 w-32">lantai</th>
                     <th class="p-3 w-28">Aksi</th>
                 </tr>
             </thead>
-            <tbody id="roomTable">
-                <tr class="hover:bg-slate-50 border-t border-slate-200">
-                    <td class="p-3">1</td>
-                    <td class="p-3">RTO1</td>
-                    <td class="p-3">Ruang Teori</td>
-                    <td class="p-3">Lantai 5</td>
-                    <td class="p-3">
-                        <div class="flex items-center gap-2">
-                            <button onclick="openEdit()" class="text-gray-600 hover:text-yellow-600" title="Edit"><i class="fas fa-pen"></i></button>
-                            <button onclick="openDelete()" class="text-gray-600 hover:text-red-600" title="Hapus"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </td>
-               <tr id="noDataRow" class="hidden border-t border-slate-200">
-    <td class="p-3 text-center text-slate-500" colspan="5">
-        Tidak ada data kategori yang sesuai.
-    </td>
-</tr>
-
-
-            </tbody>
         </table>
     </div>
 </div>
@@ -191,5 +175,58 @@ function openEdit() {
 function openDelete() {
     openModal('deleteModal');
 }
+
+
+$(document).ready(function () {
+    const table = $('#ruanganTable').DataTable({
+        searching: false,
+        lengthChange: true,
+        processing: true,
+        serverSide: true,
+        ajax: {
+            type: "POST",
+            url: '{{ url("/api/kelola-ruangan") }}',
+            data: function (d) {
+                d.role = $('#filterRole').val();
+                d.search = $('#searchInput').val();
+            },
+        },
+        columns: [
+            {
+                data: null,
+                name: 'no',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            { data: 'ruangan_role_id', name: 'ruangan_role_id', searchable: true },
+            { data: 'ruangan_nama', name: 'ruangan_nama' },
+            { data: 'lantai', name: 'lantai' },
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function (data) {
+                    return `
+                        <div class="flex gap-2">
+                            <button onclick="openDetail(${data.user_id})" title="Lihat" class="text-gray-600 hover:text-blue-600">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="openEdit(${data.user_id})" title="Edit" class="text-gray-600 hover:text-yellow-600">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <button onclick="openDelete(${data.user_id})" title="Hapus" class="text-gray-600 hover:text-red-600">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>`;
+                }
+            }
+        ]
+    });
+
+    $('#filterRole, #searchInput').on('change keyup', function () {
+        table.ajax.reload();
+    });
+});
 </script>
 @endsection
