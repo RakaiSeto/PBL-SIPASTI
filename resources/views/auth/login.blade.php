@@ -32,11 +32,11 @@
 
             <div>
                 <label for="password" class="sr-only">Password</label>
-                <div class="relative rounded-md shadow-sm">
+                <div class="relative">
                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                         <i class="fa-solid fa-lock text-gray-400"></i>
                      </div>
-                    <input type="password" name="password" id="password" class="block w-full pl-10 pr-10 border-b-2 border-gray-300 focus:outline-none focus:border-b-blue-500" placeholder="Password">
+                    <input type="password" name="password" id="password" class="block w-full pl-10 border-b-2 border-gray-300 focus:outline-none focus:border-b-blue-500" placeholder="Password">
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer text-gray-400" id="togglePassword"></div>
                 </div>
             </div>
@@ -50,6 +50,15 @@
             Belum punya akun? <a href="{{ url('/register') }}" class="text-blue-600 hover:underline">Daftar disini</a>
         </p>
     </div>
+    <div id="modalNotification" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 hidden z-50">
+        <div class="relative bg-white rounded-lg p-6 w-80 max-w-full shadow-lg flex flex-col items-center">
+            
+            <button id="modalCloseBtn" class="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-lg focus:outline-none">
+                <i class="fas fa-xmark"></i>
+            </button>
+            <div id="modalContent" class="text-center mt-2"></div>
+        </div>
+    </div>
 </body>
 <script>
     const toggle = document.getElementById('togglePassword');
@@ -61,5 +70,48 @@
       eyeIcon.classList.toggle('fa-eye');
       eyeIcon.classList.toggle('fa-eye-slash');
     });
-</script>
+
+        const modal = document.getElementById('modalNotification');
+        const modalContent = document.getElementById('modalContent');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+        modalCloseBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        function showModal(message, type) {
+            let colorClass = 'text-gray-700';
+            let iconClass = 'fa-info-circle';
+            let iconColor = 'text-gray-500';
+
+            if (type === 'success') {
+                colorClass = 'text-green-600';
+                iconClass = 'fa-circle-check';
+                iconColor = 'text-green-500';
+            } else if (type === 'error') {
+                colorClass = 'text-red-600';
+                iconClass = 'fa-circle-xmark';
+                iconColor = 'text-red-500';
+            }
+
+            modalContent.innerHTML = `
+                <div class="flex flex-col items-center space-y-2">
+                    <i class="fas ${iconClass} text-4xl ${iconColor}"></i>
+                    <p class="${colorClass} font-semibold text-center">${message}</p>
+                </div>
+                `;
+            modal.classList.remove('hidden');
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            @if(session('status'))
+                showModal(@json(session('status')), 'success');
+            @elseif($errors->any())
+                @if($errors->has('error'))
+                    showModal(@json($errors->first('error')), 'error');
+                @else
+                    showModal('Harap lengkapi semua isian!', 'error');
+                @endif
+            @endif
+        });
+    </script>
 </html>
