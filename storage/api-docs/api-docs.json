@@ -68,6 +68,295 @@
                 }
             }
         },
+        "/api/kelola-fasilitas": {
+            "post": {
+                "tags": [
+                    "Kelola Fasilitas"
+                ],
+                "summary": "Get list of fasilitas",
+                "description": "Get list of fasilitas with pagination and search",
+                "operationId": "464f60230c9b2f02cface9c8c74cd0f4",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaFasilitasRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil diambil",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/kelola-fasilitas/{id}": {
+            "get": {
+                "tags": [
+                    "Kelola Fasilitas"
+                ],
+                "summary": "Get fasilitas detail",
+                "description": "Get fasilitas detail",
+                "operationId": "276bc1f794d33695681ca241e8340830",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ruangan Role ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil diambil",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ruangan Role not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Ruangan Role not found"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Kelola Fasilitas"
+                ],
+                "summary": "Update fasilitas",
+                "description": "Update fasilitas",
+                "operationId": "dc69ad280ea85fcb2670a525c063ccbe",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaFasilitasUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diubah"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Kelola Fasilitas"
+                ],
+                "summary": "Delete fasilitas",
+                "description": "Delete fasilitas",
+                "operationId": "fd2ccd8368217023b16b94a13a80583c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil dihapus"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/kelola-fasilitas/create": {
+            "post": {
+                "tags": [
+                    "Kelola Fasilitas"
+                ],
+                "summary": "Create fasilitas",
+                "description": "Create fasilitas",
+                "operationId": "3a02314df01c07c7e7a4df5a73c728f2",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaFasilitasCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil ditambahkan",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil ditambahkan",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
+        },
         "/api/kelola-pengguna": {
             "post": {
                 "tags": [
@@ -1240,6 +1529,33 @@
                 },
                 "type": "object"
             },
+            "KelolaFasilitasRequest": {
+                "properties": {
+                    "search": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
+            "KelolaFasilitasCreateRequest": {
+                "properties": {
+                    "fasilitas_nama": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
+            "KelolaFasilitasUpdateRequest": {
+                "properties": {
+                    "fasilitas_nama": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
             "KelolaPenggunaRequest": {
                 "properties": {
                     "role": {
@@ -1414,6 +1730,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Kelola Fasilitas",
+            "description": "Kelola Fasilitas"
         },
         {
             "name": "Kelola Pengguna",
