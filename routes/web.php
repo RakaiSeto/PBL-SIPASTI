@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 // Halaman utama
 Route::get('/', function () {
     return view('index');
@@ -20,9 +21,9 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
         return view('admin.index');
     })->name('admin.dashboard');
 
-    Route::get('/mahasiswa', function () {
-        return view('admin.mahasiswa.index');
-    })->name('admin.mahasiswa');
+    // Route::get('/mahasiswa', function () {
+    //     return view('admin.mahasiswa.index');
+    // })->name('admin.mahasiswa');
 
     Route::get('/datapengguna', function () {
         return view('admin.datapengguna.index');
@@ -34,6 +35,10 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
 
 
     Route::get('export_pdf', [UserController::class, 'exportPDF'])->name('admin.datapengguna.export_pdf');
+     Route::get('export_excel', [UserController::class, 'exportExcel'])->name('admin.datapengguna.export_excel');
+
+    Route::get('export_pdf', [RoleController::class, 'exportPDF'])->name('admin.datarole.export_pdf');
+     Route::get('export_excel', [RoleController::class, 'exportExcel'])->name('admin.datarole.export_excel');
 
     Route::get('/fasilitas', function () {
         return view('admin.fasilitas.index');
