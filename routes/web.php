@@ -33,12 +33,11 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
         return view('admin.datarole.index');
     })->name('admin.datarole');
 
+    Route::get('datarole/export_pdf', [RoleController::class, 'exportPDF'])->name('admin.datarole.export_pdf');
+    Route::get('datarole/export_excel', [RoleController::class, 'exportExcel'])->name('admin.datarole.export_excel');
 
-    Route::get('export_pdf', [UserController::class, 'exportPDF'])->name('admin.datapengguna.export_pdf');
-     Route::get('export_excel', [UserController::class, 'exportExcel'])->name('admin.datapengguna.export_excel');
-
-    Route::get('export_pdf', [RoleController::class, 'exportPDF'])->name('admin.datarole.export_pdf');
-     Route::get('export_excel', [RoleController::class, 'exportExcel'])->name('admin.datarole.export_excel');
+    Route::get('datapengguna/export_pdf', [UserController::class, 'exportPDF'])->name('admin.datapengguna.export_pdf');
+    Route::get('datapengguna/export_excel', [UserController::class, 'exportExcel'])->name('admin.datapengguna.export_excel');
 
     Route::get('/fasilitas', function () {
         return view('admin.fasilitas.index');
