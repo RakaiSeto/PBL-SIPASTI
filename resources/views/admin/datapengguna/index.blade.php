@@ -15,13 +15,13 @@
 </style>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<div class="bg-white p-6 rounded shadow space-y-4">
+<div class="bg-white p-6 rounded shadow space-y-4 text-sm">
 
     <!-- Filter dan Tombol -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div class="flex items-center gap-3 flex-wrap">
             <label for="filterRole" class="font-medium text-slate-700">Filter :</label>
-            <select id="filterRole" onchange="filterTable()" class="border border-slate-300 h-10 rounded px-3 pr-8">
+            <select id="filterRole" onchange="filterTable()" class="border border-slate-300 h-10 rounded text-sm px-3 pr-8">
                 <option value="">Semua Role</option>
                 <option value="admin">Admin</option>
                 <option value="sarpras">Sarpras</option>
@@ -29,24 +29,33 @@
                 <option value="teknisi">Teknisi</option>
             </select>
             <input type="text" id="searchInput" placeholder="Cari Nama Lengkap..." onkeyup="filterTable()"
-                class="w-full md:w-64 h-10   border border-slate-300 rounded px-3">
+                class="w-full md:w-64 h-10  text-sm border border-slate-300 rounded px-3">
         </div>
 
         <div class="flex gap-2">
-    <a href="{{ route('admin.datapengguna.export_pdf') }}"
-   class="h-10 px-4   text-white bg-red-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
-  Export PDF
-</a>
+  <!-- Tambah data (aksi utama) biasanya ditaruh duluan) -->
+  <button onclick="openModal('addModal')" class="h-10 px-4 text-white bg-primary rounded hover:opacity-90 transition">
+    Tambah data
+  </button>
 
-    <button onclick="openModal('addModal')" class="h-10 px-4 text-white bg-primary rounded hover:opacity-90 transition">
-      Tambah data
-    </button>
-  </div>
+  <!-- Export Excel -->
+  <a href="{{ route('admin.datapengguna.export_pdf') }}"
+     class="h-10 px-4 text-white bg-green-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
+    Export Excel
+  </a>
+
+  <!-- Export PDF -->
+  <a href="{{ route('admin.datapengguna.export_pdf') }}"
+     class="h-10 px-4 text-white bg-red-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
+    Export PDF
+  </a>
+</div>
+
     </div>
 
     <!-- TABEL -->
     <div class="overflow-auto rounded">
-        <table id="userTable" class="w-full text-left  border border-slate-200 rounded" style="border-collapse: separate; border-spacing: 0;">
+        <table id="userTable" class="w-full text-left table-fixed border border-slate-200 rounded" style="border-collapse: separate; border-spacing: 0;">
             <thead class="bg-slate-100 text-slate-700 font-medium">
                 <tr >
                     <th class="p-3 w-10"  >No</th>
