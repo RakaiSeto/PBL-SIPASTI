@@ -14,11 +14,7 @@
 <!-- SweetAlert2 for notifications -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<style>
-.dataTables_length {
-    margin: 1rem;
-}
-</style>
+
 
 <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -27,29 +23,31 @@
     <!-- Filter dan Tombol -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div class="flex items-center gap-3 flex-wrap">
-            <label for="searchInput" class="text-sm font-medium text-slate-700">Cari:</label>
-            <input type="text" id="searchInput" placeholder="Cari Nama Role..." class="w-full md:w-64 h-10 text-sm border border-slate-300 rounded px-3">
+            <label for="searchInput" class="  font-medium text-slate-700">Cari:</label>
+            <input type="text" id="searchInput" placeholder="Cari Nama Role..." class="w-full md:w-64 h-10   border border-slate-300 rounded px-3">
         </div>
 
         <div class="flex gap-2">
-            <button onclick="openModal('addModal')" class="h-10 px-4 text-sm text-white bg-blue-800 rounded hover:opacity-90 transition">
+            <button onclick="openModal('addModal')" class="h-10 px-4   text-white bg-blue-800 rounded hover:opacity-90 transition">
                 Tambah Role
             </button>
         </div>
     </div>
 
     <!-- TABEL -->
-    <div class="overflow-auto rounded border border-slate-50">
-        <table id="roleTable" class="w-full text-sm text-left table-fixed">
-            <thead class="bg-slate-100 text-slate-700 font-medium">
-                <tr>
-                    <th class="p-3 w-10">No</th>
-                    <th class="p-3 w-40">Nama Role</th>
-                    <th class="p-3 w-28">Aksi</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
+    <div class="overflow-auto rounded">
+    <table id="roleTable" class="w-full text-left border border-slate-200 rounded" style="border-collapse: separate; border-spacing: 0;">
+        <thead class="bg-slate-100 text-slate-700 font-medium">
+            <tr>
+                <th class="p-3 w-10">No</th>
+                <th class="p-3 w-40">Nama Role</th>
+                <th class="p-3 w-28">Aksi</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+
 </div>
 
 <!-- MODAL TAMBAH -->
@@ -65,8 +63,8 @@
             </div>
 
             <div class="flex justify-end gap-2 mt-6">
-                <button type="button" onclick="closeModal('addModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Simpan</button>
+                <button type="button" onclick="closeModal('addModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400  ">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700  ">Simpan</button>
             </div>
         </form>
 
@@ -84,7 +82,7 @@
 
         <div class="space-y-3">
             <div>
-                <h4 class="text-sm font-medium text-gray-500">Nama Role</h4>
+                <h4 class="  font-medium text-gray-500">Nama Role</h4>
                 <p class="text-lg text-gray-800 role_nama">-</p>
             </div>
         </div>
@@ -105,8 +103,8 @@
             </div>
 
             <div class="flex justify-end gap-2 mt-6">
-                <button type="button" onclick="closeModal('editModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Simpan</button>
+                <button type="button" onclick="closeModal('editModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400  ">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700  ">Simpan</button>
             </div>
         </form>
 
@@ -119,10 +117,10 @@
     <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
         <input type="hidden" id="deleteRoleId">
         <h2 class="text-xl font-semibold text-slate-800 mb-4">Konfirmasi Hapus</h2>
-        <p class="text-sm text-slate-600 mb-4">Apakah Anda yakin ingin menghapus role berikut ini?</p>
+        <p class="  text-slate-600 mb-4">Apakah Anda yakin ingin menghapus role berikut ini?</p>
         <div class="flex justify-end gap-2 mt-6">
-            <button type="button" onclick="closeModal('deleteModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-            <button type="button" onclick="confirmDelete()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">Hapus</button>
+            <button type="button" onclick="closeModal('deleteModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400  ">Batal</button>
+            <button type="button" onclick="confirmDelete()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700  ">Hapus</button>
         </div>
     </div>
 </div>
@@ -312,12 +310,16 @@ $(document).ready(function () {
                             </div>`;
                     }
                 }
-            ]
+            ],
+            createdRow: function (row, data, dataIndex) {
+                $(row).addClass('border-t hover:bg-slate-50');
+                $('td', row).addClass('p-3 text-slate-700');
+            }
         });
 
         $('#searchInput').on('keyup', function () {
             if (table) {
-                table.ajax.reload(null, false); // Refresh tanpa reset paging
+                table.ajax.reload(null, false);
             } else {
                 console.error('DataTable belum diinisialisasi');
             }

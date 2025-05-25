@@ -252,8 +252,8 @@ class KelolaPengguna extends Controller
     {
         $validatedData = $request->validate([
             'role_id' => 'required',
-            'username' => 'required',
-            'fullname' => 'required',
+            'username' => 'required|string|min:3|unique:m_user,username',
+            'fullname' => 'required|string|min:3',
             'password' => 'required',
             'email' => 'required',
             'no_telp' => 'required',

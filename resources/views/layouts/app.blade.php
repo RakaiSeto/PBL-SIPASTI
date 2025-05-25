@@ -92,6 +92,19 @@ font-family: "Poppins", sans-serif;
     background-color: #c82333;
 }
 
+.dataTables_length {
+    margin-bottom: 1rem;
+}
+
+table.dataTable tbody td,
+table.dataTable thead th {
+ border-top: 1px solid #f8fafc; /* garis horizontal atas */
+    border-bottom: 1px solid #f8fafc; /* garis horizontal bawah */
+    border-left: none;  /* hilangkan garis vertikal kiri */
+    border-right: none;
+    overflow: hidden;
+}
+
     </style>
 </head>
 
