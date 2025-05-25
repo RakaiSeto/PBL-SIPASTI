@@ -4,45 +4,48 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\m_fasilitas as Fasilitas;
+use App\Models\t_fasilitas_ruang as FasilitasRuangan;
 use OpenApi\Attributes as OA;
 
-class KelolaFasilitas extends Controller
+class KelolaFasilitasRuang extends Controller
 {
     #[OA\Schema(
-        schema: 'KelolaFasilitasRequest',
+        schema: 'KelolaFasilitasRuangRequest',
         type: 'object',
         properties: [
+            new OA\Property(property: 'lantai', type: 'string', example: ''),
             new OA\Property(property: 'search', type: 'string', example: '')
         ]
     )]
 
     #[OA\Schema(
-        schema: 'KelolaFasilitasCreateRequest',
+        schema: 'KelolaFasilitasRuangCreateRequest',
         type: 'object',
         properties: [
-            new OA\Property(property: 'fasilitas_nama', type: 'string', example: ''),
+            new OA\Property(property: 'fasilitas_id', type: 'string', example: ''),
+            new OA\Property(property: 'ruangan_id', type: 'string', example: ''),
         ]
     )]
 
     #[OA\Schema(
-        schema: 'KelolaFasilitasUpdateRequest',
+        schema: 'KelolaFasilitasRuangUpdateRequest',
         type: 'object',
         properties: [
-            new OA\Property(property: 'fasilitas_nama', type: 'string', example: ''),
+            new OA\Property(property: 'fasilitas_id', type: 'string', example: ''),
+            new OA\Property(property: 'ruangan_id', type: 'string', example: ''),
         ],
     )]
 
     #[OA\Post(
-        path: '/api/kelola-fasilitas',
-        summary: 'Get list of fasilitas',
-        description: 'Get list of fasilitas with pagination and search',
-        tags: ['Kelola Fasilitas'],
+        path: '/api/kelola-fasilitas-ruang',
+        summary: 'Get list of fasilitas ruang',
+        description: 'Get list of fasilitas ruang with pagination and search',
+        tags: ['Kelola Fasilitas Ruang'],
         security: [['cookieAuth' => ['jwtToken']]],
         requestBody: new OA\RequestBody(
             content: new OA\MediaType(
                 mediaType: 'application/json',
-                schema: new OA\Schema(ref: '#/components/schemas/KelolaFasilitasRequest')
+                schema: new OA\Schema(ref: '#/components/schemas/KelolaFasilitasRuangRequest')
             )
         ),
         responses: [
@@ -83,15 +86,19 @@ class KelolaFasilitas extends Controller
 
     public function list(Request $request)
     {
-        $query = Fasilitas::with('fasilitas');
+        $query = FasilitasRuangan::with('fasilitas', 'ruangan');
         $dataTotal = $query->count();
 
-        if ($request->fasilitas_nama != '') {
-            $query->where('fasilitas_nama', $request->fasilitas_nama);
+        if ($request->lantai != '') {
+            $query->whereHas('ruangan', function ($query) use ($request) {
+                $query->where('lantai', $request->lantai);
+            });
         }
 
         if ($request->search != '') {
-            $query->where('fasilitas_nama', 'like', '%' . $request->search . '%');
+            $query->whereHas('fasilitas', function ($query) use ($request) {
+                $query->where('fasilitas_nama', 'like', '%' . $request->search . '%');
+            });
         }
 
         $dataFiltered = $query->count();
@@ -111,17 +118,17 @@ class KelolaFasilitas extends Controller
     }
 
     #[OA\Get(
-        path: '/api/kelola-fasilitas/{id}',
-        summary: 'Get fasilitas detail',
-        description: 'Get fasilitas detail',
-        tags: ['Kelola Fasilitas'],
+        path: '/api/kelola-fasilitas-ruang/{id}',
+        summary: 'Get fasilitas ruang detail',
+        description: 'Get fasilitas ruang detail',
+        tags: ['Kelola Fasilitas Ruang'],
         security: [['cookieAuth' => ['jwtToken']]],
         parameters: [
             new OA\Parameter(
                 name: 'id',
                 in: 'path',
                 required: true,
-                description: 'Ruangan Role ID'
+                description: 'Fasilitas Ruang ID'
             )
         ],
         responses: [
@@ -172,11 +179,11 @@ class KelolaFasilitas extends Controller
 
     public function detail(Request $request)
     {
-        $fasilitas = Fasilitas::find($request->id);
+        $fasilitas = FasilitasRuangan::with('fasilitas', 'ruangan')->find($request->id);
         if (!$fasilitas) {
             return response()->json([
                 'success' => false,
-                'message' => 'Fasilitas not found'
+                'message' => 'Fasilitas Ruangan not found'
             ], 404);
         }
         return response()->json([
@@ -187,15 +194,15 @@ class KelolaFasilitas extends Controller
     }
 
     #[OA\Post(
-        path: '/api/kelola-fasilitas/create',
-        summary: 'Create fasilitas',
-        description: 'Create fasilitas',
-        tags: ['Kelola Fasilitas'],
+        path: '/api/kelola-fasilitas-ruang/create',
+        summary: 'Create fasilitas ruang',
+        description: 'Create fasilitas ruang',
+        tags: ['Kelola Fasilitas Ruang'],
         security: [['cookieAuth' => ['jwtToken']]],
         requestBody: new OA\RequestBody(
             content: new OA\MediaType(
                 mediaType: 'application/json',
-                schema: new OA\Schema(ref: '#/components/schemas/KelolaFasilitasCreateRequest')
+                schema: new OA\Schema(ref: '#/components/schemas/KelolaFasilitasRuangCreateRequest')
             )
         ),
         responses: [
@@ -236,10 +243,11 @@ class KelolaFasilitas extends Controller
     public function create(Request $request)
     {
         $validatedData = $request->validate([
-            'fasilitas_nama' => 'required',
+            'ruangan_id' => 'required',
+            'fasilitas_id' => 'required',
         ]);
         $validatedData['created_at'] = now();
-        $fasilitas = Fasilitas::create($validatedData);
+        $fasilitas = FasilitasRuangan::create($validatedData);
         return response()->json([
             'success' => true,
             'message' => 'Data berhasil ditambahkan',
@@ -248,23 +256,23 @@ class KelolaFasilitas extends Controller
     }
 
     #[OA\Put(
-        path: '/api/kelola-fasilitas/{id}',
-        summary: 'Update fasilitas',
-        description: 'Update fasilitas',
-        tags: ['Kelola Fasilitas'],
+        path: '/api/kelola-fasilitas-ruang/{id}',
+        summary: 'Update fasilitas ruang',
+        description: 'Update fasilitas ruang',
+        tags: ['Kelola Fasilitas Ruang'],
         security: [['cookieAuth' => ['jwtToken']]],
         parameters: [
             new OA\Parameter(
                 name: 'id',
                 in: 'path',
                 required: true,
-                description: 'User ID'
+                description: 'Fasilitas Ruang ID'
             )
         ],
         requestBody: new OA\RequestBody(
             content: new OA\MediaType(
                 mediaType: 'application/json',
-                schema: new OA\Schema(ref: '#/components/schemas/KelolaFasilitasUpdateRequest')
+                schema: new OA\Schema(ref: '#/components/schemas/KelolaFasilitasRuangUpdateRequest')
             )
         ),
         responses: [
@@ -290,13 +298,14 @@ class KelolaFasilitas extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'fasilitas_nama' => 'required',
+            'ruangan_id' => 'required',
+            'fasilitas_id' => 'required',
         ]);
-        $fasilitas = Fasilitas::find($request->id);
+        $fasilitas = FasilitasRuangan::find($request->id);
         if (!$fasilitas) {
             return response()->json([
                 'success' => false,
-                'message' => 'Fasilitas not found'
+                'message' => 'Fasilitas Ruangan not found'
             ], 404);
         }
         $fasilitas->update($validated);
@@ -309,17 +318,17 @@ class KelolaFasilitas extends Controller
     }
 
     #[OA\Delete(
-        path: '/api/kelola-fasilitas/{id}',
-        summary: 'Delete fasilitas',
-        description: 'Delete fasilitas',
-        tags: ['Kelola Fasilitas'],
+        path: '/api/kelola-fasilitas-ruang/{id}',
+        summary: 'Delete fasilitas ruang',
+        description: 'Delete fasilitas ruang',
+        tags: ['Kelola Fasilitas Ruang'],
         security: [['cookieAuth' => ['jwtToken']]],
         parameters: [
             new OA\Parameter(
                 name: 'id',
                 in: 'path',
                 required: true,
-                description: 'User ID'
+                description: 'Fasilitas Ruang ID'
             )
         ],
         responses: [
@@ -344,11 +353,11 @@ class KelolaFasilitas extends Controller
 
     public function delete(Request $request)
     {
-        $fasilitas = Fasilitas::find($request->id);
+        $fasilitas = FasilitasRuangan::find($request->id);
         if (!$fasilitas) {
             return response()->json([
                 'success' => false,
-                'message' => 'Fasilitas not found'
+                'message' => 'Fasilitas Ruangan not found'
             ], 404);
         }
         $fasilitas->delete();

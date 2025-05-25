@@ -357,6 +357,295 @@
                 ]
             }
         },
+        "/api/kelola-fasilitas-ruang": {
+            "post": {
+                "tags": [
+                    "Kelola Fasilitas Ruang"
+                ],
+                "summary": "Get list of fasilitas ruang",
+                "description": "Get list of fasilitas ruang with pagination and search",
+                "operationId": "48ae5be4c895fad7e52ce7bd7f66980a",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaFasilitasRuangRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil diambil",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/kelola-fasilitas-ruang/{id}": {
+            "get": {
+                "tags": [
+                    "Kelola Fasilitas Ruang"
+                ],
+                "summary": "Get fasilitas ruang detail",
+                "description": "Get fasilitas ruang detail",
+                "operationId": "39306492c99d718e35d619a1cc1ac354",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Fasilitas Ruang ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil diambil",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ruangan Role not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Ruangan Role not found"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Kelola Fasilitas Ruang"
+                ],
+                "summary": "Update fasilitas ruang",
+                "description": "Update fasilitas ruang",
+                "operationId": "191e6095961d50dd77d1b3e29b582687",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Fasilitas Ruang ID",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaFasilitasRuangUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diubah"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Kelola Fasilitas Ruang"
+                ],
+                "summary": "Delete fasilitas ruang",
+                "description": "Delete fasilitas ruang",
+                "operationId": "40dba972c03753a7a51b9c0ce165d531",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Fasilitas Ruang ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil dihapus"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/kelola-fasilitas-ruang/create": {
+            "post": {
+                "tags": [
+                    "Kelola Fasilitas Ruang"
+                ],
+                "summary": "Create fasilitas ruang",
+                "description": "Create fasilitas ruang",
+                "operationId": "91f52c1a779a6e38abc8ac87b0f5c7c8",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KelolaFasilitasRuangCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil ditambahkan",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Data berhasil ditambahkan",
+                                    "data": "data"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": false,
+                                    "message": "Internal Server Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
+        },
         "/api/kelola-pengguna": {
             "post": {
                 "tags": [
@@ -1556,6 +1845,45 @@
                 },
                 "type": "object"
             },
+            "KelolaFasilitasRuangRequest": {
+                "properties": {
+                    "lantai": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "search": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
+            "KelolaFasilitasRuangCreateRequest": {
+                "properties": {
+                    "fasilitas_id": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "ruangan_id": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
+            "KelolaFasilitasRuangUpdateRequest": {
+                "properties": {
+                    "fasilitas_id": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "ruangan_id": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
             "KelolaPenggunaRequest": {
                 "properties": {
                     "role": {
@@ -1734,6 +2062,10 @@
         {
             "name": "Kelola Fasilitas",
             "description": "Kelola Fasilitas"
+        },
+        {
+            "name": "Kelola Fasilitas Ruang",
+            "description": "Kelola Fasilitas Ruang"
         },
         {
             "name": "Kelola Pengguna",
