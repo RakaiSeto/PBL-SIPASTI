@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\FasilitasController;
+use App\Http\Controllers\DashboardController;
 // Halaman utama
 Route::get('/', function () {
     return view('index');
@@ -18,9 +19,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Group Admin
 Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin'], function () {
-    Route::get('/', function () {
-        return view('admin.index');
-    })->name('admin.dashboard');
+    Route::get('/', [DashboardController::class, 'admin'])->name('admin.dashboard');
 
     // Route::get('/mahasiswa', function () {
     //     return view('admin.mahasiswa.index');
