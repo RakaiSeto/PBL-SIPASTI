@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\KelolaRole;
 use App\Http\Controllers\Api\KelolaRuangan;
 use App\Http\Controllers\Api\KelolaRuanganRole;
 use App\Http\Controllers\Api\KelolaFasilitas;
+use App\Http\Controllers\Api\KelolaFasilitasRuang;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -60,4 +61,10 @@ Route::group(['middleware' => ['auth.refresh.api', 'role.api:Admin']], function 
     Route::get('/kelola-fasilitas/{id}', [KelolaFasilitas::class, 'detail']);
     Route::post('/kelola-fasilitas/create', [KelolaFasilitas::class, 'create']);
     Route::delete('/kelola-fasilitas/{id}', [KelolaFasilitas::class, 'delete']);
+
+    Route::post('/kelola-fasilitas-ruang', [KelolaFasilitas::class, 'list']);
+    Route::put('/kelola-fasilitas-ruang/{id}', [KelolaFasilitas::class, 'update']);
+    Route::get('/kelola-fasilitas-ruang/{id}', [KelolaFasilitasRuang::class, 'detail']);
+    Route::post('/kelola-fasilitas-ruang/create', [KelolaFasilitasRuang::class, 'create']);
+    Route::delete('/kelola-fasilitas-ruang/{id}', [KelolaFasilitasRuang::class, 'delete']);
 });

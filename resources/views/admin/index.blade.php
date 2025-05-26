@@ -9,7 +9,7 @@
           <div>
             <h3 class="text-sm text-gray-500">Total Pengguna</h3>
             {{-- <p class="text-lg font-bold">173</p> --}}
-            <p id="jumlahPengguna" class="text-lg font-bold">0</p>
+            <p id="jumlahPengguna" class="text-lg font-bold">{{ $totalPengguna }}</p>
           </div>
           <div class="bg-primary text-white p-2 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -22,8 +22,8 @@
       <div class="bg-white p-4 rounded shadow">
         <div class="flex justify-between items-center">
           <div>
-            <h3 class="text-sm text-gray-500">Total Fsilitas</h3>
-            <p class="text-lg font-bold">1,240</p>
+            <h3 class="text-sm text-gray-500">Total Fasilitas</h3>
+            <p class="text-lg font-bold">{{ $totalFasilitas }}</p>
           </div>
           <div class="bg-primary text-white p-2 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -37,7 +37,7 @@
         <div class="flex justify-between items-center">
           <div>
             <h3 class="text-sm text-gray-500">Total Laporan</h3>
-            <p class="text-lg font-bold">1,240</p>
+            <p class="text-lg font-bold">{{ $totalLaporan }}</p>
           </div>
           <div class="bg-primary text-white p-2 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,7 +51,7 @@
         <div class="flex justify-between items-center">
           <div>
             <h3 class="text-sm text-gray-500"> Fasilitas diperbaiki</h3>
-            <p class="text-lg font-bold">15</p>
+            <p class="text-lg font-bold">{{ $totalLaporanSelesai }}</p>
           </div>
           <div class="bg-primary text-white p-2 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -289,17 +289,23 @@ $(document).ready(function () {
     new Chart(incomeCtx, {
       type: "bar",
       data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        labels: [@foreach ($bulanLaporan as $item)
+          "{{ $item }}",
+        @endforeach],
         datasets: [
           {
-            label: "Income",
-            data: [18, 22, 19, 25, 26, 31],
+            label: "Jumlah Laporan",
+            data: [@foreach ($jumlahLaporan as $item)
+              {{ $item }},
+            @endforeach],
             backgroundColor: "#1652B7",
             borderRadius: 5,
           },
           {
-            label: "Income",
-            data: [10, 20, 11, 21, 20, 30],
+            label: "Jumlah Laporan Selesai",
+            data: [@foreach ($jumlahLaporanSelesai as $item)
+              {{ $item }},
+            @endforeach],
             backgroundColor: "#ea8a14",
             borderRadius: 5,
           },
