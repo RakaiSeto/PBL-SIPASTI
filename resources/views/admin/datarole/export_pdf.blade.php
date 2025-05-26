@@ -66,28 +66,22 @@
             </tr>
         </table>
 
-        <h3 class="text-center" style="margin: 20px 0;">LAPORAN DATA PENGGUNA</h3>
+        <h3 class="text-center" style="margin: 20px 0;">LAPORAN DATA ROLE PENGGUNA</h3>
 
         <table>
             <thead>
                 <tr>
                     <th class="text-center">No</th>
-                    <th>Nama Lengkap</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Role</th>
+                    <th>Nama Role</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($pengguna as $index => $user)
-                    <tr>
-                        <td class="text-center">{{ $index + 1 }}</td>
-                        <td>{{ $user->fullname }}</td>
-                        <td>{{ $user->username }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->role->role_nama ?? '-' }}</td>
-                    </tr>
-                @endforeach
+                 @foreach($roles as $index => $role)
+                <tr>
+                    <td class="text-center">{{ $index + 1 }}</td>
+                    <td class="text-center">{{ $role->role_nama }}</td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
 

@@ -11,7 +11,7 @@ class m_ruangan extends Model
 
     protected $table = 'm_ruangan';
     protected $primaryKey = 'ruangan_id';
-    protected $fillable = ['ruangan_nama', 'lantai'];
+    protected $fillable = ['ruangan_role_id', 'ruangan_nama', 'lantai'];
 
     public function ruangan_role()
     {

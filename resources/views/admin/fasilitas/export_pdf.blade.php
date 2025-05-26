@@ -54,7 +54,7 @@
         <table class="header-table border-bottom-header">
             <tr>
                 <td width="15%" class="text-center">
-                    <img src="{{ public_path('polinema-bw.png') }}" class="image">
+                    <img src="{{ public_path('assets/image/polinema-bw.jpeg') }}" class="image">
                 </td>
                 <td width="85%">
                     <span class="text-center d-block font-11 font-bold mb-1">KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI</span>
@@ -66,26 +66,20 @@
             </tr>
         </table>
 
-        <h3 class="text-center" style="margin: 20px 0;">LAPORAN DATA PENGGUNA</h3>
+        <h3 class="text-center" style="margin: 20px 0;">LAPORAN DATA FASILITAS</h3>
 
         <table>
             <thead>
                 <tr>
                     <th class="text-center">No</th>
-                    <th>Nama Lengkap</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Role</th>
+                    <th>Nama Fasilitas</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($pengguna as $index => $user)
+                @foreach($pengguna as $index => $fasilitas)
                     <tr>
                         <td class="text-center">{{ $index + 1 }}</td>
-                        <td>{{ $user->fullname }}</td>
-                        <td>{{ $user->username }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->role->role_nama ?? '-' }}</td>
+                        <td>{{ $fasilitas->fasilitas_nama }}</td>
                     </tr>
                 @endforeach
             </tbody>

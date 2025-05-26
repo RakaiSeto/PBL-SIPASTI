@@ -28,9 +28,19 @@
         </div>
 
         <div class="flex gap-2">
-            <button onclick="openModal('addModal')" class="h-10 px-4   text-white bg-blue-800 rounded hover:opacity-90 transition">
-                Tambah Role
+            <button onclick="openModal('addModal')" class="h-10 px-4 text-white bg-primary rounded hover:opacity-90 transition">
+                Tambah data
             </button>
+
+            <a href="{{ route('admin.datarole.export_excel') }}"
+                class="h-10 px-4 text-white bg-green-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
+                Export Excel
+            </a>
+
+            <a href="{{ route('admin.datarole.export_pdf') }}"
+                class="h-10 px-4 text-white bg-red-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
+                Export PDF
+            </a>
         </div>
     </div>
 
@@ -49,81 +59,11 @@
 
 
 </div>
+@include('admin.datarole.tambah')
+@include('admin.datarole.edit')
+@include('admin.datarole.hapus')
+@include('admin.datarole.detail')
 
-<!-- MODAL TAMBAH -->
-<div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
-        <h2 class="text-2xl font-semibold mb-4">Tambah Role</h2>
-        <form id="addForm">
-            <div class="space-y-4 text-slate-900">
-                <div>
-                    <label for="addRoleNama" class="block mb-1 font-medium">Nama Role</label>
-                    <input id="addRoleNama" type="text" class="w-full border border-gray-300 px-3 py-2 rounded" placeholder="Masukkan nama role" required>
-                </div>
-            </div>
-
-            <div class="flex justify-end gap-2 mt-6">
-                <button type="button" onclick="closeModal('addModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400  ">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700  ">Simpan</button>
-            </div>
-        </form>
-
-        <button onclick="closeModal('addModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">×</button>
-    </div>
-</div>
-
-<!-- MODAL DETAIL -->
-<div id="detailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 hidden transition-opacity duration-300">
-    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-95">
-        <div class="relative mb-6">
-            <h2 class="text-2xl font-bold text-gray-800">Detail Role</h2>
-            <button class="absolute right-0 top-0 text-gray-500 hover:text-red-500 text-xl font-semibold transition duration-200" onclick="closeModal('detailModal')">×</button>
-        </div>
-
-        <div class="space-y-3">
-            <div>
-                <h4 class="  font-medium text-gray-500">Nama Role</h4>
-                <p class="text-lg text-gray-800 role_nama">-</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL EDIT -->
-<div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
-        <h2 class="text-2xl font-semibold mb-4">Edit Role</h2>
-        <form id="editForm">
-            <input type="hidden" id="editRoleId">
-            <div class="space-y-4 text-slate-900">
-                <div>
-                    <label for="editRoleNama" class="block mb-1 font-medium">Nama Role</label>
-                    <input id="editRoleNama" type="text" class="w-full border border-gray-300 px-3 py-2 rounded" placeholder="Masukkan nama role" required>
-                </div>
-            </div>
-
-            <div class="flex justify-end gap-2 mt-6">
-                <button type="button" onclick="closeModal('editModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400  ">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700  ">Simpan</button>
-            </div>
-        </form>
-
-        <button onclick="closeModal('editModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">×</button>
-    </div>
-</div>
-
-<!-- MODAL HAPUS -->
-<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
-        <input type="hidden" id="deleteRoleId">
-        <h2 class="text-xl font-semibold text-slate-800 mb-4">Konfirmasi Hapus</h2>
-        <p class="  text-slate-600 mb-4">Apakah Anda yakin ingin menghapus role berikut ini?</p>
-        <div class="flex justify-end gap-2 mt-6">
-            <button type="button" onclick="closeModal('deleteModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400  ">Batal</button>
-            <button type="button" onclick="confirmDelete()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700  ">Hapus</button>
-        </div>
-    </div>
-</div>
 
 <!-- SCRIPT -->
 <script>

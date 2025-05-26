@@ -242,7 +242,7 @@ class KelolaRuangan extends Controller
     public function create(Request $request)
     {
         $validatedData = $request->validate([
-            'ruangan_role' => 'required',
+            'ruangan_role_id' => 'required',
             'ruangan_nama' => 'required',
             'lantai' => 'required',
         ]);
@@ -297,7 +297,7 @@ class KelolaRuangan extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'ruangan_role' => 'required',
+            'ruangan_role_id' => 'required',
             'ruangan_nama' => 'required',
             'lantai' => 'required',
         ]);
