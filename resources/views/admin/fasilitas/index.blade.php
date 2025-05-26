@@ -281,8 +281,43 @@ $(document).ready(function () {
             showConfirmButton: false
         });
     }
+</script>
 
-    
+<script>
+    document.getElementById('addModal').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const fasilitas_nama = document.getElementById('addNama').value;
+
+        const data = {
+            fasilitas_nama,
+        };
+
+        try {
+            const response = await fetch('/api/kelola-fasilitas/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                closeModal('addModal');
+                showSuccess('Data berhasil ditambahkan!');
+                document.getElementById('addForm').reset(); // Kosongkan form
+                $('#userTable').DataTable().ajax.reload();
+            } else {
+                showError('Gagal menambahkan data: ' + result.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showError('Terjadi kesalahan saat mengirim data');
+        }
+    });
 </script>
 
 @endsection
