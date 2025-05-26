@@ -28,46 +28,44 @@ class FasilitasController extends Controller
     }
 
 
-public function exportExcel()
-{
-    $pengguna = m_fasilitas::select('fasilitas_nama')
-            ->orderBy('fasilitas_nama')
-            ->get();
+    public function exportExcel(){
+        $pengguna = m_fasilitas::select('fasilitas_nama')
+                ->orderBy('fasilitas_nama')
+                ->get();
 
-    $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
-    $sheet->setCellValue('A1', 'No');
-    $sheet->setCellValue('B1', 'Nama Fasilitas');
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Nama Fasilitas');
 
-    $sheet->getStyle('A1:B1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:B1')->getFont()->setBold(true);
 
-    $baris = 2;
-    $no = 1;
-    foreach ($pengguna as $data) {
-        $sheet->setCellValue('A' . $baris, $no);
-        $sheet->setCellValue('B' . $baris, $data->fasilitas_nama);
+        $baris = 2;
+        $no = 1;
+        foreach ($pengguna as $data) {
+            $sheet->setCellValue('A' . $baris, $no);
+            $sheet->setCellValue('B' . $baris, $data->fasilitas_nama);
 
-        $baris++;
-        $no++;
+            $baris++;
+            $no++;
+        }
+
+        foreach (range('A', 'B') as $kolom) {
+            $sheet->getColumnDimension($kolom)->setAutoSize(true);
+        }
+
+        $sheet->setTitle('Data Fasilitas');
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'Data Fasilitas - SIPASTI - ' . date('Y-m-d H-i-s') . '.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment;filename=\"{$filename}\"");
+        header('Cache-Control: max-age=0');
+        header('Pragma: public');
+
+        $writer->save('php://output');
+        exit;
     }
-
-    foreach (range('A', 'B') as $kolom) {
-        $sheet->getColumnDimension($kolom)->setAutoSize(true);
-    }
-
-    $sheet->setTitle('Data Fasilitas');
-
-    $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-    $filename = 'Data Fasilitas - SIPASTI - ' . date('Y-m-d H-i-s') . '.xlsx';
-
-    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header("Content-Disposition: attachment;filename=\"{$filename}\"");
-    header('Cache-Control: max-age=0');
-    header('Pragma: public');
-
-    $writer->save('php://output');
-    exit;
-}
-
 }
