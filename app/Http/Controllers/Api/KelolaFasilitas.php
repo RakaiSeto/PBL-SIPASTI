@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 use App\Models\m_fasilitas as Fasilitas;
 use OpenApi\Attributes as OA;
 
@@ -83,31 +84,32 @@ class KelolaFasilitas extends Controller
 
     public function list(Request $request)
     {
-        $query = Fasilitas::with('fasilitas');
+        $query = Fasilitas::query();
         $dataTotal = $query->count();
 
-        if ($request->fasilitas_nama != '') {
+        // Filter berdasarkan nama
+        if ($request->filled('fasilitas_nama')) {
             $query->where('fasilitas_nama', $request->fasilitas_nama);
         }
 
-        if ($request->search != '') {
-            $query->where('fasilitas_nama', 'like', '%' . $request->search . '%');
+        // Search global
+        if ($request->filled('search.value')) {
+            $searchValue = $request->input('search.value');
+            $query->where('fasilitas_nama', 'like', '%' . $searchValue . '%');
         }
 
         $dataFiltered = $query->count();
-        $query->offset($request->start);
-        $query->limit($request->length);
+        $query->offset($request->input('start', 0));
+        $query->limit($request->input('length', 10));
 
-        return response()->json(
-            [
-                'success' => true,
-                'message' => 'Data berhasil diambil',
-                'draw' => intval($request->input('draw')),
-                'recordsTotal' => $dataTotal,
-                'recordsFiltered' => $dataFiltered,
-                'data' => $query->get()
-            ]
-        );
+        $data = $query->get();
+
+        return response()->json([
+            'draw' => intval($request->input('draw')),
+            'recordsTotal' => $dataTotal,
+            'recordsFiltered' => $dataFiltered,
+            'data' => $data
+        ]);
     }
 
     #[OA\Get(
