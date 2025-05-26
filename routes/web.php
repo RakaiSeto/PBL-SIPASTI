@@ -63,6 +63,10 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
         return view('admin.laporanstatistik.index');
     })->name('admin.laporanstatistik');
 
+     Route::get('/datalaporan', function () {
+        return view('admin.datalaporan.index');
+    })->name('admin.datalaporan');
+
 });
 
 // Route tambahan admin (duplikat dashboard)

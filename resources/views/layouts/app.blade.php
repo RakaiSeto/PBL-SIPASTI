@@ -29,7 +29,7 @@
         }
         body {
             /* font-family: 'Comic Neue', cursive; */
-font-family: "Poppins", sans-serif;
+font-family: "Inter", sans-serif;
 
             /* font-family: "Poppins", sans-serif; */
         }

@@ -59,7 +59,7 @@
     <a href="{{ route('admin.datarole') }}"
        class="block p-3 rounded font-semibold
               {{ request()->routeIs('admin.datarole') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-user-tie mr-2"></i> Kelola Role
+      <i class="fa-solid fa-user-group mr-2"></i> Kelola Role
     </a>
     <a href="{{ route('admin.datapengguna') }}"
        class="block p-3 rounded font-semibold
@@ -68,6 +68,11 @@
     </a>
 
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Data Inventaris</h2>
+    <a href="{{ route('admin.roleruangan') }}"
+      class="block p-3 rounded font-semibold
+              {{ request()->routeIs('admin.roleruangan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-building-user mr-2"></i> Kelola Role Ruangan
+    </a>
     <a href="{{ route('admin.ruangan') }}"
        class="block p-3 rounded font-semibold
               {{ request()->routeIs('admin.ruangan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
@@ -83,17 +88,18 @@
               {{ request()->routeIs('admin.ruanganfasilitas') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
       <i class="fa-solid fa-chalkboard mr-2"></i> Kelola Ruang & Fasilitas
     </a>
-    <a href="{{ route('admin.roleruangan') }}"
-      class="block p-3 rounded font-semibold
-              {{ request()->routeIs('admin.roleruangan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-chalkboard mr-2"></i> Kelola Role Ruangan
-    </a>
     <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Laporan & Data Statistik</h2>
+      <a href="{{ route('admin.datalaporan') }}"
+      class="block p-3 rounded font-semibold
+              {{ request()->routeIs('admin.datalaporan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+      <i class="fa-solid fa-file-lines mr-2"></i>  Data Laporan
+    </a>
     <a href="{{ route('admin.laporanstatistik') }}"
       class="block p-3 rounded font-semibold
               {{ request()->routeIs('admin.laporanstatistik') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-      <i class="fa-solid fa-chalkboard mr-2"></i> Laporan & Statistik
+      <i class="fa-solid fa-chart-pie mr-2"></i> Laporan & Statistik
     </a>
+  
     @endif
 
     @if (Auth::user()->role->role_nama == 'Civitas')

@@ -30,14 +30,14 @@
     </div>
 
     <!-- TABEL -->
-    <div class="overflow-auto rounded border border-slate-200">
+    <div class="overflow-auto rounded border border-slate-200 text-sm">
         <table id="ruanganTable" class="w-full text-sm text-left table-fixed">
             <thead class="bg-slate-100 text-slate-700 font-medium">
                 <tr>
                     <th class="p-3 w-10">No</th>
                     <th class="p-3 w-40">ID Role Ruangan</th>
                     <th class="p-3 w-32">Nama Ruangan</th>
-                    <th class="p-3 w-32">lantai</th>
+                    <th class="p-3 w-32">Lantai</th>
                     <th class="p-3 w-28">Aksi</th>
                 </tr>
             </thead>
