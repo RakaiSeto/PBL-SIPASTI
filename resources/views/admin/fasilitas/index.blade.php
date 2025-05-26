@@ -15,14 +15,6 @@
     <!-- Filter dan Tombol -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div class="flex items-center gap-3 flex-wrap">
-            <label for="filterRole" class="text-sm font-medium text-slate-700">Filter :</label>
-            <select id="filterRole" onchange="filterTable()" class="border border-slate-300 text-sm h-10 rounded px-3 pr-8">
-                <option value="">Semua Kategori</option>
-                <option value="Elektronik">Elektronik</option>
-                <option value="Furniture">Furniture</option>
-                <option value="Jaringan">Jaringan</option>
-                <option value="Perlengkapan Kelas">Perlengkapan Kelas</option>
-            </select>
             <input type="text" id="searchInput" placeholder="Cari Fasilitas..." onkeyup="filterTable()"
                 class="w-full md:w-64 h-10 text-sm border border-slate-300 rounded px-3">
         </div>
@@ -57,92 +49,6 @@
     </div>
 </div>
 
-<!-- //////MODAL//////// -->
-
-{{-- <!-- MODAL TAMBAH -->
-<div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
-        <h2 class="text-2xl font-semibold mb-4">Tambah Fasilitas</h2>
-        <form onsubmit="event.preventDefault(); closeModal('addModal'); showSuccess('Fasilitas berhasil ditambahkan!');">
-            <div class="space-y-2 text-slate-900">
-                <div>
-                    <label for="addId" class="block mb-1 font-medium">ID Fasilitas</label>
-                    <input id="addId" type="text" class="w-full border-gray-200 px-3 py-2 rounded" placeholder="Masukkan ID fasilitas" required>
-                </div>
-                <div>
-                    <label for="addNama" class="block mb-1 font-medium">Nama Fasilitas</label>
-                    <input id="addNama" type="text" class="w-full border-gray-200 px-3 py-2 rounded" placeholder="Masukkan nama fasilitas" required>
-                </div>
-                <div>
-                    <label for="addKategori" class="block mb-1 font-medium">Kategori</label>
-                    <select id="addKategori" class="w-full border-gray-200 px-3 py-2 rounded" required>
-                        <option value="">Pilih Kategori</option>
-                        <option value="Elektronik">Elektronik</option>
-                        <option value="Furniture">Furniture</option>
-                        <option value="Lainnya">Lainnya</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="flex justify-end gap-2 mt-6">
-                <button type="button" onclick="closeModal('addModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Simpan</button>
-            </div>
-        </form>
-        <button onclick="closeModal('addModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">&times;</button>
-    </div>
-</div>
-
-<!-- MODAL EDIT -->
-<div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
-        <h2 class="text-2xl font-semibold mb-4">Edit Fasilitas</h2>
-        <form onsubmit="event.preventDefault(); closeModal('editModal'); showSuccess('Fasilitas berhasil diubah!');">
-            <div class="space-y-2 text-slate-800">
-                <div>
-                    <label class="block mb-1 font-medium text-sm">ID Fasilitas</label>
-                    <input type="text" class="w-full border-gray-200 text-sm rounded" placeholder="Masukkan ID fasilitas" required>
-                </div>
-                <div>
-                    <label class="block mb-1 font-medium text-sm">Nama Fasilitas</label>
-                    <input type="text" class="w-full border-gray-200 text-sm rounded" placeholder="Masukkan nama fasilitas">
-                </div>
-                <div>
-                    <label class="block mb-1 font-medium text-sm">Kategori</label>
-                    <select class="w-full border-gray-200 px-2 py-2 text-sm rounded" required>
-                        <option value="">Pilih Kategori</option>
-                        <option value="Elektronik">Elektronik</option>
-                        <option value="Furniture">Furniture</option>
-                        <option value="Lainnya">Lainnya</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="flex justify-end gap-2 mt-6">
-                <button type="button" onclick="closeModal('editModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Simpan</button>
-            </div>
-        </form>
-
-        <button onclick="closeModal('editModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">&times;</button>
-    </div>
-</div>
-
-<!-- MODAL HAPUS -->
-<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
-        <h2 class="text-xl font-semibold text-slate-800 mb-4">Konfirmasi Hapus</h2>
-        <p class="text-sm text-slate-600 mb-4">Apakah Anda yakin ingin menghapus pengguna berikut ini?</p>
-        <div class="flex justify-end gap-2 mt-6">
-            <button type="button" onclick="closeModal('deleteModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-            <button type="button" onclick="closeModal('deleteModal'); showDelete('deleteSuccess');" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">Hapus</button>
-        </div>
-        <button onclick="closeModal('deleteModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">&times;</button>
-    </div>
-</div> --}}
-
-<!-- ///////////////////////////// -->
-
 @include('admin.fasilitas.tambah')
 @include('admin.fasilitas.edit')
 @include('admin.fasilitas.detail')
@@ -166,6 +72,7 @@
             if (response.success) {
                 const data = response.data;
                 openModal('detailModal');
+                document.querySelector('.fasilitas_id').textContent = data.fasilitas_id;
                 document.querySelector('.fasilitas_nama').textContent = data.fasilitas_nama;
             } else {
                 alert("Data tidak ditemukan");
@@ -181,7 +88,7 @@
         .then(res => res.json())
         .then(result => {
             const data = result.data;
-            document.getElementById('editFasilitasId').value = fasilitas_id;
+            document.getElementById('editFasilitasId').value = id;
             document.getElementById('editNama').value = data.fasilitas_nama;
             openModal('editModal');
         })
@@ -192,12 +99,12 @@
     }   
 
     function openDelete(id) {
-        document.getElementById('deleteFasilitasId').value = fasilitas_id;
+        document.getElementById('deleteFasilitasId').value = id;
         openModal('deleteModal');
     }
 </script>
 
-<!-- Search, Filter -->
+<!-- data tabel -->
 <script>
 $(document).ready(function () {
     const table = $('#userTable').DataTable({
@@ -284,6 +191,8 @@ $(document).ready(function () {
 </script>
 
 <script>
+
+    //CREATE//
     document.getElementById('addModal').addEventListener('submit', async function (e) {
         e.preventDefault();
         const fasilitas_nama = document.getElementById('addNama').value;
@@ -318,6 +227,66 @@ $(document).ready(function () {
             showError('Terjadi kesalahan saat mengirim data');
         }
     });
-</script>
 
+    //UPDATE//
+    document.getElementById('editForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const id = document.getElementById('editFasilitasId').value;
+        const data = {
+            fasilitas_nama: document.getElementById('editNama').value,
+        };
+
+        fetch(`/api/kelola-fasilitas/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(result => {
+            if (result.success) {
+                closeModal('editModal');
+                showSuccess('Data berhasil diubah!');
+                $('#userTable').DataTable().ajax.reload();
+            } else {
+                showError('Gagal update: ' + result.message);
+            }
+        })
+        .catch(error => {
+            console.error('Gagal update:', error);
+            showError('Terjadi kesalahan saat update');
+        });
+    });
+
+    //DELETE//
+    function confirmDelete() {
+        const id = document.getElementById('deleteFasilitasId').value;
+
+        fetch(`/api/kelola-fasilitas/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        })
+        .then(res => res.json())
+        .then(result => {
+            if (result.success) {
+                closeModal('deleteModal');
+                showDelete('Data berhasil dihapus!');
+                $('#userTable').DataTable().ajax.reload();
+            } else {
+                showError('Gagal menghapus data: ' + result.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error delete:', error);
+            showError('Terjadi kesalahan saat menghapus data');
+        });
+    }
+</script>
 @endsection
