@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\FasilitasController;
 // Halaman utama
 Route::get('/', function () {
     return view('index');
@@ -20,9 +22,9 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
         return view('admin.index');
     })->name('admin.dashboard');
 
-    Route::get('/mahasiswa', function () {
-        return view('admin.mahasiswa.index');
-    })->name('admin.mahasiswa');
+    // Route::get('/mahasiswa', function () {
+    //     return view('admin.mahasiswa.index');
+    // })->name('admin.mahasiswa');
 
     Route::get('/datapengguna', function () {
         return view('admin.datapengguna.index');
@@ -32,8 +34,14 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
         return view('admin.datarole.index');
     })->name('admin.datarole');
 
+    Route::get('datarole/export_pdf', [RoleController::class, 'exportPDF'])->name('admin.datarole.export_pdf');
+    Route::get('datarole/export_excel', [RoleController::class, 'exportExcel'])->name('admin.datarole.export_excel');
 
-    Route::get('export_pdf', [UserController::class, 'exportPDF'])->name('admin.datapengguna.export_pdf');
+    Route::get('datapengguna/export_pdf', [UserController::class, 'exportPDF'])->name('admin.datapengguna.export_pdf');
+    Route::get('datapengguna/export_excel', [UserController::class, 'exportExcel'])->name('admin.datapengguna.export_excel');
+
+    Route::get('fasilitas/export_pdf', [FasilitasController::class, 'exportPDF'])->name('admin.fasilitas.export_pdf');
+    Route::get('fasilitas/export_excel', [FasilitasController::class, 'exportExcel'])->name('admin.fasilitas.export_excel');
 
     Route::get('/fasilitas', function () {
         return view('admin.fasilitas.index');
