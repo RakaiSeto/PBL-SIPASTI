@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<div class="bg-white p-6 rounded shadow space-y-4">
+<div class="bg-white p-6 rounded shadow space-y-4 text-sm">
 
     <!-- Filter dan Tombol -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -27,13 +27,19 @@
                 class="w-full md:w-64 h-10 text-sm border border-slate-300 rounded px-3">
         </div>
         <div class="flex gap-2">
-            <a href="{{ route('admin.datapengguna.export_pdf') }}"
+            <button onclick="openModal('addModal')" class="h-10 px-4 text-white bg-primary rounded hover:opacity-90 transition">
+                Tambah data
+            </button>
+
+            <a href="{{ route('admin.fasilitas.export_excel') }}"
+                class="h-10 px-4 text-white bg-green-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
+                Export Excel
+            </a>
+
+            <a href="{{ route('admin.fasilitas.export_pdf') }}"
                 class="h-10 px-4 text-white bg-red-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
                 Export PDF
             </a>
-            <button onclick="openModal('addModal')" class="h-10 px-4 text-sm text-white bg-primary rounded hover:opacity-90 transition">
-                Tambah Fasilitas
-            </button>
         </div>
     </div>
 
