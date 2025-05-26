@@ -19,7 +19,7 @@
 <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<div class="bg-white p-6 rounded shadow space-y-4">
+<div class="bg-white p-6 rounded shadow space-y-4 text-sm">
     <!-- Filter dan Tombol -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div class="flex items-center gap-3 flex-wrap">
