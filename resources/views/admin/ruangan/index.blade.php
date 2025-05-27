@@ -15,10 +15,10 @@
             <label for="filterRole" class="text-sm font-medium text-slate-700">Filter :</label>
             <select id="filterRole" onchange="filterTable()" class="border border-slate-300 text-sm h-10 rounded px-3 pr-8">
                 <option value="">Semua Lantai</option>
-                <option value="Lantai 5">Lantai 5</option>
-                <option value="Lantai 6">Lantai 6</option>
-                <option value="Lantai 7">Lantai 7</option>
-                <option value="Lantai 8">Lantai 8</option>
+                <option value="5">Lantai 5</option>
+                <option value="6">Lantai 6</option>
+                <option value="7">Lantai 7</option>
+                <option value="8">Lantai 8</option>
             </select>
             <input type="text" id="searchInput" placeholder="Cari Ruangan..." onkeyup="filterTable()"
                 class="w-full md:w-64 h-10 text-sm border border-slate-300 rounded px-3">
@@ -52,8 +52,12 @@
         <form id="addtambahRuangan" >
             <div class="space-y-4 text-slate-900">
                 <div>
-                    <label for="addidrole" class="block mb-1 font-medium">ID Role Ruangan</label>
-                    <input id="addidrole" type="text" class="w-full border border-gray-300 px-3 py-2 rounded" placeholder="Masukkan ID Role Ruangan" required>
+                    <label for="addidrole" class="block mb-1 font-medium">Role Ruangan</label>
+                    <select id="addidrole" class="w-full border border-gray-300 px-3 py-2 rounded" required>
+                        @foreach ($roleRuangan as $item)
+                            <option value="{{ $item->ruangan_role_id }}">{{ $item->ruangan_role_nama }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div>
                     <label for="addnamaruangan" class="block mb-1 font-medium">Nama Ruangan</label>
@@ -93,8 +97,12 @@
 
             <div class="space-y-4 text-slate-900">
                 <div>
-                    <label for="editRuanganRoleId" class="block mb-1 font-medium">ID Role Ruangan</label>
-                    <input id="editRuanganRoleId" name="ruangan_role_id" type="text" class="w-full border border-gray-300 px-3 py-2 rounded" placeholder="Masukkan ID role ruangan" required>
+                    <label for="editRuanganRoleId" class="block mb-1 font-medium">Role Ruangan</label>
+                    <select id="editRuanganRoleId" class="w-full border border-gray-300 px-3 py-2 rounded" required>
+                        @foreach ($roleRuangan as $item)
+                            <option value="{{ $item->ruangan_role_id }}">{{ $item->ruangan_role_nama }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div>
