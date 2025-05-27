@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\RuanganFasilitasController;
+use App\Http\Controllers\RoleRuanganController;
 // Halaman utama
 Route::get('/', function () {
     return view('index');
@@ -55,6 +56,9 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
 
     Route::get('fasilitas/export_pdf', [FasilitasController::class, 'exportPDF'])->name('admin.fasilitas.export_pdf');
     Route::get('fasilitas/export_excel', [FasilitasController::class, 'exportExcel'])->name('admin.fasilitas.export_excel');
+
+    Route::get('roleruangan/export_pdf', [RoleRuanganController::class, 'exportPDF'])->name('admin.roleruangan.export_pdf');
+    Route::get('roleruangan/export_excel', [RoleRuanganController::class, 'exportExcel'])->name('admin.roleruangan.export_excel');
 
     Route::get('/fasilitas', function () {
         return view('admin.fasilitas.index');

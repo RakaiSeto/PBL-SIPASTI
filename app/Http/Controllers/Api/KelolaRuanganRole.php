@@ -84,31 +84,32 @@ class KelolaRuanganRole extends Controller
 
     public function list(Request $request)
     {
-        $query = RuanganRole::with('ruangan');
+        $query = RuanganRole::query();
         $dataTotal = $query->count();
 
-        if ($request->ruangan_role_nama != '') {
+        // Filter berdasarkan nama
+        if ($request->filled('ruangan_role_nama')) {
             $query->where('ruangan_role_nama', $request->ruangan_role_nama);
         }
 
-        if ($request->search != '') {
-            $query->where('ruangan_role_nama', 'like', '%' . $request->search . '%');
+        // Search global
+        if ($request->filled('search.value')) {
+            $searchValue = $request->input('search.value');
+            $query->where('ruangan_role_nama', 'like', '%' . $searchValue . '%');
         }
 
         $dataFiltered = $query->count();
-        $query->offset($request->start);
-        $query->limit($request->length);
+        $query->offset($request->input('start', 0));
+        $query->limit($request->input('length', 10));
 
-        return response()->json(
-            [
-                'success' => true,
-                'message' => 'Data berhasil diambil',
-                'draw' => intval($request->input('draw')),
-                'recordsTotal' => $dataTotal,
-                'recordsFiltered' => $dataFiltered,
-                'data' => $query->get()
-            ]
-        );
+        $data = $query->get();
+
+        return response()->json([
+            'draw' => intval($request->input('draw')),
+            'recordsTotal' => $dataTotal,
+            'recordsFiltered' => $dataFiltered,
+            'data' => $data
+        ]);
     }
 
     #[OA\Get(
