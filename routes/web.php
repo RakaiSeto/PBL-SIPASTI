@@ -22,11 +22,16 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 // Route::post('/update-profile', [ProfileController::class, 'update'])->name('profile.update');
 
+    // Untuk semua pengguna yang sudah login
+Route::middleware(['auth.refresh'])->group(function () {
+    Route::post('/update-profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
+});
+
 // Group Admin
 Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin'], function () {
 
-    Route::post('/update-profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
+
     // Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
 
 

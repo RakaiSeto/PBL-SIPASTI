@@ -100,6 +100,12 @@
                         document.querySelector('.role').textContent = data.role_nama;
                         document.querySelector('.email').textContent = data.email;
                         document.querySelector('.no_telp').textContent = data.no_telp;
+
+                        // Ganti foto profil secara dinamis
+                        const img = document.getElementById('detail-photo');
+                        img.src = data.profile_picture ?
+                            `/assets/profile/${data.profile_picture}` :
+                            `/assets/profile/default.png`;
                     } else {
                         alert("Data tidak ditemukan");
                     }
@@ -108,6 +114,7 @@
                     console.error("Gagal ambil data:", error);
                 });
         }
+
 
         function openEdit(id) {
             fetch(`/api/kelola-pengguna/${id}`)

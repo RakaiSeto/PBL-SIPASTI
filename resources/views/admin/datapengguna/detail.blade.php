@@ -14,7 +14,10 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="flex justify-center">
                 <div class=" overflow-hidden rounded">
-                    <img src="{{ asset('assets/image/10.jpg') }}" alt="Foto" class="w-full h-full object-cover">
+                    <!-- Gambar Dinamis -->
+                    <img id="detail-photo" src="{{ asset('assets/image/10.jpg') }}" alt="Foto"
+                        class="w-full h-full object-cover">
+
                 </div>
             </div>
 

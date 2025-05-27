@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -21,13 +22,20 @@ class ProfileController extends Controller
 
     $user->fullname = $request->fullname;
 
+    // Jika upload gambar baru
     if ($request->hasFile('profile_picture')) {
+
+        // Hapus gambar lama jika bukan default
         if ($user->profile_picture && $user->profile_picture !== 'default.png') {
-            Storage::delete('public/profile/' . $user->profile_picture);
+            $oldPath = public_path('assets/profile/' . $user->profile_picture);
+            if (File::exists($oldPath)) {
+                File::delete($oldPath);
+            }
         }
 
         $filename = time() . '_' . $request->file('profile_picture')->getClientOriginalName();
-        $request->file('profile_picture')->storeAs('public/profile', $filename);
+        $request->file('profile_picture')->move(public_path('assets/profile'), $filename);
+
         $user->profile_picture = $filename;
     }
 
@@ -35,7 +43,6 @@ class ProfileController extends Controller
 
     return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
 }
-
 public function changePassword(Request $request)
 {
     $request->validate([
@@ -52,7 +59,6 @@ public function changePassword(Request $request)
     $user->password = Hash::make($request->new_password);
     $user->save();
 
-    // Redirect sesuai role
     $role = $user->role->role_nama;
 
     switch ($role) {
