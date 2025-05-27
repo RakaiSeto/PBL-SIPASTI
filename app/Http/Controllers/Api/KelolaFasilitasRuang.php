@@ -86,7 +86,8 @@ class KelolaFasilitasRuang extends Controller
 
     public function list(Request $request)
     {
-        $query = FasilitasRuangan::with('fasilitas', 'ruangan');
+        $query = FasilitasRuangan::query();
+        $query = $query->with('fasilitas', 'ruangan');
         $dataTotal = $query->count();
 
         if ($request->lantai != '') {
@@ -102,8 +103,12 @@ class KelolaFasilitasRuang extends Controller
         }
 
         $dataFiltered = $query->count();
-        $query->offset($request->start);
-        $query->limit($request->length);
+        if ($request->start != '') {
+            $query->skip($request->start);
+        }
+        if ($request->length != '') {
+            $query->take($request->length);
+        }
 
         return response()->json(
             [
