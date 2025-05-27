@@ -1,26 +1,22 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="relative">
-    <button id="profileToggle"
-        class="flex items-center space-x-3 rounded-lg hover:bg-gray-100 transition duration-200 focus:outline-none">
-        <span class="font-semibold text-gray-800">
+    <div class="relative flex items-center space-x-3">
+        <!-- Teks nama & role, tanpa event klik -->
+        <span class="font-semibold text-gray-800 select-none">
             {{ Auth::user()->fullname }} / <span
                 class="text-gray-500 font-normal">{{ Auth::user()->role->role_nama }}</span>
         </span>
-        <img src="{{ Auth::user()->profile_picture ? asset('assets/profile/' . Auth::user()->profile_picture) : asset('assets/profile/default.png') }}"
-            alt="Foto Profil" class="w-12 h-12 rounded-full object-cover ring-2 ring-blue-500">
 
-    </button>
+        <!-- Gambar profil sebagai tombol -->
+        <button id="profileToggle" type="button"
+            class="w-12 h-12 rounded-full overflow-hidden ring-2 ring-blue-500 focus:outline-none">
+            <img src="{{ Auth::user()->profile_picture ? asset('assets/profile/' . Auth::user()->profile_picture) : asset('assets/profile/default.png') }}"
+                alt="Foto Profil" class="w-full h-full object-cover">
+        </button>
+    </div>
 
-    @if (session('success'))
-        <div class="bg-green-50 text-green-700 p-3 rounded-lg mb-4 shadow-sm">
-            {{ session('success') }}
-        </div>
-    @endif
 
-    @if (session('error'))
-        <div class="bg-red-50 text-red-700 p-3 rounded-lg mb-4 shadow-sm">
-            {{ session('error') }}
-        </div>
-    @endif
 
     <!-- Dropdown menu -->
     <div id="profileMenu"
@@ -198,4 +194,46 @@
         document.getElementById('modalPassword').classList.remove('flex');
         document.getElementById('modalPassword').classList.add('hidden');
     }
+</script>
+<script>
+    function showSuccess(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Sukses',
+            text: message,
+            timer: 2000,
+            showConfirmButton: false
+        });
+    }
+
+    function showError(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Kesalahan',
+            text: message,
+            timer: 3000,
+            showConfirmButton: true
+        });
+    }
+
+    function showDelete(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Sukses',
+            text: message,
+            timer: 2000,
+            showConfirmButton: false
+        });
+    }
+</script>
+
+<!-- Panggil fungsi jika ada session -->
+<script>
+    @if (session('success'))
+        showSuccess("{{ session('success') }}");
+    @endif
+
+    @if (session('error'))
+        showError("{{ session('error') }}");
+    @endif
 </script>
