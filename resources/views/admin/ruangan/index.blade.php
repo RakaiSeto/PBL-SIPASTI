@@ -300,7 +300,7 @@ document.getElementById('editFormRuangan').addEventListener('submit', function (
 
     const id = document.getElementById('editRuanganId').value;
     const data = {
-        ruangan_role_id: document.getElementById('editRuanganRoleId').value, 
+        ruangan_role_id: document.getElementById('editRuanganRoleId').value,
         ruangan_nama: document.getElementById('editRuanganNama').value,
         lantai: document.getElementById('editLantai').value,
     };

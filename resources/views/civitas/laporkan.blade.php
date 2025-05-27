@@ -7,6 +7,15 @@
   <form id="formPelaporan" class="space-y-6">
     <!-- Ruang -->
     <div>
+      <label class="block mb-1 text-sm font-medium text-gray-700">Lantai</label>
+      <select class="w-full border border-gray-300 rounded-lg bg-white p-3 focus:ring-2 focus:ring-blue-500" required>
+        <option value="RT001">01</option>
+      </select>
+    </div>
+
+
+    <!-- Ruang -->
+    <div>
       <label class="block mb-1 text-sm font-medium text-gray-700">Ruang</label>
       <select class="w-full border border-gray-300 rounded-lg bg-white p-3 focus:ring-2 focus:ring-blue-500" required>
         <option value="RT001">RT001</option>
