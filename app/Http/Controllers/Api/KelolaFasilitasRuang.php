@@ -13,7 +13,7 @@ class KelolaFasilitasRuang extends Controller
         schema: 'KelolaFasilitasRuangRequest',
         type: 'object',
         properties: [
-            new OA\Property(property: 'lantai', type: 'string', example: ''),
+            new OA\Property(property: 'ruangan_id', type: 'string', example: ''),
             new OA\Property(property: 'search', type: 'string', example: '')
         ]
     )]
@@ -86,28 +86,33 @@ class KelolaFasilitasRuang extends Controller
 
     public function list(Request $request)
     {
-        $query = FasilitasRuangan::query();
-        $query = $query->with('fasilitas', 'ruangan');
-        $dataTotal = $query->count();
+        $dataFiltered = 0;
+        $dataTotal = 0;
+        $data = [];
+        if ($request->ruangan_id != '') {
 
-        if ($request->lantai != '') {
-            $query->whereHas('ruangan', function ($query) use ($request) {
-                $query->where('lantai', $request->lantai);
-            });
-        }
+            $query = FasilitasRuangan::query();
+            $query = $query->with('fasilitas', 'ruangan');
 
-        if ($request->search != '') {
-            $query->whereHas('fasilitas', function ($query) use ($request) {
-                $query->where('fasilitas_nama', 'like', '%' . $request->search . '%');
-            });
-        }
+            if ($request->ruangan_id != '') {
+                $query->whereHas('ruangan', function ($query) use ($request) {
+                    $query->where('ruangan_id', $request->ruangan_id);
+                });
+            }
 
-        $dataFiltered = $query->count();
-        if ($request->start != '') {
-            $query->skip($request->start);
-        }
-        if ($request->length != '') {
-            $query->take($request->length);
+            if ($request->search != '') {
+                $query->whereHas('fasilitas', function ($query) use ($request) {
+                    $query->where('fasilitas_nama', 'like', '%' . $request->search . '%');
+                });
+            }
+
+            if ($request->start != '') {
+                $query->skip($request->start);
+            }
+            if ($request->length != '') {
+                $query->take($request->length);
+            }
+            $data = $query->get();
         }
 
         return response()->json(
@@ -117,7 +122,7 @@ class KelolaFasilitasRuang extends Controller
                 'draw' => intval($request->input('draw')),
                 'recordsTotal' => $dataTotal,
                 'recordsFiltered' => $dataFiltered,
-                'data' => $query->get()
+                'data' => $data
             ]
         );
     }

@@ -8,6 +8,7 @@ use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RuanganController;
+use App\Http\Controllers\RuanganFasilitasController;
 // Halaman utama
 Route::get('/', function () {
     return view('index');
@@ -61,9 +62,7 @@ Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->na
         return view('admin.roleruangan.index');
     })->name('admin.roleruangan');
 
-     Route::get('/ruanganfasilitas', function () {
-        return view('admin.ruanganfasilitas.index');
-    })->name('admin.ruanganfasilitas');
+     Route::get('/ruanganfasilitas', [RuanganFasilitasController::class, 'index'])->name('admin.ruanganfasilitas');
 
     Route::get('/laporanstatistik', function () {
         return view('admin.laporanstatistik.index');
