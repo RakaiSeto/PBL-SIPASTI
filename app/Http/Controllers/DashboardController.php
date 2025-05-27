@@ -33,6 +33,16 @@ class DashboardController extends Controller
             $jumlahLaporanSelesai[] = Laporan::where('is_done', 1)->where('lapor_datetime', 'like', date('Y-m', strtotime('-' . $i . ' months')) . '%')->count();
         }
 
-        return view('admin.index', compact('totalPengguna', 'totalFasilitas', 'totalLaporan', 'totalLaporanSelesai', 'bulanLaporan', 'jumlahLaporan', 'jumlahLaporanSelesai'));
+        $hariLaporan = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $hariLaporan[] = date('d-m', strtotime('-' . $i . ' days'));
+        }
+
+        $jumlahLaporanMingguan = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $jumlahLaporanMingguan[] = Laporan::where('lapor_datetime', 'like', date('Y-m-d', strtotime('-' . $i . ' days')) . '%')->count();
+        }
+
+        return view('admin.index', compact('totalPengguna', 'totalFasilitas', 'totalLaporan', 'totalLaporanSelesai', 'bulanLaporan', 'jumlahLaporan', 'jumlahLaporanSelesai', 'jumlahLaporanMingguan', 'hariLaporan'));
     }
 }

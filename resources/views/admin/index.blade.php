@@ -68,7 +68,7 @@
         <!-- Header -->
         <div class="flex flex-wrap justify-between items-center gap-2">
           <div class="mb-4">
-            <h2 class="text-sm text-gray-500 dark:text-neutral-500">Total Kerusakan</h2>
+            <h2 class="text-sm text-gray-500 dark:text-neutral-500">Total Kerusakan Bulanan</h2>
           </div>
         </div>
         <!-- End Header -->
@@ -82,7 +82,7 @@
         <!-- Header -->
         <div class="flex flex-wrap justify-between items-center gap-2">
           <div class="mb-4">
-            <h2 class="text-sm text-gray-500 dark:text-neutral-500">Visitors</h2>
+            <h2 class="text-sm text-gray-500 dark:text-neutral-500">Laporan Harian</h2>
           </div>
         </div>
         <!-- End Header -->
@@ -333,11 +333,15 @@ $(document).ready(function () {
     new Chart(visitorCtx, {
       type: "line",
       data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        labels: [@foreach ($hariLaporan as $item)
+          "{{ $item }}",
+        @endforeach],
         datasets: [
           {
-            label: "Visitors",
-            data: [6, 15, 12, 17, 10, 18],
+            label: "Jumlah Laporan Harian",
+            data: [@foreach ($jumlahLaporanMingguan as $item)
+              {{ $item }},
+            @endforeach],
             fill: true,
             backgroundColor: "rgba(22, 82, 183, 0.1)",
             borderColor: "#1652B7",
