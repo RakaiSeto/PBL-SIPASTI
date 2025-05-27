@@ -1,12 +1,13 @@
 @php
     $pageTitles = [
-        'admin.dashboard' => 'Dashboard',
+         'admin.dashboard' => 'Dashboard',
         'admin.mahasiswa' => 'Data Mahasiswa',
         'admin.datapengguna' => 'Data Pengguna',
         'admin.fasilitas' => 'Data Fasilitas',
         'admin.ruangan' => 'Data Ruangan',
         'admin.ruanganfasilitas' => 'Ruangan & Fasilitas',
         'admin.laporanstatistik' => 'Laporan Statistik',
+        'admin.datalaporan' => 'Data Laporan Kerusakan',
 
         'civitas.dashboard' => 'Dashboard',
         'civitas.laporkan' => 'Laporkan Kerusakan',

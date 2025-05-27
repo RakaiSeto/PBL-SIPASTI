@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
 // Halaman utama
 Route::get('/', function () {
     return view('index');
@@ -16,9 +17,16 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'doLogin']);
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+// Route::post('/update-profile', [ProfileController::class, 'update'])->name('profile.update');
 
 // Group Admin
 Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin'], function () {
+
+    Route::post('/update-profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
+// Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
+
+
     Route::get('/', [DashboardController::class, 'admin'])->name('admin.dashboard');
 
     // Route::get('/mahasiswa', function () {

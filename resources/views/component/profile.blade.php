@@ -7,6 +7,17 @@
         <img src="{{ Auth::user()->profile_picture ? asset('storage/profile/' . Auth::user()->profile_picture) : asset('storage/profile/default.png') }}"
             class="w-12 h-12 rounded-full border" alt="Profile" />
     </button>
+@if (session('success'))
+    <div class="bg-green-100 text-green-800 p-2 rounded mb-4">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if (session('error'))
+    <div class="bg-red-100 text-red-800 p-2 rounded mb-4">
+        {{ session('error') }}
+    </div>
+@endif
 
 
     <!-- Dropdown menu -->
@@ -51,8 +62,9 @@
 
         <h2 class="text-xl font-semibold mb-4">Ganti Password</h2>
 
-        <form action="/ganti-password" method="POST">
-            @csrf
+        <form action="{{ route('profile.changePassword') }}" method="POST">
+    @csrf
+
             <!-- Password Lama -->
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Password Lama</label>
@@ -103,41 +115,45 @@
 
         <h2 class="text-xl font-semibold mb-4">Ganti Profil</h2>
 
-        <form>
+        <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    @method('POST') {{-- bisa juga pakai PUT jika kamu pakai route resource --}}
 
-            <div class="flex justify-center mb-4">
-                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Foto Profil"
-                    class="w-24 h-24 rounded-full object-cover ring-2 ring-blue-500">
-            </div>
-            <!-- Nama -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
-                <input type="text" placeholder="Nama lengkap"
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
+    <div class="flex justify-center mb-4">
+        <img src="{{ Auth::user()->profile_picture ? asset('storage/profile/' . Auth::user()->profile_picture) : asset('storage/profile/default.png') }}" alt="Foto Profil"
+            class="w-24 h-24 rounded-full object-cover ring-2 ring-blue-500">
+    </div>
 
-            <!-- Email -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input type="email" placeholder="email@example.com"
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
+    <!-- Nama -->
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
+        <input type="text" name="fullname" value="{{ Auth::user()->fullname }}"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+    </div>
 
-            <!-- Foto Profil -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Foto Profil</label>
-                <input type="file" class="w-full border border-gray-300 rounded px-3 py-2">
-                {{-- <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Preview"
-                    class="mt-2 w-20 h-20 rounded-full object-cover"> --}}
-            </div>
+    <!-- Email (readonly) -->
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <input type="email" value="{{ Auth::user()->email }}" readonly
+            class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 cursor-not-allowed">
+    </div>
 
-            <!-- Tombol Aksi -->
-            <div class="flex justify-end gap-2">
-                <button type="button" onclick="closeModalProfile()"
-                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Batal</button>
-                <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Simpan</button>
-            </div>
-        </form>
+    <!-- Foto Profil -->
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Foto Profil</label>
+        <input type="file" name="profile_picture"
+            class="w-full border border-gray-300 rounded px-3 py-2">
+    </div>
+
+    <!-- Tombol Aksi -->
+    <div class="flex justify-end gap-2">
+        <button type="button" onclick="closeModalProfile()"
+            class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Batal</button>
+        <button type="submit"
+            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Simpan</button>
+    </div>
+</form>
+
     </div>
 </div>
 
