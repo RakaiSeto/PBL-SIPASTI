@@ -89,6 +89,7 @@ class KelolaRuangan extends Controller
     public function list(Request $request)
     {
         $query = Ruangan::query();
+        $query = $query->with('ruangan_role');
         $dataTotal = $query->count();
 
         if ($request->lantai != '') {

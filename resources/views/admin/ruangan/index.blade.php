@@ -12,8 +12,8 @@
     <!-- Filter dan Tombol -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div class="flex items-center gap-3 flex-wrap">
-            <label for="filterRole" class="text-sm font-medium text-slate-700">Filter :</label>
-            <select id="filterRole" onchange="filterTable()" class="border border-slate-300 text-sm h-10 rounded px-3 pr-8">
+            <label for="filterLantai" class="text-sm font-medium text-slate-700">Filter :</label>
+            <select id="filterLantai" class="border border-slate-300 text-sm h-10 rounded px-3 pr-8">
                 <option value="">Semua Lantai</option>
                 <option value="5">Lantai 5</option>
                 <option value="6">Lantai 6</option>
@@ -35,7 +35,7 @@
             <thead class="bg-slate-100 text-slate-700 font-medium">
                 <tr>
                     <th class="p-3 w-10">No</th>
-                    <th class="p-3 w-40">ID Role Ruangan</th>
+                    <th class="p-3 w-40">Jenis Ruangan</th>
                     <th class="p-3 w-32">Nama Ruangan</th>
                     <th class="p-3 w-32">Lantai</th>
                     <th class="p-3 w-28">Aksi</th>
@@ -225,7 +225,7 @@ $(document).ready(function () {
             type: "POST",
             url: '{{ url("/api/kelola-ruangan") }}',
             data: function (d) {
-                d.role = $('#filterRole').val();
+                d.lantai = $('#filterLantai').val();
                 d.search = $('#searchInput').val();
             },
         },
@@ -237,7 +237,7 @@ $(document).ready(function () {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
-            { data: 'ruangan_role_id', name: 'ruangan_role_id', searchable: true },
+            { data: 'ruangan_role.ruangan_role_nama', name: 'ruangan_role', searchable: true },
             { data: 'ruangan_nama', name: 'ruangan_nama' },
             { data: 'lantai', name: 'lantai' },
             {
@@ -258,7 +258,7 @@ $(document).ready(function () {
         ]
     });
 
-    $('#filterRole, #searchInput').on('change keyup', function () {
+    $('#filterLantai, #searchInput').on('change keyup', function () {
         table.ajax.reload();
     });
 });
