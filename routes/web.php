@@ -25,8 +25,8 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin'], function () {
 
     Route::post('/update-profile', [ProfileController::class, 'update'])->name('profile.update');
-Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
-// Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
+    Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
+    // Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
 
 
     Route::get('/', [DashboardController::class, 'admin'])->name('admin.dashboard');
@@ -38,6 +38,10 @@ Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->na
     Route::get('/datapengguna', function () {
         return view('admin.datapengguna.index');
     })->name('admin.datapengguna');
+
+    Route::get('/datapengguna', [UserController::class, 'index'])->name('admin.datapengguna');
+
+
 
     Route::get('/datarole', function () {
         return view('admin.datarole.index');
@@ -68,10 +72,9 @@ Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->na
         return view('admin.laporanstatistik.index');
     })->name('admin.laporanstatistik');
 
-     Route::get('/datalaporan', function () {
+    Route::get('/datalaporan', function () {
         return view('admin.datalaporan.index');
     })->name('admin.datalaporan');
-
 });
 
 // Route tambahan admin (duplikat dashboard)
