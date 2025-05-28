@@ -24,127 +24,38 @@
                 class="w-full md:w-64 h-10 text-sm border border-slate-300 rounded px-3">
         </div>
 
-        <button onclick="openModal('addModal')" class="h-10 px-4 text-sm text-white bg-primary rounded hover:opacity-90 transition">
-            Tambah Ruangan
-        </button>
+        <div class="flex gap-2">
+                <button onclick="openModal('addModal')"
+                    class="h-10 px-4 text-white bg-primary rounded hover:opacity-90 transition">
+                    Tambah Ruangan
+                </button>
+                <a href="{{ route('admin.ruangan.export_pdf') }}"
+                    class="h-10 px-4 text-white bg-red-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
+                    Export PDF
+                </a>
+            </div>
     </div>
 
     <!-- TABEL -->
-    <div class="overflow-auto rounded border border-slate-200 text-sm">
-        <table id="ruanganTable" class="w-full text-sm text-left table-fixed">
-            <thead class="bg-slate-100 text-slate-700 font-medium">
-                <tr>
-                    <th class="p-3 w-10">No</th>
-                    <th class="p-3 w-40">Jenis Ruangan</th>
-                    <th class="p-3 w-32">Nama Ruangan</th>
-                    <th class="p-3 w-32">Lantai</th>
-                    <th class="p-3 w-28">Aksi</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-</div>
-
-<!-- MODAL TAMBAH -->
-<div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
-        <h2 class="text-2xl font-semibold mb-4">Tambah Ruangan</h2>
-        <form id="addtambahRuangan" >
-            <div class="space-y-4 text-slate-900">
-                <div>
-                    <label for="addidrole" class="block mb-1 font-medium">Role Ruangan</label>
-                    <select id="addidrole" class="w-full border border-gray-300 px-3 py-2 rounded" required>
-                        @foreach ($roleRuangan as $item)
-                            <option value="{{ $item->ruangan_role_id }}">{{ $item->ruangan_role_nama }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <label for="addnamaruangan" class="block mb-1 font-medium">Nama Ruangan</label>
-                    <input id="addnamaruangan" type="text" class="w-full border border-gray-300 px-3 py-2 rounded" placeholder="Masukkan Nama Ruangan" required>
-                </div>
-                <div>
-                    <label for="addlantai" class="block mb-1 font-medium">Lantai</label>
-                    <select id="addlantai" class="w-full border border-gray-300 px-3 py-2 rounded" required>
-                        <option value="" disabled selected>Pilih Lantai</option>
-                        <option value="5">Lantai 5</option>
-                        <option value="6">Lantai 6</option>
-                        <option value="7">Lantai 7</option>
-                        <option value="8">Lantai 8</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <div class="flex justify-end gap-2 mt-6">
-                <button type="button" onclick="closeModal('addModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-                <button type="submit" id="submitAddForm" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Simpan</button>
-            </div>
-        </form>
-
-        <button onclick="closeModal('addModal')" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">&times;</button>
-    </div>
-</div>
-
-<!-- MODAL EDIT -->
-<div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
-        <h2 class="text-2xl font-semibold mb-4">Edit Ruangan</h2>
-        <form id="editFormRuangan">
-
-            {{-- ID tersembunyi --}}
-            <input type="hidden" id="editRuanganId">
-
-            <div class="space-y-4 text-slate-900">
-                <div>
-                    <label for="editRuanganRoleId" class="block mb-1 font-medium">Role Ruangan</label>
-                    <select id="editRuanganRoleId" class="w-full border border-gray-300 px-3 py-2 rounded" required>
-                        @foreach ($roleRuangan as $item)
-                            <option value="{{ $item->ruangan_role_id }}">{{ $item->ruangan_role_nama }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div>
-                    <label for="editRuanganNama" class="block mb-1 font-medium">Nama Ruangan</label>
-                    <input id="editRuanganNama" type="text" class="w-full border border-gray-300 px-3 py-2 rounded" placeholder="Masukkan nama ruangan" required>
-                </div>
-
-                <div>
-                    <label for="editLantai" class="block mb-1 font-medium">Lantai</label>
-                    <select id="editLantai" class="w-full border border-gray-300 px-3 py-2 rounded" required>
-                        <option value="" disabled selected>Pilih Lantai</option>
-                        <option value="5">Lantai 5</option>
-                        <option value="6">Lantai 6</option>
-                        <option value="7">Lantai 7</option>
-                        <option value="8">Lantai 8</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="flex justify-end gap-2 mt-6">
-                <button type="button" onclick="closeModal('editModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700 text-sm">Simpan</button>
-            </div>
-        </form>
-
-        <button onclick="closeModal('editModal')"
-            class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">&times;</button>
-    </div>
-</div>
-
-<!-- MODAL HAPUS -->
-<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
-        <input type="hidden" id="deleteRuanganId">
-        <h2 class="text-xl font-semibold text-slate-800 mb-4">Konfirmasi Hapus</h2>
-        <p class="text-sm text-slate-600 mb-4">Apakah Anda yakin ingin menghapus pengguna berikut ini?</p>
-        <div class="flex justify-end gap-2 mt-6">
-            <button type="button" onclick="closeModal('deleteModal')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-        <button type="button" onclick="confirmDelete()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">Hapus</button>
+  <div class="overflow-auto rounded">
+            <table id="ruanganTable" class="w-full text-left table-fixed border border-slate-200 rounded"
+                style="border-collapse: separate; border-spacing: 0;">
+                <thead class="bg-slate-100 text-slate-700 font-medium">
+                    <tr>
+                        <th class="p-3 w-10">No</th>
+                        <th class="p-3 w-40">Jenis Ruangan</th>
+                        <th class="p-3 w-32">Nama Ruangan</th>
+                        <th class="p-3 w-32">Lantai</th>
+                        <th class="p-3 w-28">Aksi</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
-    </div>
 </div>
+
+@include('admin.ruangan.tambah')
+@include('admin.ruangan.edit')
+@include('admin.ruangan.hapus')
 
 @include('component.popsukses')
 @include('component.pophapus')
@@ -262,6 +173,7 @@ $(document).ready(function () {
         table.ajax.reload();
     });
 });
+
 //TAMBAH DATA
 document.getElementById('addtambahRuangan').addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -344,7 +256,7 @@ function openDelete(id) {
     openModal('deleteModal');
 }
 
-//DELETE DATA
+//DELETE 
 function confirmDelete() {
     const id = document.getElementById('deleteRuanganId').value;
 
@@ -370,7 +282,5 @@ function confirmDelete() {
         showError('Terjadi kesalahan saat menghapus data');
     });
 }
-
-
 </script>
 @endsection

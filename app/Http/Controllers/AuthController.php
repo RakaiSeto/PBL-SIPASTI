@@ -74,7 +74,7 @@ public function doLogin(Request $request)
             return redirect()->route('sarpras.dashboard')->withCookie($cookie);
         }
     } else {
-        return redirect()->back()->withErrors(['error' => 'Invalid credentials']);
+        return redirect()->back()->withErrors(['error' => 'Username atau password salah']);
     }
 }
 
