@@ -29,10 +29,15 @@
                     class="h-10 px-4 text-white bg-primary rounded hover:opacity-90 transition">
                     Tambah Ruangan
                 </button>
+                <a href="{{ route('admin.ruangan.export_excel') }}"
+                    class="h-10 px-4 text-white bg-green-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
+                    Export Excel
+                </a>
                 <a href="{{ route('admin.ruangan.export_pdf') }}"
                     class="h-10 px-4 text-white bg-red-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
                     Export PDF
                 </a>
+                
             </div>
     </div>
 
@@ -52,13 +57,10 @@
             </table>
         </div>
 </div>
-
 @include('admin.ruangan.tambah')
+@include('admin.ruangan.detail')
 @include('admin.ruangan.edit')
 @include('admin.ruangan.hapus')
-
-@include('component.popsukses')
-@include('component.pophapus')
 
 <!-- SCRIPT -->
 <script>
@@ -101,6 +103,30 @@ function closeModal(id) {
 }
 
 
+//Detail
+function openDetail(id) {
+        console.log("ID yang dikirim:", id);
+        fetch(`/api/kelola-ruangan/${id}`)
+        .then(res => res.json())
+        .then(response => {
+            if (response.success) {
+                const data = response.data;
+                openModal('detailModal');
+                document.querySelector('.ruangan_id').textContent = data.ruangan_id ?? '-';
+                document.querySelector('.ruangan_role_nama').textContent = data.ruangan_role?.ruangan_role_nama ?? '-';
+                document.querySelector('.ruangan_nama').textContent = data.ruangan_nama ?? '-';
+                document.querySelector('.lantai').textContent = data.lantai ?? '-';
+            } else {
+                alert("Data tidak ditemukan");
+            }
+        })
+        .catch(error => {
+            console.error("Gagal ambil data:", error);
+        });
+    }
+
+
+//Edit
 function editModal(id) {
     fetch(`/api/kelola-ruangan/${id}`)
         .then(res => res.json())
@@ -129,7 +155,7 @@ function editModal(id) {
 $(document).ready(function () {
     const table = $('#ruanganTable').DataTable({
         searching: false,
-        lengthChange: true,
+        lengthChange: false,
         processing: true,
         serverSide: true,
         ajax: {
@@ -157,6 +183,9 @@ $(document).ready(function () {
                 searchable: false,
                 render: function (data) {
                     return `
+                            <button onclick="openDetail(${data.ruangan_id})" title="Lihat" class="text-gray-600 hover:text-blue-600">
+                                <i class="fas fa-eye"></i>
+                            </button>
                             <button onclick="editModal(${data.ruangan_id})" title="Edit" class="text-gray-600 hover:text-yellow-600">
                                 <i class="fas fa-pen"></i>
                             </button>

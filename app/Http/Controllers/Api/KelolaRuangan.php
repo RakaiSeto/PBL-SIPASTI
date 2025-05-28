@@ -179,7 +179,7 @@ class KelolaRuangan extends Controller
 
     public function detail(Request $request)
     {
-        $ruangan = Ruangan::find($request->id);
+        $ruangan = Ruangan::with('ruangan_role')->find($request->id);
         if (!$ruangan) {
             return response()->json([
                 'success' => false,

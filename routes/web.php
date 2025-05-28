@@ -66,6 +66,7 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
     Route::get('roleruangan/export_excel', [RoleRuanganController::class, 'exportExcel'])->name('admin.roleruangan.export_excel');
 
     Route::get('ruangan/export_pdf', [RuanganController::class, 'exportPDF'])->name('admin.ruangan.export_pdf');
+    Route::get('ruangan/export_excel', [RuanganController::class, 'exportExcel'])->name('admin.ruangan.export_excel');
 
     Route::get('/fasilitas', function () {
         return view('admin.fasilitas.index');
