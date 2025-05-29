@@ -45,6 +45,11 @@
             height: 200px;
         } */
 
+        body {
+            overflow-x: hidden;
+        }
+
+
         #logoScroll {
             animation: scroll-left 40s linear infinite;
         }
