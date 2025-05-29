@@ -2,15 +2,13 @@
 
 <div class="relative">
     <div class="relative flex items-center space-x-3">
-        <!-- Teks nama & role, tanpa event klik -->
         <span class="font-semibold text-gray-800 select-none">
             {{ Auth::user()->fullname }} / <span
                 class="text-gray-500 font-normal">{{ Auth::user()->role->role_nama }}</span>
         </span>
 
-        <!-- Gambar profil sebagai tombol -->
         <button id="profileToggle" type="button"
-            class="w-12 h-12 rounded-full overflow-hidden ring-2 ring-blue-500 focus:outline-none">
+            class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-blue-500 focus:outline-none">
             <img src="{{ Auth::user()->profile_picture ? asset('assets/profile/' . Auth::user()->profile_picture) : asset('assets/profile/default.png') }}"
                 alt="Foto Profil" class="w-full h-full object-cover">
         </button>
@@ -18,7 +16,6 @@
 
 
 
-    <!-- Dropdown menu -->
     <div id="profileMenu"
         class="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-lg py-2 z-50 hidden transform transition-all duration-200 ease-in-out">
         @php
@@ -95,7 +92,6 @@
                     required>
             </div>
 
-            <!-- Tombol Aksi -->
             <div class="flex justify-end gap-3">
                 <button type="button" onclick="closeModalPassword()"
                     class="px-5 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition duration-150">Batal</button>
@@ -110,7 +106,7 @@
 <div id="modalProfile" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50"
     onclick="closeModalProfile(event)">
     <div
-        class="bg-white w-full max-w-md rounded-2xl p-6 shadow-xl relative transform transition-all duration-300 ease-in-out">
+        class="bg-white w-full max-w-md rounded-xl p-6 shadow-xl relative transform transition-all duration-300 ease-in-out">
         <button onclick="closeModalProfile()"
             class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-xl font-bold">×</button>
 
@@ -126,7 +122,6 @@
             </div>
 
 
-            <!-- Nama -->
             <div class="mb-5">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Nama</label>
                 <input type="text" name="fullname" value="{{ Auth::user()->fullname }}"
@@ -134,11 +129,17 @@
                     required>
             </div>
 
-            <!-- Email (readonly) -->
             <div class="mb-5">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
                 <input type="email" value="{{ Auth::user()->email }}" readonly
                     class="w-full border border-gray-200 rounded-lg px-4 py-3 bg-gray-50 cursor-not-allowed">
+            </div>
+
+            <div class="mb-5">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Telp</label>
+                <input type="text" name="no_telp" value="{{ Auth::user()->no_telp }}"
+                    class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                    required>
             </div>
 
             <!-- Foto Profil -->

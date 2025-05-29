@@ -1,6 +1,6 @@
 @php
     $pageTitles = [
-         'admin.dashboard' => 'Dashboard',
+        'admin.dashboard' => 'Dashboard',
         'admin.mahasiswa' => 'Data Mahasiswa',
         'admin.datapengguna' => 'Data Pengguna',
         'admin.fasilitas' => 'Data Fasilitas',
@@ -31,8 +31,8 @@
     $currentRoute = Route::currentRouteName();
     $pageTitle = $pageTitles[$currentRoute] ?? Auth::user()->role->role_nama;
 @endphp
+<header class="sticky top-0 z-40 flex justify-between items-center bg-white px-6 py-4 shadow">
 
-<header class="md:sticky md:top-0 z-40 flex justify-between items-center bg-white px-6 py-4 shadow">
     <button id="toggleSidebar" class="md:hidden text-2xl">☰</button>
     <h2 class="text-2xl font-semibold">{{ $pageTitle }}</h2>
 
@@ -42,7 +42,4 @@
     @include('component.profile')
     @include('component.gantipassword')
 
-  </header>
-
-
-
+</header>
