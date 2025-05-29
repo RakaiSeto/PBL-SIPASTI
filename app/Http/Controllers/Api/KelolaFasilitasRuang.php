@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\t_fasilitas_ruang as FasilitasRuangan;
+use Illuminate\Support\Collection;
 use OpenApi\Attributes as OA;
 
 class KelolaFasilitasRuang extends Controller
@@ -23,7 +24,7 @@ class KelolaFasilitasRuang extends Controller
         type: 'object',
         properties: [
             new OA\Property(property: 'fasilitas_id', type: 'string', example: ''),
-            new OA\Property(property: 'ruangan_id', type: 'string', example: ''),
+            new OA\Property(property: 'ruangan_id', type: 'array', example: '[]', items: new OA\Items(type: 'string')),
         ]
     )]
 
@@ -88,7 +89,7 @@ class KelolaFasilitasRuang extends Controller
     {
         $dataFiltered = 0;
         $dataTotal = 0;
-        $data = [];
+        $data = new Collection();
         if ($request->ruangan_id != '') {
 
             $query = FasilitasRuangan::query();
@@ -254,14 +255,21 @@ class KelolaFasilitasRuang extends Controller
     {
         $validatedData = $request->validate([
             'ruangan_id' => 'required',
-            'fasilitas_id' => 'required',
+            'fasilitas_id' => 'required|array',
         ]);
         $validatedData['created_at'] = now();
-        $fasilitas = FasilitasRuangan::create($validatedData);
+        foreach ($validatedData['fasilitas_id'] as $f) {
+            $dataArr = [
+                'fasilitas_ruang_id' => 'RU-' . $validatedData['ruangan_id'] . '-' . $f,
+                'ruangan_id' => $validatedData['ruangan_id'],
+                'fasilitas_id' => $f,
+                'created_at' => now()
+            ];
+            FasilitasRuangan::createOrFirst($dataArr);
+        }
         return response()->json([
             'success' => true,
-            'message' => 'Data berhasil ditambahkan',
-            'data' => $fasilitas
+            'message' => 'Data berhasil ditambahkan'
         ]);
     }
 

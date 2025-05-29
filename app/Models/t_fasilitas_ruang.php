@@ -11,7 +11,9 @@ class t_fasilitas_ruang extends Model
 
     protected $table = 't_fasilitas_ruang';
     protected $primaryKey = 'fasilitas_ruang_id';
-    protected $fillable = ['fasilitas_id', 'ruangan_id'];
+    protected $fillable = ['fasilitas_ruang_id', 'fasilitas_id', 'ruangan_id'];
+
+    protected $keyType = 'string';
 
     public function fasilitas()
     {

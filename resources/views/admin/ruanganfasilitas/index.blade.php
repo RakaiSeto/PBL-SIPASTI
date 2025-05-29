@@ -54,6 +54,7 @@
 				<thead class="bg-slate-100 text-slate-700 font-medium">
 					<tr>
 						<th class="p-3 w-10">No</th>
+						<th class="p-3 w-10">Id</th>
 						<th class="p-3 w-32">Nama Ruangan</th>
 						<th class="p-3 w-32">Fasilitas</th>
 						<th class="p-3 w-32">Lantai</th>
@@ -113,7 +114,7 @@
 				<div class="flex justify-end gap-2 mt-6">
 					<button type="button" onclick="closeModal('addModal')"
 						class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm">Batal</button>
-					<button type="submit" class="btn-primary">Simpan</button>
+					<button type="button" class="btn-primary" id="btnTambahRuanganFasilitas">Simpan</button>
 				</div>
 			</form>
 			<button onclick="closeModal('addModal')"
@@ -253,6 +254,41 @@
 		});
 	</script>
 	<script>
+		document.getElementById('select-fasilitas').addEventListener('change', () => {
+			let dataArr = [];
+			for (let i = 0; i < document.getElementById('select-fasilitas').options.length; i++) {
+				if (document.getElementById('select-fasilitas').options[i].selected) {
+					dataArr.push(document.getElementById('select-fasilitas').options[i].value);
+				}
+			}
+		});
+		document.getElementById('btnTambahRuanganFasilitas').addEventListener('click', () => {
+			const ruanganId = document.getElementById('addRole').value;
+			let dataArr = [];
+			for (let i = 0; i < document.getElementById('select-fasilitas').options.length; i++) {
+				if (document.getElementById('select-fasilitas').options[i].selected) {
+					dataArr.push(document.getElementById('select-fasilitas').options[i].value);
+				}
+			}
+			$.ajax({
+				url: '{{ url("/api/kelola-fasilitas-ruang/create") }}',
+				type: 'POST',
+				data: {
+					ruangan_id: ruanganId,	
+					fasilitas_id: dataArr
+				},
+				success: function(response) {
+					closeModal('addModal');
+					showSuccess('Data berhasil ditambahkan!');
+					table.ajax.reload();
+				},
+				error: function(xhr, status, error) {
+					showError('Data gagal ditambahkan!');
+				}
+			});
+		});
+	</script>
+	<script>
 		var table;
 		const dropdownButton = document.getElementById('dropdown-button');
 		const dropdownMenu = document.getElementById('dropdown-menu');
@@ -300,10 +336,17 @@
 					},
 				},
 				columns: [
-					{ data: 'fasilitas_ruangan_id', name: 'fasilitas_ruangan_id', searchable: true },
-					{ data: 'ruangan_nama', name: 'ruangan_nama' },
-					{ data: 'fasilitas_nama', name: 'fasilitas_nama', searchable: true },
-					{ data: 'ruangan_lantai', name: 'ruangan_lantai' },
+					{
+						data: null,
+						name: 'no',
+						render: function (data, type, row, meta) {
+							return meta.row + meta.settings._iDisplayStart + 1;
+						}
+					},
+					{ data: 'fasilitas_ruang_id', name: 'fasilitas_ruang_id', searchable: true },
+					{ data: 'ruangan.ruangan_nama', name: 'ruangan_nama' },
+					{ data: 'fasilitas.fasilitas_nama', name: 'fasilitas_nama', searchable: true },
+					{ data: 'ruangan.lantai', name: 'ruangan_lantai' },
 					{ data: 'action', name: 'action', searchable: true },
 				]
 			});
