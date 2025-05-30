@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\KelolaRuangan;
 use App\Http\Controllers\Api\KelolaRuanganRole;
 use App\Http\Controllers\Api\KelolaFasilitas;
 use App\Http\Controllers\Api\KelolaFasilitasRuang;
+use App\Http\Controllers\Api\LaporanController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -67,4 +68,8 @@ Route::group(['middleware' => ['auth.refresh.api', 'role.api:Admin']], function 
     Route::get('/kelola-fasilitas-ruang/{id}', [KelolaFasilitasRuang::class, 'detail']);
     Route::post('/kelola-fasilitas-ruang/create', [KelolaFasilitasRuang::class, 'create']);
     Route::delete('/kelola-fasilitas-ruang/{id}', [KelolaFasilitasRuang::class, 'delete']);
+});
+
+Route::group(['middleware' => ['auth.refresh.api', 'role.api:Civitas']], function () {
+    Route::post('/laporkan', [LaporanController::class, 'store'])->name('laporkan.store');
 });

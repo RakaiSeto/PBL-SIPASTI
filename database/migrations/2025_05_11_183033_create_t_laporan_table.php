@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id('laporan_id');
             $table->foreignId('user_id')->references('user_id')->on('m_user');
             $table->foreignId('fasilitas_ruang_id')->references('fasilitas_ruang_id')->on('t_fasilitas_ruang');
-            $table->foreignId('teknisi_id')->references('user_id')->on('m_user');
+            $table->foreignId('teknisi_id')->references('user_id')->on('m_user')->nullable();
             $table->text('deskripsi_laporan')->nullable();
+            $table->binary('lapor_foto')->nullable();
             $table->datetime('lapor_datetime');
             $table->integer('review_pelapor')->nullable();
             $table->boolean('is_verified');

@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\RuanganFasilitasController;
 use App\Http\Controllers\RoleRuanganController;
+use App\Http\Controllers\CivitasController;
 // Halaman utama
 Route::get('/', function () {
     return view('index');
@@ -100,9 +101,7 @@ Route::group(['middleware' => ['auth.refresh', 'role:Civitas'], 'prefix' => 'civ
         return view('civitas.index');
     })->name('civitas.dashboard');
 
-    Route::get('/laporkan', function () {
-        return view('civitas.laporkan');
-    })->name('civitas.laporkan');
+    Route::get('/laporkan', [CivitasController::class, 'laporkan'])->name('civitas.laporkan');
 
     Route::get('/status', function () {
         return view('civitas.status');

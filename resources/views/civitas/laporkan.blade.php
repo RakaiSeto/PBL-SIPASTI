@@ -8,41 +8,42 @@
     <!-- Ruang -->
     <div>
       <label class="block mb-1 text-sm font-medium text-gray-700">Lantai</label>
-      <select class="w-full border border-gray-300 rounded-lg bg-white p-3 focus:ring-2 focus:ring-blue-500" required>
-        <option value="RT001">01</option>
+      <select id="lantaiSelect" class="w-full border border-gray-300 rounded-lg bg-white p-3 focus:ring-2 focus:ring-blue-500" required onchange="showRuang()">
+        <option value="" selected disabled>-- Pilih Lantai --</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
       </select>
     </div>
 
 
     <!-- Ruang -->
-    <div>
+    <div class="hidden" id="div-ruang">
       <label class="block mb-1 text-sm font-medium text-gray-700">Ruang</label>
-      <select class="w-full border border-gray-300 rounded-lg bg-white p-3 focus:ring-2 focus:ring-blue-500" required>
-        <option value="RT001">RT001</option>
+      <select id="ruangSelect" class="w-full border border-gray-300 rounded-lg bg-white p-3 focus:ring-2 focus:ring-blue-500" required onchange="showFasilitas()">
+        <option value="" selected disabled id="ruang-placeholder">-- Pilih Ruang --</option>
+        @foreach ($ruang as $r)
+          <option data-lantai="{{ $r->lantai }}" value="{{ $r->ruangan_id }}">{{ $r->ruangan_nama }} - {{ $r->lantai }}</option>
+        @endforeach
       </select>
     </div>
 
     <!-- Fasilitas -->
-    <div>
+    <div class="hidden" id="div-fasilitas">
       <label class="block mb-1 text-sm font-medium text-gray-700">Fasilitas</label>
       <select id="fasilitasSelect" class="w-full border border-gray-300 rounded-lg p-3 bg-white focus:ring-2 focus:ring-blue-500" required>
-        <option value="">-- Pilih Fasilitas --</option>
-        <option value="Proyektor">Proyektor</option>
-        <option value="Komputer">Komputer</option>
-        <option value="AC">AC</option>
+        <option value="" selected disabled id="fasilitas-placeholder">-- Pilih Fasilitas --</option>
+        @foreach ($fasilitas as $f)
+          <option data-ruang="{{ $f->ruangan_id }}" value="{{ $f->fasilitas_ruang_id }}">{{ $f->fasilitas->fasilitas_nama }} - {{ $f->ruangan->ruangan_nama }}</option>
+        @endforeach
       </select>
-    </div>
-
-    <!-- Tanggal -->
-    <div>
-      <label class="block mb-1 text-sm font-medium text-gray-700">Tanggal Pelaporan</label>
-      <input type="date" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500" required>
     </div>
 
     <!-- Deskripsi -->
     <div>
       <label class="block mb-1 text-sm font-medium text-gray-700">Deskripsi Kerusakan</label>
-      <textarea maxlength="500" rows="4" placeholder="Contoh: Tidak menyala saat dinyalakan..."
+      <textarea maxlength="500" rows="4" id="deskripsiInput" placeholder="Contoh: Tidak menyala saat dinyalakan..."
         class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 resize-none" required></textarea>
     </div>
 
@@ -68,6 +69,38 @@
 </div>
 
 <script>
+
+  function showRuang() {
+    document.getElementById("div-fasilitas").classList.add("hidden");
+    const lantai = document.getElementById("lantaiSelect").value;
+    const ruang = document.getElementById("ruangSelect").getElementsByTagName("option");
+    for (let i = 0; i < ruang.length; i++) {
+      if (ruang[i].getAttribute("data-lantai") !== lantai) {
+        ruang[i].style.display = "none";
+      } else {
+        ruang[i].style.display = "block";
+      }
+    }
+    document.getElementById("ruang-placeholder").style.display = "block";
+    document.getElementById("ruangSelect").selectedIndex = 0;
+    document.getElementById("div-ruang").classList.remove("hidden");
+  }
+
+  function showFasilitas() {
+    const ruang = document.getElementById("ruangSelect").value;
+    const fasilitas = document.getElementById("fasilitasSelect").getElementsByTagName("option");
+    for (let i = 0; i < fasilitas.length; i++) {
+      if (fasilitas[i].getAttribute("data-ruang") !== ruang) {
+        fasilitas[i].style.display = "none";
+      } else {
+        fasilitas[i].style.display = "block";
+      }
+    }
+    document.getElementById("fasilitas-placeholder").style.display = "block";
+    document.getElementById("fasilitasSelect").selectedIndex = 0;
+    document.getElementById("div-fasilitas").classList.remove("hidden");
+  }
+
   document.getElementById("formPelaporan").addEventListener("submit", function(e) {
     e.preventDefault();
 
@@ -78,8 +111,29 @@
       return;
     }
 
-    alert("Laporan terkirim");
-    window.location.href = "/laporkan-kerusakan"; // Ganti dengan route Laravel kamu
+    const formData = new FormData();
+
+    formData.append("fasilitas_ruang_id", document.getElementById("fasilitasSelect").value);
+    formData.append("deskripsi_laporan", document.getElementById("deskripsiInput").value);
+    formData.append("lapor_foto", document.getElementById("fotoInput").files[0]);
+
+    $.ajax({
+      url: "{{ route('laporkan.store') }}",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+      },
+      success: function(response) {
+        alert("Laporan terkirim");
+        window.location.href = "/civitas";
+      },
+      error: function(xhr, status, error) {
+        alert("Gagal mengirim laporan");
+      }
+    });
   });
 </script>
 @endsection

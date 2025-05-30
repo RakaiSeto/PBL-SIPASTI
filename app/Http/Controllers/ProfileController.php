@@ -63,7 +63,7 @@ public function changePassword(Request $request)
 
     switch ($role) {
         case 'Admin':
-            return redirect('/admin')->with('success', 'Password berhasil diperbarui.');
+            return redirect('   /admin')->with('success', 'Password berhasil diperbarui.');
         case 'Sarpras':
             return redirect('/sarpras')->with('success', 'Password berhasil diperbarui.');
         case 'Teknisi':

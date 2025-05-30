@@ -57,7 +57,7 @@
 						<th class="p-3 w-10">Id</th>
 						<th class="p-3 w-32">Nama Ruangan</th>
 						<th class="p-3 w-32">Fasilitas</th>
-						<th class="p-3 w-32">Lantai</th>
+						<th class="p-3 w-32">Lantai</th>	
 						<th class="p-3 w-28">Aksi</th>
 					</tr>
 				</thead>
