@@ -60,8 +60,8 @@
                         <th class="p-3 w-40">Nama Lengkap</th>
                         <th class="p-3 w-32">Username</th>
                         <th class="p-3 w-32">Role</th>
-                        <th class="p-3 w-32">Email</th>
-                        <th class="p-3 w-32">telp</th>
+                        {{-- <th class="p-3 w-32">Email</th>
+                        <th class="p-3 w-32">telp</th> --}}
                         <th class="p-3 w-28">Aksi</th>
                     </tr>
                 </thead>
@@ -103,7 +103,7 @@
                         const img = document.getElementById('detail-photo');
                         img.src = data.profile_picture ?
                             `/assets/profile/${data.profile_picture}` :
-                            `/assets/profile/default.png`;
+                            `/assets/profile/default.jpg`;
                     } else {
                         alert("Data tidak ditemukan");
                     }
@@ -124,6 +124,7 @@
                     document.getElementById('editUsername').value = data.username;
                     document.getElementById('editEmail').value = data.email;
                     document.getElementById('editRole').value = data.role_id;
+                    document.getElementById('editTelp').value = data.no_telp;
 
                     // document.getElementById('editRole').value = roleMapping[data.role_id];
                     openModal('editModal');
@@ -177,14 +178,14 @@
                         name: 'role.role_nama',
                         defaultContent: '-'
                     },
-                    {
-                        data: 'email',
-                        name: 'email'
-                    },
-                    {
-                        data: 'no_telp',
-                        name: 'no_telp'
-                    },
+                    // {
+                    //     data: 'email',
+                    //     name: 'email'
+                    // },
+                    // {
+                    //     data: 'no_telp',
+                    //     name: 'no_telp'
+                    // },
                     {
                         data: null,
                         orderable: false,
@@ -244,28 +245,21 @@
             });
         }
         // TAMBAH DATA
-        const roleMapping = {
-            admin: 1,
-            sarpras: 2,
-            civitas: 3,
-            teknisi: 4
-        };
-
         document.getElementById('addForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const fullname = document.getElementById('addNama').value;
             const username = document.getElementById('addUsername').value;
             const email = document.getElementById('addEmail').value;
-            const role = document.getElementById('addRole').value;
+            const role = document.getElementById('addRole').value; // Langsung ambil role_id
             const no_telp = document.getElementById('addTelp').value;
 
             const data = {
                 fullname,
                 username,
                 email,
-                role_id: roleMapping[role],
+                role_id: role, // Gunakan nilai role langsung (sudah numerik)
                 password: '12345678',
-                no_telp: '000000000'
+                no_telp
             };
 
             try {
@@ -284,7 +278,7 @@
                 if (result.success) {
                     closeModal('addModal');
                     showSuccess('Data berhasil ditambahkan!');
-                    document.getElementById('addForm').reset(); // Kosongkan form
+                    document.getElementById('addForm').reset();
                     $('#userTable').DataTable().ajax.reload();
                 } else {
                     showError('Gagal menambahkan data: ' + result.message);
@@ -296,13 +290,6 @@
         });
 
         // EDIT DATA
-        const reverseRoleMapping = {
-            admin: 1,
-            sarpras: 2,
-            civitas: 3,
-            teknisi: 4
-        };
-
         document.getElementById('editForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -311,8 +298,8 @@
                 fullname: document.getElementById('editNama').value,
                 username: document.getElementById('editUsername').value,
                 email: document.getElementById('editEmail').value,
-                role_id: reverseRoleMapping[document.getElementById('editRole').value],
-                no_telp: '0000000000'
+                role_id: document.getElementById('editRole').value,
+                no_telp: document.getElementById('editTelp').value
             };
 
             fetch(`/api/kelola-pengguna/${id}`, {

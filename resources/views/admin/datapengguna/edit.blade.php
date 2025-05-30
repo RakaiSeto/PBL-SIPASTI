@@ -23,6 +23,11 @@
                         placeholder="Masukkan email" required>
                 </div>
                 <div>
+                    <label for="editTelp" class="block mb-1 font-medium">Telp</label>
+                    <input id="editTelp" type="text" class="w-full border border-gray-300 px-3 py-2 rounded"
+                        required>
+                </div>
+                <div>
                     <label for="editRole" class="block mb-1 font-medium">Role</label>
                     <select id="editRole" name="role" class="w-full border border-gray-300 px-3 py-2 rounded"
                         required>
