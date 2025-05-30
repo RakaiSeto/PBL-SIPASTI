@@ -9,9 +9,9 @@
     <link rel="icon" href="{{ asset('assets/image/logo.svg') }}" type="image/x-icon">
 </head>
 
-<body class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="w-full max-w-4xl bg-white shadow-lg rounded-2xl flex overflow-hidden h-[60vh]">
-        <div class="w-1/2 flex items-center justify-center px-10 py-6">
+<body class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div class="w-full max-w-4xl bg-white shadow-lg rounded-2xl flex flex-col md:flex-row overflow-hidden md:h-[60vh]">
+        <div class="w-full md:w-1/2 flex items-center justify-center px-6 md:px-10 py-6">
             <div class="w-full max-w-md">
                 <div class="w-full max-w-md space-y-6">
             
@@ -64,8 +64,8 @@
 </div>
 
         <!-- Kanan: Ilustrasi atau Promosi -->
-        <div class="w-1/2 h-auto overflow-hidden">
-            <img src="{{ asset('assets/image/gedung.jpeg') }}" alt="Dashboard Preview" class="w-full h-full object-cover rounded-r-2xl" />
+        <div class="hidden md:block md:w-1/2 h-64 md:h-auto overflow-hidden">
+            <img src="{{ asset('assets/image/gedung.jpeg') }}" alt="Dashboard Preview" class="w-full h-full object-cover rounded-b-2xl md:rounded-none md:rounded-r-2xl" />
         </div>
 
     </div>
