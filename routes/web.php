@@ -12,6 +12,7 @@ use App\Http\Controllers\RuanganFasilitasController;
 use App\Http\Controllers\RoleRuanganController;
 use App\Http\Controllers\CivitasController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\StatusLaporanController;
 
 // Halaman utama
 Route::get('/', function () {
@@ -60,6 +61,12 @@ Route::middleware(['auth', 'role:Sarpras'])->prefix('sarpras/laporan')->name('sa
     Route::get('/export-pdf', function () {
         return response()->json(['message' => 'Export PDF belum diimplementasikan']);
     })->name('export_pdf');
+});
+
+Route::middleware(['auth'])->prefix('civitas/status-laporan')->name('civitas.status-laporan.')->group(function () {
+    Route::get('/', [StatusLaporanController::class, 'index'])->name('index');
+    Route::post('/list', [StatusLaporanController::class, 'list'])->name('list');
+    Route::get('/{id}', [StatusLaporanController::class, 'show'])->name('show');
 });
 // Group Admin
 Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin'], function () {
