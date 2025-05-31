@@ -38,6 +38,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin/laporan')->name('admin.
     Route::get('/{id}', [LaporanController::class, 'show'])->name('show');
     Route::put('/verify/{id}', [LaporanController::class, 'verify'])->name('verify');
     Route::put('/complete/{id}', [LaporanController::class, 'complete'])->name('complete');
+    Route::put('/reject/{id}', [LaporanController::class, 'reject'])->name('reject');
     // Placeholder untuk export (perlu controller tambahan)
     Route::get('/export-excel', function () {
         return response()->json(['message' => 'Export Excel belum diimplementasikan']);

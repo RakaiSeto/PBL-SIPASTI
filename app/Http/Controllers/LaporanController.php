@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class LaporanController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth', 'role:Sarpras']);
-    }
+    // public function __construct()
+    // {
+    //     $$this->middleware(['auth', 'role:Admin|Sarpras']);
+    // }
 
     public function index()
     {
