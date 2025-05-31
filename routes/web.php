@@ -52,6 +52,7 @@ Route::middleware(['auth', 'role:Sarpras'])->prefix('sarpras/laporan')->name('sa
     Route::get('/{id}', [LaporanController::class, 'show'])->name('show');
     Route::put('/verify/{id}', [LaporanController::class, 'verify'])->name('verify');
     Route::put('/complete/{id}', [LaporanController::class, 'complete'])->name('complete');
+    Route::put('/reject/{id}', [LaporanController::class, 'reject'])->name('reject');
     // Placeholder untuk export
     Route::get('/export-excel', function () {
         return response()->json(['message' => 'Export Excel belum diimplementasikan']);

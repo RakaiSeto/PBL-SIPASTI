@@ -10,17 +10,15 @@ use Illuminate\Support\Facades\Auth;
 
 class LaporanController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware(['auth', 'role:Admin']);
-    // }
+    public function __construct()
+    {
+        $this->middleware(['auth', 'role:Sarpras']);
+    }
 
-
-
-    // public function index()
-    // {
-    //     return view('admin.laporan.index');
-    // }
+    public function index()
+    {
+        return view('sarpras.laporan.index');
+    }
 
     public function list(Request $request)
     {
@@ -177,6 +175,39 @@ class LaporanController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat menyelesaikan laporan'
+            ], 500);
+        }
+    }
+
+    public function reject($id)
+    {
+        try {
+            $laporan = t_laporan::findOrFail($id);
+            if ($laporan->is_verified || $laporan->is_done) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Laporan sudah diverifikasi atau selesai dan tidak dapat ditolak'
+                ], 422);
+            }
+
+            $laporan->is_done = true;
+            $laporan->is_verified = false;
+            $laporan->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Laporan berhasil ditolak'
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Laporan tidak ditemukan'
+            ], 404);
+        } catch (\Exception $e) {
+            Log::error('Gagal menolak laporan: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menolak laporan'
             ], 500);
         }
     }
