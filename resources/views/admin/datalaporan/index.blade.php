@@ -1,222 +1,342 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-white p-4 rounded shadow">
-        <div class="flex justify-between mb-3 mt-1 items-center gap-4 flex-wrap">
+    <!-- jQuery (required by DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-            <div class="flex items-center gap-2 whitespace-nowrap">
-                <label for="filterFasilitas" class="text-sm text-slate-700">Fasilitas</label>
-                <select id="filterFasilitas"
-                    class="border border-slate-300 rounded px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-50">
-                    <option value="">Semua</option>
+    <!-- DataTables CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        #laporanTable th,
+        #laporanTable td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #laporanTable .dt-buttons {
+            margin-bottom: 10px;
+        }
+    </style>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <div class="bg-white p-6 rounded shadow space-y-4 text-sm">
+        <!-- Filter dan Tombol -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="flex items-center gap-3 flex-wrap">
+                <label for="filterFasilitas" class="font-medium text-slate-700">Filter Fasilitas:</label>
+                <select id="filterFasilitas" onchange="filterTable()"
+                    class="border border-slate-300 h-10 rounded text-sm px-3 pr-8">
+                    <option value="">Semua Fasilitas</option>
                     <option value="AC">AC</option>
                     <option value="Proyektor">Proyektor</option>
                     <option value="Kipas Angin">Kipas Angin</option>
                     <option value="Lampu">Lampu</option>
                 </select>
 
-                <input class="w-full sm:max-w-sm pr-11 h-10 pl-3 py-2 text-sm border border-slate-200 rounded"
-                    placeholder="Cari..." />
+                <input type="text" id="searchInput" placeholder="Cari Deskripsi..." onkeyup="filterTable()"
+                    class="w-full md:w-64 h-10 text-sm border border-slate-300 rounded px-3">
             </div>
 
+            <div class="flex gap-2">
+                <a href="{{ route('admin.laporan.export_excel') }}"
+                    class="h-10 px-4 text-white bg-green-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
+                    Export Excel
+                </a>
 
-            <!-- Dropdown Tampilkan data di kanan -->
-            <div class="flex items-center gap-2 whitespace-nowrap">
-                <label for="tampilData" class="text-sm text-slate-700">Tampilkan</label>
-                <select id="tampilData"
-                    class="border border-slate-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="5" selected>5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                </select>
+                <a href="{{ route('admin.laporan.export_pdf') }}"
+                    class="h-10 px-4 text-white bg-red-600 rounded hover:opacity-90 transition inline-flex items-center justify-center">
+                    Export PDF
+                </a>
             </div>
-
         </div>
 
-        <!-- Table -->
-        <div class="overflow-auto">
-            <table class="w-full table-auto text-sm text-left">
-                <thead>
-                    <tr class="bg-slate-100 border-b border-slate-300 font-bold">
-                        @php
-                            $headers = ['No', 'Ruang', 'Fasilitas', 'Tanggal', 'Status', 'Aksi'];
-                        @endphp
-                        @foreach ($headers as $header)
-                            <th class="p-3 transition-colors cursor-pointer hover:bg-slate-100">
-                                <p
-                                    class="flex items-center justify-between gap-2 text-sm font-bold leading-none text-slate-800">
-                                    {{ $header }}
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M8.25 15L12 18.75 15.75 15M8.25 9L12 5.25 15.75 9" />
-                                    </svg>
-                                </p>
-                            </th>
-                        @endforeach
+        <!-- Tabel -->
+        <div class="overflow-auto rounded">
+            <table id="laporanTable" class="w-full text-left table-fixed border border-slate-200 rounded"
+                style="border-collapse: separate; border-spacing: 0;">
+                <thead class="bg-slate-100 text-slate-700 font-medium">
+                    <tr>
+                        <th class="p-3 w-10">No</th>
+                        <th class="p-3 w-32">Ruang</th>
+                        <th class="p-3 w-32">Fasilitas</th>
+                        <th class="p-3 w-40">Deskripsi</th>
+                        <th class="p-3 w-28">Tanggal</th>
+                        <th class="p-3 w-28">Status</th>
+                        <th class="p-3 w-28">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- Tambahkan baris data -->
-                    <tr class="hover:bg-slate-50 border-b">
-                        <td class="p-3 font-semibold">1</td>
-                        <td class="p-3">RT001</td>
-                        <td class="p-3">AC</td>
-                        <td class="p-3">2005-02-02</td>
-                        <td class="p-3">
-                            <span class="bg-yellow-500/20 text-yellow-900 text-xs px-2 py-1 rounded font-bold">
-                                Menunggu Verifikasi
-                            </span>
-                        </td>
-                        <td class="p-3 flex gap-2">
-                            <button onclick="bukaDetailModal('selesai')"
-                                class="bg-primary text-white rounded py-2 px-4 rounded hover:bg-blue-700 gap-x-4 "><i
-                                    class="fas fa-eye pr-1"></i> Verifikasi</button>
-                        </td>
-                    </tr>
-                </tbody>
             </table>
         </div>
 
-
-
-        @include('component.plagination')
-    </div>
-
-    <!-- Modal Detail -->
-    <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-        <div class="bg-white p-6 rounded shadow-lg w-[90%] max-w-2xl overflow-y-auto max-h-[90vh]">
-            <!-- Header -->
-            <div class="relative mb-4">
-                <h2 class="text-2xl font-bold">Detail Laporan</h2>
-                <button class="absolute right-2 top-2 text-gray-500 hover:text-red-500"
-                    onclick="tutupDetailModal()">✕</button>
-            </div>
-
-            <!-- Informasi Laporan -->
-            <div class="space-y-6 mb-6">
-                <!-- Info Utama -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <div>
-                            <h4 class="text-sm text-gray-500 font-medium">Ruangan</h4>
-                            <p class="text-gray-800 text-base font-semibold">RT001</p>
+        <!-- Modal Detail -->
+        <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+            <div class="bg-white p-6 rounded shadow-lg w-[90%] max-w-2xl overflow-y-auto max-h-[90vh]">
+                <div class="relative mb-4">
+                    <h2 class="text-2xl font-bold">Detail Laporan</h2>
+                    <button class="absolute right-2 top-2 text-gray-500 hover:text-red-500"
+                        onclick="closeModal('detailModal')">✕</button>
+                </div>
+                <div class="space-y-6 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <div>
+                                <h4 class="text-sm text-gray-500 font-medium">Ruangan</h4>
+                                <p class="ruang text-gray-800 text-base font-semibold">-</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm text-gray-500 font-medium">Fasilitas</h4>
+                                <p class="fasilitas text-gray-800 text-base font-semibold">-</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm text-gray-500 font-medium mb-1">Deskripsi</h4>
+                                <p class="deskripsi text-gray-800">-</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm text-gray-500 font-medium mb-1">Tanggal</h4>
+                                <p class="tanggal text-gray-800">-</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm text-gray-500 font-medium mb-1">Status</h4>
+                                <p class="status text-gray-800">-</p>
+                            </div>
                         </div>
                         <div>
-                            <h4 class="text-sm text-gray-500 font-medium">Fasilitas</h4>
-                            <p class="text-gray-800 text-base font-semibold">AC</p>
-                        </div>
-                        <div>
-                            <h4 class="text-sm text-gray-500 font-medium mb-1">Deskripsi</h4>
-                            <p class="text-gray-800">AC tidak dingin sejak seminggu lalu.</p>
-                        </div>
-                        <div>
-                            <h4 class="text-sm text-gray-500 font-medium mb-1">Kategori</h4>
-                            <p class="text-gray-800">Pendingin Ruangan</p>
-                        </div>
-                    </div>
-
-                    <!-- Foto -->
-                    <div>
-                        <h4 class="text-sm text-gray-500 font-medium mb-1">Foto Fasilitas</h4>
-                        <div class="rounded overflow-hidden shadow border">
-                            <img src="{{ asset('assets/image/5.jpg') }}" alt="Foto Fasilitas"
-                                class="w-full h-auto object-cover">
+                            <h4 class="text-sm text-gray-500 font-medium mb-1">Foto Fasilitas</h4>
+                            <div class="rounded overflow-hidden shadow border">
+                                <img id="detail-photo" src="/assets/image/placeholder.jpg" alt="Foto Fasilitas"
+                                    class="w-full h-auto object-cover">
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Riwayat Status -->
-                <div>
-                    <h4 class="text-sm text-gray-500 font-medium mb-2">Riwayat Status</h4>
-                    <div class="bg-gray-50 p-4 rounded border">
-                        <ul class="space-y-2 text-sm text-gray-700">
-                            <li class="flex items-center gap-2">
-                                <i class="fas fa-flag text-gray-500 w-4"></i>
-                                <span><strong>Baru:</strong> 06-05-2025</span>
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="fas fa-spinner text-yellow-500 w-4"></i>
-                                <span><strong>Diproses:</strong> - </span>
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="fas fa-check-circle text-green-600 w-4"></i>
-                                <span><strong>Selesai:</strong> -</span>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="flex justify-end gap-3 border-t pt-4" id="modalActions">
+                    <!-- Tombol aksi akan dimuat di sini -->
                 </div>
-            </div>
-
-            <!-- Footer Actions -->
-            <div class="flex justify-end gap-3 border-t pt-4">
-                <button onclick="bukaDetailModal('selesai')"
-                    class="flex items-center gap-2 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
-                    <i class="fas fa-times"></i> Tuttup
-                </button>
-
             </div>
         </div>
     </div>
 
-
-
     <script>
-        function bukaDetailModal(status) {
-            document.getElementById('detailModal').classList.remove('hidden');
-
-            // Tampilkan form feedback jika status selesai
-            if (status === 'selesai') {
-                document.getElementById('feedbackSection').classList.remove('hidden');
-            } else {
-                document.getElementById('feedbackSection').classList.add('hidden');
-            }
+        // MODAL HANDLING
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
         }
 
-        function tutupDetailModal() {
-            document.getElementById('detailModal').classList.add('hidden');
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
         }
 
-        function kirimUmpanBalik(event) {
-            event.preventDefault();
+        function openDetail(id) {
+            fetch(`/admin/laporan/${id}`, {
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(response => {
+                    if (response.success) {
+                        const data = response.data;
+                        openModal('detailModal');
+                        document.querySelector('.ruang').textContent = data.fasilitas_ruang_id;
+                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang_id;
+                        document.querySelector('.deskripsi').textContent = data.deskripsi_laporan;
+                        document.querySelector('.tanggal').textContent = new Date(data.lapor_datetime)
+                            .toLocaleDateString('id-ID');
+                        document.querySelector('.status').textContent = data.is_done ? 'Selesai' : data.is_verified ?
+                            'Diproses' : 'Menunggu Verifikasi';
 
-            const rating = document.getElementById('rating').value;
-            const komentar = document.getElementById('komentar').value;
+                        // Ganti foto laporan
+                        const img = document.getElementById('detail-photo');
+                        img.src = data.lapor_foto_url ? data.lapor_foto_url : '/assets/image/placeholder.jpg';
 
-            if (!rating || !komentar.trim()) {
-                alert("Silakan isi semua kolom.");
-                return;
-            }
-
-            alert("Umpan balik terkirim.");
-            tutupDetailModal();
-
-            // Tambahkan logika update status (misal ubah teks atau refresh tabel)
+                        // Tambahkan tombol aksi admin
+                        let actions = `
+                            <button onclick="closeModal('detailModal')"
+                                class="flex items-center gap-2 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
+                                <i class="fas fa-times"></i> Tutup
+                            </button>`;
+                        if (!data.is_verified) {
+                            actions = `
+                                <button onclick="verifyLaporan(${data.laporan_id})"
+                                    class="flex items-center gap-2 bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700 transition">
+                                    <i class="fas fa-check"></i> Verifikasi
+                                </button>
+                                ${actions}`;
+                        }
+                        if (data.is_verified && !data.is_done) {
+                            actions = `
+                                <button onclick="completeLaporan(${data.laporan_id})"
+                                    class="flex items-center gap-2 bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition">
+                                    <i class="fas fa-check-circle"></i> Selesaikan
+                                </button>
+                                ${actions}`;
+                        }
+                        document.getElementById('modalActions').innerHTML = actions;
+                    } else {
+                        showError(response.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Gagal ambil data:', error);
+                    showError('Gagal mengambil detail laporan');
+                });
         }
 
-        // filter
-        const fasilitasFilter = document.getElementById('filterFasilitas');
-        const inputCari = document.querySelector('input[placeholder="Cari..."]');
-
-        fasilitasFilter.addEventListener('change', filterData);
-        inputCari.addEventListener('input', filterData);
-
-        function filterData() {
-            const filterFasilitas = fasilitasFilter.value.toLowerCase();
-            const keyword = inputCari.value.toLowerCase();
-
-            const rows = document.querySelectorAll('tbody tr');
-
-            rows.forEach(row => {
-                const fasilitas = row.children[2].textContent.toLowerCase();
-                const rowText = row.textContent.toLowerCase();
-
-                const matchFasilitas = !filterFasilitas || fasilitas.includes(filterFasilitas);
-                const matchKeyword = rowText.includes(keyword);
-
-                row.style.display = (matchFasilitas && matchKeyword) ? '' : 'none';
+        // DATA TABLE INITIALIZATION
+        $(document).ready(function() {
+            const table = $('#laporanTable').DataTable({
+                searching: false,
+                lengthChange: false,
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    type: "POST",
+                    url: '{{ route('admin.laporan.list') }}',
+                    data: function(d) {
+                        d.fasilitas = $('#filterFasilitas').val();
+                        d.search = $('#searchInput').val();
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    error: function(xhr) {
+                        showError('Gagal mengambil data laporan');
+                    }
+                },
+                columns: [{
+                        data: null,
+                        name: 'no',
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'fasilitas_ruang_id',
+                        name: 'fasilitas_ruang_id',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'fasilitas_ruang_id',
+                        name: 'fasilitas_ruang_id',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'deskripsi_laporan',
+                        name: 'deskripsi_laporan'
+                    },
+                    {
+                        data: 'lapor_datetime',
+                        name: 'lapor_datetime',
+                        render: function(data) {
+                            return new Date(data).toLocaleDateString('id-ID');
+                        }
+                    },
+                    {
+                        data: 'is_verified',
+                        name: 'status',
+                        render: function(data, type, row) {
+                            if (row.is_done) {
+                                return '<span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded font-bold">Selesai</span>';
+                            } else if (data) {
+                                return '<span class="bg-blue-500/20 text-blue-900 text-xs px-2 py-1 rounded font-bold">Diproses</span>';
+                            } else {
+                                return '<span class="bg-yellow-500/20 text-yellow-900 text-xs px-2 py-1 rounded font-bold">Menunggu Verifikasi</span>';
+                            }
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function(data) {
+                            return `
+                                <div class="flex gap-2">
+                                    <button onclick="openDetail(${data.laporan_id})" title="Detail" class="text-gray-600 hover:text-blue-600">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>`;
+                        }
+                    }
+                ]
             });
+
+            window.filterTable = function() {
+                table.ajax.reload();
+            };
+        });
+
+        // NOTIFIKASI
+        function showSuccess(message) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Sukses',
+                text: message,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
+
+        function showError(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Kesalahan',
+                text: message,
+                timer: 3000,
+                showConfirmButton: true
+            });
+        }
+
+        // AKSI VERIFIKASI DAN SELESAI
+        function verifyLaporan(laporanId) {
+            fetch(`/admin/laporan/verify/${laporanId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        closeModal('detailModal');
+                        showSuccess(result.message);
+                        $('#laporanTable').DataTable().ajax.reload();
+                    } else {
+                        showError(result.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Gagal memverifikasi:', error);
+                    showError('Terjadi kesalahan saat memverifikasi laporan');
+                });
+        }
+
+        function completeLaporan(laporanId) {
+            fetch(`/admin/laporan/complete/${laporanId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        closeModal('detailModal');
+                        showSuccess(result.message);
+                        $('#laporanTable').DataTable().ajax.reload();
+                    } else {
+                        showError(result.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Gagal menyelesaikan:', error);
+                    showError('Terjadi kesalahan saat menyelesaikan laporan');
+                });
         }
     </script>
 @endsection

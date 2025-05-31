@@ -11,6 +11,8 @@ use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\RuanganFasilitasController;
 use App\Http\Controllers\RoleRuanganController;
 use App\Http\Controllers\CivitasController;
+use App\Http\Controllers\LaporanController;
+
 // Halaman utama
 Route::get('/', function () {
     return view('index');
@@ -29,6 +31,35 @@ Route::middleware(['auth.refresh'])->group(function () {
     Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
 });
 
+Route::middleware(['auth', 'role:Admin'])->prefix('admin/laporan')->name('admin.laporan.')->group(function () {
+    Route::get('/', [LaporanController::class, 'index'])->name('index');
+    Route::post('/list', [LaporanController::class, 'list'])->name('list');
+    Route::get('/{id}', [LaporanController::class, 'show'])->name('show');
+    Route::put('/verify/{id}', [LaporanController::class, 'verify'])->name('verify');
+    Route::put('/complete/{id}', [LaporanController::class, 'complete'])->name('complete');
+    // Placeholder untuk export (perlu controller tambahan)
+    Route::get('/export-excel', function () {
+        return response()->json(['message' => 'Export Excel belum diimplementasikan']);
+    })->name('export_excel');
+    Route::get('/export-pdf', function () {
+        return response()->json(['message' => 'Export PDF belum diimplementasikan']);
+    })->name('export_pdf');
+});
+
+Route::middleware(['auth', 'role:Sarpras'])->prefix('sarpras/laporan')->name('sarpras.laporan.')->group(function () {
+    Route::get('/', [LaporanController::class, 'index'])->name('index');
+    Route::post('/list', [LaporanController::class, 'list'])->name('list');
+    Route::get('/{id}', [LaporanController::class, 'show'])->name('show');
+    Route::put('/verify/{id}', [LaporanController::class, 'verify'])->name('verify');
+    Route::put('/complete/{id}', [LaporanController::class, 'complete'])->name('complete');
+    // Placeholder untuk export
+    Route::get('/export-excel', function () {
+        return response()->json(['message' => 'Export Excel belum diimplementasikan']);
+    })->name('export_excel');
+    Route::get('/export-pdf', function () {
+        return response()->json(['message' => 'Export PDF belum diimplementasikan']);
+    })->name('export_pdf');
+});
 // Group Admin
 Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin'], function () {
 
