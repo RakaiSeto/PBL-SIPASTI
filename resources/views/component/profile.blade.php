@@ -9,7 +9,7 @@
 
         <button id="profileToggle" type="button"
             class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-blue-500 focus:outline-none">
-            <img src="{{ Auth::user()->profile_picture ? asset('assets/profile/' . Auth::user()->profile_picture) : asset('assets/profile/default.png') }}"
+            <img src="{{ Auth::user()->profile_picture ? asset('assets/profile/' . Auth::user()->profile_picture) : asset('assets/profile/default.jpg') }}"
                 alt="Foto Profil" class="w-full h-full object-cover">
         </button>
     </div>
