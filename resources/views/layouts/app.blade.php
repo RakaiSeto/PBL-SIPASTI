@@ -130,7 +130,7 @@
         </div>
     </div>
     @filamentScripts
+    @stack('scripts')
+
 </body>
-
-
 </html>
