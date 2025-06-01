@@ -6,17 +6,79 @@ use Illuminate\Http\Request;
 use App\Models\t_laporan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class StatusLaporanController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth'); // Hanya pengguna yang login
+        $this->middleware('auth');
     }
 
     public function index()
     {
-        return view('civitas.status-laporan.index');
+        try {
+            $userId = Auth::id();
+
+            $laporanAktif = t_laporan::where('user_id', $userId)
+                ->where('is_verified', 0)
+                ->where('is_done', 0)
+                ->count();
+            $laporanDiproses = t_laporan::where('user_id', $userId)
+                ->where('is_verified', 1)
+                ->where('is_done', 0)
+                ->count();
+            $laporanSelesai = t_laporan::where('user_id', $userId)
+                ->where('is_done', 1)
+                ->where('is_verified', 1)
+                ->count();
+            $laporanDitolak = t_laporan::where('user_id', $userId)
+                ->where('is_done', 1)
+                ->where('is_verified', 0)
+                ->count();
+            $totalLaporan = $laporanAktif + $laporanDiproses + $laporanSelesai + $laporanDitolak;
+
+            $lineChartData = t_laporan::select(
+                DB::raw('DATE(lapor_datetime) as tanggal'),
+                DB::raw('COUNT(*) as jumlah')
+            )
+                ->where('user_id', $userId)
+                ->where('lapor_datetime', '>=', now()->subDays(7))
+                ->groupBy('tanggal')
+                ->orderBy('tanggal')
+                ->get()
+                ->pluck('jumlah', 'tanggal')
+                ->toArray();
+
+            $labelsLine = [];
+            $dataLine = [];
+            for ($i = 6; $i >= 0; $i--) {
+                $date = now()->subDays($i)->format('Y-m-d');
+                $labelsLine[] = now()->subDays($i)->format('d M');
+                $dataLine[] = $lineChartData[$date] ?? 0;
+            }
+
+            $dataDoughnut = [
+                'Menunggu' => $totalLaporan ? round(($laporanAktif / $totalLaporan) * 100, 1) : 0,
+                'Diproses' => $totalLaporan ? round(($laporanDiproses / $totalLaporan) * 100, 1) : 0,
+                'Selesai' => $totalLaporan ? round(($laporanSelesai / $totalLaporan) * 100, 1) : 0,
+                'Ditolak' => $totalLaporan ? round(($laporanDitolak / $totalLaporan) * 100, 1) : 0,
+            ];
+
+            return view('civitas.index', compact(
+                'laporanAktif',
+                'laporanDiproses',
+                'laporanSelesai',
+                'laporanDitolak',
+                'totalLaporan',
+                'labelsLine',
+                'dataLine',
+                'dataDoughnut'
+            ));
+        } catch (\Exception $e) {
+            Log::error('Gagal memuat dashboard civitas: ' . $e->getMessage());
+            return view('civitas.index')->with('error', 'Gagal memuat data: ' . $e->getMessage());
+        }
     }
 
     public function list(Request $request)

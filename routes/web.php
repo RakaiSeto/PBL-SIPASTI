@@ -137,16 +137,11 @@ Route::get('/hai', function () {
 
 // Group Civitas
 Route::group(['middleware' => ['auth.refresh', 'role:Civitas'], 'prefix' => 'civitas'], function () {
-    Route::get('/', function () {
-        return view('civitas.index');
-    })->name('civitas.dashboard');
-
+    Route::get('/', [StatusLaporanController::class, 'index'])->name('civitas.dashboard'); // Gunakan controller
     Route::get('/laporkan', [CivitasController::class, 'laporkan'])->name('civitas.laporkan');
-
     Route::get('/status', function () {
         return view('civitas.status');
     })->name('civitas.status');
-
     Route::get('/rating', function () {
         return view('civitas.rating');
     })->name('civitas.rating');

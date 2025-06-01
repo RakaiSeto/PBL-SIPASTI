@@ -1,157 +1,197 @@
 @extends('layouts.app')
 @section('content')
-{{-- <div class="p-4"> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    {{-- <div class="p-4"> --}}
     <!-- Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-      <!-- Card 1 -->
-      <div class="bg-white p-4 rounded shadow">
-        <div class="flex justify-between items-center">
-          <div>
-            <h3 class="text-sm text-gray-500">Laporan Aktif</h3>
-            <p class="text-lg font-bold">3</p>
-          </div>
-          <div class="bg-primary text-white p-2 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m5-9v9m4-9v9m1-9h4m-1-6h-2" />
-            </svg>
-          </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <!-- Card 1 -->
+        <div class="bg-white p-4 rounded shadow">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-sm text-gray-500">Laporan total</h3>
+                    <p class="text-lg font-bold">{{ $totalLaporan }}</p>
+                </div>
+                <div class="bg-primary text-white w-10 h-10 flex items-center justify-center rounded-full">
+                    <i class="fas fa-clipboard-list text-white"></i>
+                </div>
+
+            </div>
         </div>
-      </div>
-      <!-- Card 2 -->
-      <div class="bg-white p-4 rounded shadow">
-        <div class="flex justify-between items-center">
-          <div>
-            <h3 class="text-sm text-gray-500">Laporan diproses</h3>
-            <p class="text-lg font-bold">1,240</p>
-          </div>
-          <div class="bg-primary text-white p-2 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 114 0v2m4 4H7a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2z" />
-            </svg>
-          </div>
+        <!-- Card 2 -->
+        <div class="bg-white p-4 rounded shadow">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-sm text-gray-500">Laporan diproses</h3>
+                    <p class="text-lg font-bold">{{ $laporanDiproses }}</p>
+                </div>
+                <div class="bg-primary text-white w-10 h-10 flex items-center justify-center rounded-full">
+                    <i class="fas fa-spinner text-white"></i>
+                </div>
+
+            </div>
         </div>
-      </div>
-      <!-- Card 3 -->
-      <div class="bg-white p-4 rounded shadow">
-        <div class="flex justify-between items-center">
-          <div>
-            <h3 class="text-sm text-gray-500">Laporan Selesai</h3>
-            <p class="text-lg font-bold">15</p>
-          </div>
-          <div class="bg-primary text-white p-2 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-1.414 1.414a8 8 0 11-11.314 0L4.636 5.636a10 10 0 1014.728 0z" />
-            </svg>
-          </div>
+        <!-- Card 2 -->
+        <div class="bg-white p-4 rounded shadow">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-sm text-gray-500">Laporan Selesai</h3>
+                    <p class="text-lg font-bold">{{ $laporanSelesai }}</p>
+                </div>
+                <div class="bg-primary text-white w-10 h-10 flex items-center justify-center rounded-full">
+                    <i class="fas fa-check-circle text-white"></i>
+                </div>
+
+            </div>
         </div>
-      </div>
+        <!-- Card 3 -->
+        <div class="bg-white p-4 rounded shadow">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-sm text-gray-500">Laporan Ditolak</h3>
+                    <p class="text-lg font-bold">{{ $laporanSelesai }}</p>
+                </div>
+                <div class="bg-primary text-white w-10 h-10 flex items-center justify-center rounded-full">
+                    <i class="fas fa-times-circle text-white"></i>
+                </div>
+
+            </div>
+        </div>
     </div>
 
-    <div class="grid lg:grid-cols-2 gap-2 sm:gap-4 mb-4">
-      <!-- Card -->
-      <div class="p-4 md:p-5 min-h-102.5 flex flex-col bg-white border border-gray-200 rounded shadow dark:bg-neutral-800 dark:border-neutral-700">
-        <!-- Header -->
-        <div class="flex flex-wrap justify-between items-center gap-2">
-          <div class="mb-4">
-            <h2 class="text-sm text-gray-500 dark:text-neutral-500">Total Kerusakan</h2>
-          </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+
+
+        <!-- Card -->
+        <!-- Line Chart - Lebar 2/3 -->
+        <div
+            class="p-4 md:p-5 min-h-102.5 flex flex-col bg-white border border-gray-200 rounded shadow lg:col-span-2 dark:bg-neutral-800 dark:border-neutral-700">
+            <!-- Header -->
+            <div class="flex flex-wrap justify-between items-center gap-2">
+                <div class="mb-4">
+                    <h2 class="text-sm text-gray-500 dark:text-neutral-500">Jumlah Laporan Perhari</h2>
+                </div>
+            </div>
+            <!-- End Header -->
+            <div id="hs-single-area-chart" class="relative w-full h-[300px] sm:h-[350px] md:h-[400px] lg:h-[420px]"></div>
+
+            {{-- <div id="hs-single-area-chart"></div> --}}
         </div>
-        <!-- End Header -->
 
-        <div id="hs-multiple-bar-charts"></div>
-      </div>
-      <!-- End Card -->
+        <!-- Donut Chart - Lebar 1/3 -->
+        <div
+            class="p-4 md:p-5 min-h-102.5 flex flex-col bg-white border border-gray-200 rounded shadow dark:bg-neutral-800 dark:border-neutral-700">
+            <!-- Header -->
+            <div class="flex flex-wrap justify-between items-center gap-2">
+                <div class="mb-4">
+                    <h2 class="text-sm text-gray-500 dark:text-neutral-500">Persentase Status Laporan</h2>
+                </div>
+            </div>
+            <!-- End Header -->
+            {{-- <div id="hs-doughnut-chart"></div> --}}
+            <div id="hs-doughnut-chart" class="relative w-full h-[300px] sm:h-[350px] md:h-[400px] lg:h-[420px]"></div>
 
-      <!-- Card -->
-      <div class="p-4 md:p-5 min-h-102.5 flex flex-col bg-white border border-gray-200 rounded shadow dark:bg-neutral-800 dark:border-neutral-700">
-        <!-- Header -->
-        <div class="flex flex-wrap justify-between items-center gap-2">
-          <div class="mb-4">
-            <h2 class="text-sm text-gray-500 dark:text-neutral-500">Visitors</h2>
-          </div>
         </div>
-        <!-- End Header -->
 
-        <div id="hs-single-area-chart"></div>
-      </div>
-      <!-- End Card -->
     </div>
+
+    <!-- Tabel Laporan Terbaru -->
+    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+        <div class="overflow-x-auto">
+            <table id="laporanTable" class="w-full table-auto text-sm text-left">
+                <thead>
+                    <tr class="bg-slate-100 border-b border-slate-300 font-bold">
+                        <th class="p-3">No</th>
+                        <th class="p-3">Ruang</th>
+                        <th class="p-3">Fasilitas</th>
+                        <th class="p-3">Tanggal</th>
+                        <th class="p-3">Status</th>
+                        <th class="p-3">Aksi</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
 
 
     <!--  -->
-  </div>
+    </div>
 
-  <script>
-    // Multiple Bar Chart (Income)
-    const incomeCtx = document.createElement("canvas");
-    document.getElementById("hs-multiple-bar-charts").appendChild(incomeCtx);
+    <script>
+        // Multiple Bar Chart (Income)
 
-    new Chart(incomeCtx, {
-      type: "bar",
-      data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-        datasets: [
-          {
-            label: "Income",
-            data: [18, 22, 19, 25, 26, 31],
-            backgroundColor: "#1652B7",
-            borderRadius: 5,
-          },
-          {
-            label: "Income",
-            data: [10, 20, 11, 21, 20, 30],
-            backgroundColor: "#ea8a14",
-            borderRadius: 5,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: false,
-          },
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
 
-    // Area Chart (Visitors)
-    const visitorCtx = document.createElement("canvas");
-    document.getElementById("hs-single-area-chart").appendChild(visitorCtx);
+        // Area Chart (Visitors)
+        const visitorCtx = document.createElement("canvas");
+        visitorCtx.style.width = "100%";
+        visitorCtx.style.height = "100%";
+        document.getElementById("hs-single-area-chart").appendChild(visitorCtx);
 
-    new Chart(visitorCtx, {
-      type: "line",
-      data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-        datasets: [
-          {
-            label: "Visitors",
-            data: [6, 15, 12, 17, 10, 18],
-            fill: true,
-            backgroundColor: "rgba(22, 82, 183, 0.1)",
-            borderColor: "#1652B7",
-            tension: 0.4,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: false,
-          },
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
-  </script>
-  @endsection
+        new Chart(visitorCtx, {
+            type: "line",
+            data: {
+                labels: {!! json_encode($labelsLine) !!}, // Ambil dari controller
+                datasets: [{
+                    label: "Jumlah Laporan",
+                    data: {!! json_encode($dataLine) !!}, // Ambil dari controller
+                    fill: true,
+                    backgroundColor: "rgba(22, 82, 183, 0.1)",
+                    borderColor: "#1652B7",
+                    tension: 0.4,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+
+
+
+        // Donut Chart
+        const donutCtx = document.createElement("canvas");
+        donutCtx.style.width = "100%";
+        donutCtx.style.height = "100%";
+        document.getElementById("hs-doughnut-chart").appendChild(donutCtx);
+
+        new Chart(donutCtx, {
+            type: "doughnut",
+            data: {
+                labels: {!! json_encode(array_keys($dataDoughnut)) !!}, // ['Menunggu', 'Diproses', 'Selesai', 'Ditolak']
+                datasets: [{
+                    data: {!! json_encode(array_values($dataDoughnut)) !!}, // [nilai-nilai persentase]
+                    backgroundColor: [
+                        "#EA8A14", // Menunggu (kuning-oranye terang)
+                        "#1652B7", // Diproses (biru tua)
+                        "#2EAD59", // Selesai (hijau segar, kontras dengan biru & oranye)
+                        "#D14343", // Ditolak (merah tegas, kontras dengan yang lain)
+                    ],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: "#6B7280", // Warna teks legend
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+@endsection
