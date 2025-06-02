@@ -11,7 +11,7 @@ class t_laporan extends Model
 
     protected $table = 't_laporan';
     protected $primaryKey = 'laporan_id';
-    protected $fillable = ['user_id', 'fasilitas_ruang_id', 'teknisi_id', 'deskripsi_laporan', 'lapor_foto', 'lapor_datetime', 'review_pelapor', 'is_verified', 'is_done'];
+    protected $fillable = ['user_id', 'fasilitas_ruang_id', 'teknisi_id', 'deskripsi_laporan', 'lapor_foto', 'lapor_datetime', 'review_pelapor', 'review_komentar', 'is_verified', 'is_done'];
     public $timestamps = false;
 
     public function user()

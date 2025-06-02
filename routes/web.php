@@ -26,7 +26,7 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 // Route::post('/update-profile', [ProfileController::class, 'update'])->name('profile.update');
 
-    // Untuk semua pengguna yang sudah login
+// Untuk semua pengguna yang sudah login
 Route::middleware(['auth.refresh'])->group(function () {
     Route::post('/update-profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
@@ -64,11 +64,11 @@ Route::middleware(['auth', 'role:Sarpras'])->prefix('sarpras/laporan')->name('sa
     })->name('export_pdf');
 });
 
-Route::middleware(['auth'])->prefix('civitas/status-laporan')->name('civitas.status-laporan.')->group(function () {
-    Route::get('/', [StatusLaporanController::class, 'index'])->name('index');
-    Route::post('/list', [StatusLaporanController::class, 'list'])->name('list');
-    Route::get('/{id}', [StatusLaporanController::class, 'show'])->name('show');
-});
+// Route::middleware(['auth'])->prefix('civitas/status-laporan')->name('civitas.status-laporan.')->group(function () {
+//     Route::get('/', [StatusLaporanController::class, 'index'])->name('index');
+//     Route::post('/list', [StatusLaporanController::class, 'list'])->name('list');
+//     Route::get('/{id}', [StatusLaporanController::class, 'show'])->name('show');
+// });
 // Group Admin
 Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin'], function () {
 
@@ -119,7 +119,7 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
         return view('admin.roleruangan.index');
     })->name('admin.roleruangan');
 
-     Route::get('/ruanganfasilitas', [RuanganFasilitasController::class, 'index'])->name('admin.ruanganfasilitas');
+    Route::get('/ruanganfasilitas', [RuanganFasilitasController::class, 'index'])->name('admin.ruanganfasilitas');
 
     Route::get('/laporanstatistik', function () {
         return view('admin.laporanstatistik.index');
@@ -136,17 +136,27 @@ Route::get('/hai', function () {
 })->name('admin.hai');
 
 // Group Civitas
-Route::group(['middleware' => ['auth.refresh', 'role:Civitas'], 'prefix' => 'civitas'], function () {
-    Route::get('/', [StatusLaporanController::class, 'index'])->name('civitas.dashboard'); // Gunakan controller
-    Route::get('/laporkan', [CivitasController::class, 'laporkan'])->name('civitas.laporkan');
-    Route::get('/status', function () {
-        return view('civitas.status');
-    })->name('civitas.status');
-    Route::get('/rating', function () {
-        return view('civitas.rating');
-    })->name('civitas.rating');
-});
+// Route::group(['middleware' => ['auth.refresh', 'role:Civitas'], 'prefix' => 'civitas'], function () {
+//     Route::get('/', [StatusLaporanController::class, 'index'])->name('civitas.dashboard'); // Gunakan controller
+//     Route::get('/laporkan', [CivitasController::class, 'laporkan'])->name('civitas.laporkan');
+//     Route::get('/status', function () {
+//         return view('civitas.status');
+//     })->name('civitas.status');
+//     Route::get('/rating', function () {
+//         return view('civitas.rating');
+//     })->name('civitas.rating');
+// });
 
+Route::group(['middleware' => ['auth.refresh', 'role:Civitas'], 'prefix' => 'civitas'], function () {
+    Route::get('/', [CivitasController::class, 'index'])->name('civitas.dashboard');
+    Route::get('/laporkan', [CivitasController::class, 'laporkan'])->name('civitas.laporkan');
+    Route::get('/status', [CivitasController::class, 'status'])->name('civitas.status');
+    Route::post('/status/list', [CivitasController::class, 'list'])->name('civitas.status-laporan.list');
+    Route::get('/status/{id}', [CivitasController::class, 'show'])->name('civitas.status-laporan.show');
+    Route::get('/rating', [CivitasController::class, 'rating'])->name('civitas.rating');
+    Route::post('/rating/list', [CivitasController::class, 'ratingList'])->name('civitas.rating.list');
+    Route::post('/rating/submit', [CivitasController::class, 'submitRating'])->name('civitas.rating.submit');
+});
 // Group Sarpras
 Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sarpras'], function () {
     Route::get('/', function () {

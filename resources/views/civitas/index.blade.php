@@ -49,7 +49,7 @@
             <div class="flex justify-between items-center">
                 <div>
                     <h3 class="text-sm text-gray-500">Laporan Ditolak</h3>
-                    <p class="text-lg font-bold">{{ $laporanSelesai }}</p>
+                    <p class="text-lg font-bold">{{ $laporanDitolak }}</p>
                 </div>
                 <div class="bg-primary text-white w-10 h-10 flex items-center justify-center rounded-full">
                     <i class="fas fa-times-circle text-white"></i>
@@ -172,10 +172,7 @@
                 datasets: [{
                     data: {!! json_encode(array_values($dataDoughnut)) !!}, // [nilai-nilai persentase]
                     backgroundColor: [
-                        "#EA8A14", // Menunggu (kuning-oranye terang)
-                        "#1652B7", // Diproses (biru tua)
-                        "#2EAD59", // Selesai (hijau segar, kontras dengan biru & oranye)
-                        "#D14343", // Ditolak (merah tegas, kontras dengan yang lain)
+                        '#1E3A8A', '#3B82F6', '#60A5FA', '#BFDBFE'
                     ],
                     hoverOffset: 4
                 }]
