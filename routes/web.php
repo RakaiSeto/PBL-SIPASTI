@@ -12,6 +12,7 @@ use App\Http\Controllers\RuanganFasilitasController;
 use App\Http\Controllers\RoleRuanganController;
 use App\Http\Controllers\CivitasController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\StatistikController;
 use App\Http\Controllers\StatusLaporanController;
 
 // Halaman utama
@@ -121,9 +122,7 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
 
      Route::get('/ruanganfasilitas', [RuanganFasilitasController::class, 'index'])->name('admin.ruanganfasilitas');
 
-    Route::get('/laporanstatistik', function () {
-        return view('admin.laporanstatistik.index');
-    })->name('admin.laporanstatistik');
+    Route::get('/laporanstatistik', [StatistikController::class, 'laporanStatistik'])->name('admin.laporanstatistik');
 
     Route::get('/datalaporan', function () {
         return view('admin.datalaporan.index');
