@@ -33,13 +33,7 @@ class LaporanController extends Controller
                 6 => 'is_verified',
             ];
 
-            $totalData = t_laporan::count();
-            $totalFiltered = $totalData;
-
-            $limit = $request->input('length', 10);
-            $start = $request->input('start', 0);
-            $orderColumn = $columns[$request->input('order.0.column', 4)];
-            $orderDir = $request->input('order.0.dir', 'desc');
+            $status = $request->input('status', 'pending'); // Default ke 'pending' jika tidak ada parameter
 
             $query = t_laporan::select(
                 'laporan_id',
@@ -50,6 +44,24 @@ class LaporanController extends Controller
                 'is_verified',
                 'is_done'
             );
+
+            // Filter berdasarkan status
+            if ($status === 'pending') {
+                $query->where('is_verified', 0)->where('is_done', 0);
+            } elseif ($status === 'processed') {
+                $query->where(function ($query) {
+                    $query->where('is_verified', 1)
+                        ->orWhere('is_done', 1);
+                });
+            }
+
+            $totalData = $query->count();
+            $totalFiltered = $totalData;
+
+            $limit = $request->input('length', 10);
+            $start = $request->input('start', 0);
+            $orderColumn = $columns[$request->input('order.0.column', 4)];
+            $orderDir = $request->input('order.0.dir', 'desc');
 
             // Filter fasilitas
             if ($request->has('fasilitas') && !empty($request->fasilitas)) {
@@ -94,7 +106,6 @@ class LaporanController extends Controller
             ], 500);
         }
     }
-
     public function show($id)
     {
         try {

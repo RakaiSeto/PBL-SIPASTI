@@ -55,7 +55,7 @@ Route::middleware(['auth', 'role:Sarpras'])->prefix('sarpras/laporan')->name('sa
     Route::put('/verify/{id}', [LaporanController::class, 'verify'])->name('verify');
     Route::put('/complete/{id}', [LaporanController::class, 'complete'])->name('complete');
     Route::put('/reject/{id}', [LaporanController::class, 'reject'])->name('reject');
-    // Placeholder untuk export
+    Route::post('/list-kategorisasi', [LaporanController::class, 'listKategorisasi'])->name('listKategorisasi');
     Route::get('/export-excel', function () {
         return response()->json(['message' => 'Export Excel belum diimplementasikan']);
     })->name('export_excel');
@@ -63,7 +63,6 @@ Route::middleware(['auth', 'role:Sarpras'])->prefix('sarpras/laporan')->name('sa
         return response()->json(['message' => 'Export PDF belum diimplementasikan']);
     })->name('export_pdf');
 });
-
 // Route::middleware(['auth'])->prefix('civitas/status-laporan')->name('civitas.status-laporan.')->group(function () {
 //     Route::get('/', [StatusLaporanController::class, 'index'])->name('index');
 //     Route::post('/list', [StatusLaporanController::class, 'list'])->name('list');
