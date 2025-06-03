@@ -27,7 +27,7 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 // Route::post('/update-profile', [ProfileController::class, 'update'])->name('profile.update');
 
-    // Untuk semua pengguna yang sudah login
+// Untuk semua pengguna yang sudah login
 Route::middleware(['auth.refresh'])->group(function () {
     Route::post('/update-profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
@@ -56,7 +56,7 @@ Route::middleware(['auth', 'role:Sarpras'])->prefix('sarpras/laporan')->name('sa
     Route::put('/verify/{id}', [LaporanController::class, 'verify'])->name('verify');
     Route::put('/complete/{id}', [LaporanController::class, 'complete'])->name('complete');
     Route::put('/reject/{id}', [LaporanController::class, 'reject'])->name('reject');
-    // Placeholder untuk export
+    Route::post('/list-kategorisasi', [LaporanController::class, 'listKategorisasi'])->name('listKategorisasi');
     Route::get('/export-excel', function () {
         return response()->json(['message' => 'Export Excel belum diimplementasikan']);
     })->name('export_excel');
@@ -65,23 +65,13 @@ Route::middleware(['auth', 'role:Sarpras'])->prefix('sarpras/laporan')->name('sa
     })->name('export_pdf');
 });
 
-Route::middleware(['auth'])->prefix('civitas/status-laporan')->name('civitas.status-laporan.')->group(function () {
-    Route::get('/', [StatusLaporanController::class, 'index'])->name('index');
-    Route::post('/list', [StatusLaporanController::class, 'list'])->name('list');
-    Route::get('/{id}', [StatusLaporanController::class, 'show'])->name('show');
-});
 // Group Admin
 Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin'], function () {
 
 
-    // Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
-
 
     Route::get('/', [DashboardController::class, 'admin'])->name('admin.dashboard');
 
-    // Route::get('/mahasiswa', function () {
-    //     return view('admin.mahasiswa.index');
-    // })->name('admin.mahasiswa');
 
     Route::get('/datapengguna', function () {
         return view('admin.datapengguna.index');
@@ -120,7 +110,7 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
         return view('admin.roleruangan.index');
     })->name('admin.roleruangan');
 
-     Route::get('/ruanganfasilitas', [RuanganFasilitasController::class, 'index'])->name('admin.ruanganfasilitas');
+    Route::get('/ruanganfasilitas', [RuanganFasilitasController::class, 'index'])->name('admin.ruanganfasilitas');
 
     Route::get('/laporanstatistik', [StatistikController::class, 'laporanStatistik'])->name('admin.laporanstatistik');
 
@@ -134,18 +124,16 @@ Route::get('/hai', function () {
     return view('admin.index');
 })->name('admin.hai');
 
-// Group Civitas
 Route::group(['middleware' => ['auth.refresh', 'role:Civitas'], 'prefix' => 'civitas'], function () {
-    Route::get('/', [StatusLaporanController::class, 'index'])->name('civitas.dashboard'); // Gunakan controller
+    Route::get('/', [CivitasController::class, 'index'])->name('civitas.dashboard');
     Route::get('/laporkan', [CivitasController::class, 'laporkan'])->name('civitas.laporkan');
-    Route::get('/status', function () {
-        return view('civitas.status');
-    })->name('civitas.status');
-    Route::get('/rating', function () {
-        return view('civitas.rating');
-    })->name('civitas.rating');
+    Route::get('/status', [CivitasController::class, 'status'])->name('civitas.status');
+    Route::post('/status/list', [CivitasController::class, 'list'])->name('civitas.status-laporan.list');
+    Route::get('/status/{id}', [CivitasController::class, 'show'])->name('civitas.status-laporan.show');
+    Route::get('/rating', [CivitasController::class, 'rating'])->name('civitas.rating');
+    Route::post('/rating/list', [CivitasController::class, 'ratingList'])->name('civitas.rating.list');
+    Route::post('/rating/submit', [CivitasController::class, 'submitRating'])->name('civitas.rating.submit');
 });
-
 // Group Sarpras
 Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sarpras'], function () {
     Route::get('/', function () {
@@ -179,6 +167,10 @@ Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sar
     Route::get('/kategorisasi', function () {
         return view('sarpras.kategorisasi');
     })->name('sarpras.kategorisasi');
+
+    Route::get('/riwayatLaporan', function () {
+        return view('sarpras.riwayatLaporan');
+    })->name('sarpras.riwayatlaporan');
 });
 
 // Group Teknisi

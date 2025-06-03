@@ -282,7 +282,7 @@
                     data: function(d) {
                         d.fasilitas = $('#filterFasilitas').val();
                         d.search = $('#searchInput').val();
-                        d.status = 'processed'; // Tambahkan parameter status
+                        d.status = 'completed,rejected'; // Filter untuk Selesai dan Ditolak
                     },
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
@@ -323,8 +323,6 @@
                                 return '<span class="bg-red-500/20 text-red-900 text-xs px-2 py-1 rounded uppercase font-bold">Ditolak</span>';
                             } else if (row.is_done) {
                                 return '<span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded uppercase font-bold">Selesai</span>';
-                            } else if (row.is_verified) {
-                                return '<span class="bg-blue-500/20 text-blue-900 text-xs px-2 py-1 rounded uppercase font-bold">Diproses</span>';
                             }
                             return '-';
                         }
@@ -335,9 +333,9 @@
                         searchable: false,
                         render: function(data) {
                             return `
-                                <button onclick="openDetail(${data.laporan_id})"
-                                    class="bg-primary text-white rounded py-2 px-4 hover:bg-blue-700">Beri Nilai</button>
-                            `;
+                            <button onclick="openDetail(${data.laporan_id})"
+                                class="bg-primary text-white rounded py-2 px-4 hover:bg-blue-700">Beri Nilai</button>
+                        `;
                         }
                     }
                 ]
