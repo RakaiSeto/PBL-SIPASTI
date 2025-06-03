@@ -63,23 +63,14 @@ Route::middleware(['auth', 'role:Sarpras'])->prefix('sarpras/laporan')->name('sa
         return response()->json(['message' => 'Export PDF belum diimplementasikan']);
     })->name('export_pdf');
 });
-// Route::middleware(['auth'])->prefix('civitas/status-laporan')->name('civitas.status-laporan.')->group(function () {
-//     Route::get('/', [StatusLaporanController::class, 'index'])->name('index');
-//     Route::post('/list', [StatusLaporanController::class, 'list'])->name('list');
-//     Route::get('/{id}', [StatusLaporanController::class, 'show'])->name('show');
-// });
+
 // Group Admin
 Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin'], function () {
 
 
-    // Route::post('/ganti-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
-
 
     Route::get('/', [DashboardController::class, 'admin'])->name('admin.dashboard');
 
-    // Route::get('/mahasiswa', function () {
-    //     return view('admin.mahasiswa.index');
-    // })->name('admin.mahasiswa');
 
     Route::get('/datapengguna', function () {
         return view('admin.datapengguna.index');
@@ -134,18 +125,6 @@ Route::get('/hai', function () {
     return view('admin.index');
 })->name('admin.hai');
 
-// Group Civitas
-// Route::group(['middleware' => ['auth.refresh', 'role:Civitas'], 'prefix' => 'civitas'], function () {
-//     Route::get('/', [StatusLaporanController::class, 'index'])->name('civitas.dashboard'); // Gunakan controller
-//     Route::get('/laporkan', [CivitasController::class, 'laporkan'])->name('civitas.laporkan');
-//     Route::get('/status', function () {
-//         return view('civitas.status');
-//     })->name('civitas.status');
-//     Route::get('/rating', function () {
-//         return view('civitas.rating');
-//     })->name('civitas.rating');
-// });
-
 Route::group(['middleware' => ['auth.refresh', 'role:Civitas'], 'prefix' => 'civitas'], function () {
     Route::get('/', [CivitasController::class, 'index'])->name('civitas.dashboard');
     Route::get('/laporkan', [CivitasController::class, 'laporkan'])->name('civitas.laporkan');
@@ -189,6 +168,10 @@ Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sar
     Route::get('/kategorisasi', function () {
         return view('sarpras.kategorisasi');
     })->name('sarpras.kategorisasi');
+
+    Route::get('/riwayatLaporan', function () {
+        return view('sarpras.riwayatLaporan');
+    })->name('sarpras.riwayatlaporan');
 });
 
 // Group Teknisi

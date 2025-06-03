@@ -172,7 +172,7 @@
                 datasets: [{
                     data: {!! json_encode(array_values($dataDoughnut)) !!}, // [nilai-nilai persentase]
                     backgroundColor: [
-                        '#1E3A8A', '#3B82F6', '#60A5FA', '#BFDBFE'
+                        '#3B82F6', '#1E3A8A', '#60A5FA', '#BFDBFE'
                     ],
                     hoverOffset: 4
                 }]

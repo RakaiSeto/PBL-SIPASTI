@@ -49,10 +49,13 @@ class LaporanController extends Controller
             if ($status === 'pending') {
                 $query->where('is_verified', 0)->where('is_done', 0);
             } elseif ($status === 'processed') {
-                $query->where(function ($query) {
-                    $query->where('is_verified', 1)
-                        ->orWhere('is_done', 1);
-                });
+                $query->where('is_verified', 1)->where('is_done', 0); // Hanya diproses (is_verified = 1, is_done = 0)
+            } elseif ($status === 'completed') {
+                $query->where('is_verified', 1)->where('is_done', 1); // Selesai
+            } elseif ($status === 'rejected') {
+                $query->where('is_verified', 0)->where('is_done', 1); // Ditolak
+            } elseif ($status === 'completed,rejected') {
+                $query->where('is_done', 1); // Selesai dan Ditolak
             }
 
             $totalData = $query->count();
@@ -106,6 +109,7 @@ class LaporanController extends Controller
             ], 500);
         }
     }
+
     public function show($id)
     {
         try {
