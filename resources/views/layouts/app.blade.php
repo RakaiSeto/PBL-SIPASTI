@@ -117,20 +117,25 @@
         @include('layouts.sidebar')
 
         <div class="flex-1 ml-0 md:ml-64 transition-all duration-300 min-w-0 flex flex-col">
-            @include('layouts.header') <!-- ← HEADER DIPINDAH KE SINI -->
 
             <main class="flex-1 overflow-y-auto max-h-screen">
+                @include('layouts.header') <!-- ← HEADER DIPINDAH KE SINI -->
+
                 <div class="p-4">
                     @include('layouts.breadcrumb')
                     @yield('content')
+
+
                 </div>
 
                 @include('layouts.footer')
             </main>
         </div>
     </div>
+
     @filamentScripts
     @stack('scripts')
 
 </body>
+
 </html>

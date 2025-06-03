@@ -26,14 +26,14 @@
         <div class="flex justify-between mb-3 mt-1 items-center gap-4 flex-wrap">
             <!-- Filter dan Pencarian -->
             <div class="flex items-center gap-2 whitespace-nowrap">
-                <label for="filterFasilitas" class="text-sm text-slate-700">Fasilitas</label>
-                <select id="filterFasilitas" onchange="filterTable()"
-                    class="border border-slate-300 rounded px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label for="filterStatus" class="text-sm text-slate-700">Fasilitas</label>
+                <select id="filterStatus" onchange="filterTable()"
+                    class="border border-slate-300 rounded px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-900">
                     <option value="">Semua</option>
-                    <option value="1">AC</option>
-                    <option value="2">Proyektor</option>
-                    <option value="3">Kipas Angin</option>
-                    <option value="4">Lampu</option>
+                    <option value="1">Menunggu Verifikasi</option>
+                    <option value="2">Diproses</option>
+                    <option value="3">Diterima</option>
+                    <option value="4">Ditolak</option>
                 </select>
 
                 <input id="searchInput"
@@ -45,9 +45,8 @@
             <div class="flex items-center gap-2 whitespace-nowrap">
                 <label for="tampilData" class="text-sm text-slate-700">Tampilkan</label>
                 <select id="tampilData" onchange="filterTable()"
-                    class="border border-slate-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="5" selected>5</option>
-                    <option value="10">10</option>
+                    class="border border-slate-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-900">
+                    <option value="10" selected>10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
                 </select>
@@ -108,7 +107,7 @@
                     <div>
                         <h4 class="text-sm text-gray-500 font-medium mb-1">Foto Fasilitas</h4>
                         <div class="rounded overflow-hidden shadow border">
-                            <img id="detail-photo" src="{{ asset('assets/image/placeholder.jpg') }}" alt="Foto Fasilitas"
+                            <img id="detail-photo" src="{{ asset('assets/profile/default.jpg') }}" alt="Foto Fasilitas"
                                 class="w-full h-auto object-cover">
                         </div>
                     </div>
@@ -158,7 +157,7 @@
 
                         // Ganti foto
                         const img = document.getElementById('detail-photo');
-                        img.src = data.lapor_foto_url ?? "{{ asset('assets/image/placeholder.jpg') }}";
+                        img.src = data.lapor_foto_url ?? "{{ asset('assets/profile/default.jpg') }}";
 
                         // Riwayat Status
                         const riwayatStatus = document.getElementById('riwayatStatus');
@@ -226,7 +225,7 @@
                     type: "POST",
                     url: '{{ route('civitas.status-laporan.list') }}',
                     data: function(d) {
-                        d.fasilitas = $('#filterFasilitas').val();
+                        d.status = $('#filterStatus').val(); // gunakan nama 'status'
                         d.search = $('#searchInput').val();
                     },
                     headers: {
@@ -309,16 +308,5 @@
                 table.ajax.reload();
             };
         });
-
-        // Map fasilitas_ruang_id ke kategori
-        function mapFasilitas(id) {
-            const fasilitasMap = {
-                '1': 'Pendingin Ruangan',
-                '2': 'Peralatan Presentasi',
-                '3': 'Pendingin Ruangan',
-                '4': 'Penerangan'
-            };
-            return fasilitasMap[id] || '-';
-        }
     </script>
 @endsection
