@@ -1,216 +1,331 @@
 @extends('layouts.app')
 
 @section('content')
-
-<!-- Filter and Download Section -->
-<div class="p-6 flex justify-between items-center">
-  <div>
-    <label for="yearFilter" class="text-sm font-semibold mr-2">Filter Tahun:</label>
-    <select id="yearFilter" class="border rounded-lg p-2 focus:ring-2 ">
-      <option value="2025">2025</option>
-      <option value="2024">2024</option>
-      <option value="2023">2023</option>
-    </select>
-  </div>
-  <button id="downloadPdf" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm transition duration-200">
-    <i class="fa-solid fa-file-pdf mr-1"></i> Ekspor PDF
-  </button>
+<!-- Container filter+download -->
+<div class="flex items-center justify-between py-4 px-4 mb-4 bg-white rounded shadow">
+    <div>
+        <label for="filterTahun" class="mr-2 font-semibold text-gray-700">Filter Tahun:</label>
+        <select id="filterTahun" class="border border-gray-300 rounded px-3 py-1 pr-8">
+            <option value="">Semua Tahun</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+        </select>
+    </div>
+    <div>
+       <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm flex items-center">
+          Ekspor PDF
+       </button>
+    </div>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
-  <!-- Laporan Masuk -->
-  <div class="bg-blue-600 text-white rounded-2xl p-5 flex items-center justify-between shadow-md">
-    <div class="flex items-center space-x-4">
-      <div class="bg-white bg-opacity-20 p-3 rounded-full">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
-        </svg>
-      </div>
-      <div>
-        <p class="text-sm text-white text-opacity-80">Total Laporan Masuk</p>
-        <p class="text-2xl font-bold">436</p>
-      </div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+    
+    <!-- Card: Total Laporan Kerusakan -->
+    <div class="bg-blue-800 text-white rounded p-5 flex items-center justify-between shadow-md">
+        <div class="flex items-center space-x-4">
+            <div class="bg-white bg-opacity-20 p-3 rounded-full">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                </svg>
+            </div>
+            <div>
+                <p class="text-sm text-white text-opacity-80">Total Laporan Kerusakan</p>
+                <p id="totalLaporan" class="text-2xl font-bold text-white">{{ $totalLaporan }}</p>
+            </div>
+        </div>
+        <div class="text-white text-2xl">:</div>
     </div>
-    <div class="text-white text-2xl">⋮</div>
-  </div>
 
-  <!-- Total Fasilitas -->
-  <div class="bg-blue-600 text-white rounded-2xl p-5 flex items-center justify-between shadow-md">
-    <div class="flex items-center space-x-4">
-      <div class="bg-white bg-opacity-20 p-3 rounded-full">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h-2m-6 0H3m10-14v14"/>
-        </svg>
-      </div>
-      <div>
-        <p class="text-sm text-white text-opacity-80">Total Fasilitas</p>
-        <p class="text-2xl font-bold">248</p>
-      </div>
+    <!-- Card: Laporan Ditolak -->
+    <div class="bg-white rounded p-5 flex items-center justify-between shadow-md text-black">
+        <div class="flex items-center space-x-4">
+            <div class="bg-blue-800 p-3 rounded-full text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </div>
+            <div>
+                <p class="text-sm text-opacity-80">Laporan Ditolak</p>
+                <p id="laporanditolak" class="text-2xl font-bold">{{ $totalLaporanDitolak }}</p>
+            </div>
+        </div>
+        <div class="text-2xl">:</div>
     </div>
-    <div class="text-white text-2xl">⋮</div>
-  </div>
 
-  <!-- Laporan Selesai Diperbaiki -->
-  <div class="bg-blue-600 text-white rounded-2xl p-5 flex items-center justify-between shadow-md">
-    <div class="flex items-center space-x-4">
-      <div class="bg-white bg-opacity-20 p-3 rounded-full">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M5 13l4 4L19 7"/>
-        </svg>
-      </div>
-      <div>
-        <p class="text-sm text-white text-opacity-80">Selesai Diperbaiki</p>
-        <p class="text-2xl font-bold">123</p>
-      </div>
+    <!-- Card: Perbaikan Selesai -->
+    <div class="bg-white rounded p-5 flex items-center justify-between shadow-md text-black">
+        <div class="flex items-center space-x-4">
+            <div class="bg-blue-800 p-3 rounded-full text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <div>
+                <p class="text-sm text-opacity-80">Perbaikan Selesai</p>
+                <p id="selesaiDiperbaiki" class="text-2xl font-bold">{{$totalLaporanSelesai}}</p>
+            </div>
+        </div>
+        <div class="text-2xl">:</div>
     </div>
-    <div class="text-white text-2xl">⋮</div>
-  </div>
 
-  <!-- Kepuasan Pengguna -->
-  <div class="bg-blue-600 text-white rounded-2xl p-5 flex items-center justify-between shadow-md">
-    <div class="flex items-center space-x-4">
-      <div class="bg-white bg-opacity-20 p-3 rounded-full">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
-        </svg>
-      </div>
-      <div>
-        <p class="text-sm text-white text-opacity-80">Kepuasan Pengguna</p>
-        <p class="text-2xl font-bold">80%</p>
-      </div>
+    <!-- Card: Total Fasilitas -->
+    <div class="bg-white rounded p-5 flex items-center justify-between shadow-md text-black">
+        <div class="flex items-center space-x-4">
+            <div class="bg-blue-800 p-3 rounded-full text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h-2m-6 0H3m10-14v14"/>
+                </svg>
+            </div>
+            <div>
+                <p class="text-sm text-opacity-80">Total Fasilitas</p>
+                <p id="jumlahFasilitas" class="text-2xl font-bold">{{ $totalFasilitas }}</p>
+            </div>
+        </div>
+        <div class="text-2xl">:</div>
     </div>
-    <div class="text-white text-2xl">⋮</div>
-  </div>
 </div>
 
-<!-- Container fleksibel untuk grafik line dan pie berdampingan -->
-<div class="flex flex-col lg:flex-row gap-6 p-6">
-  <div class="bg-white p-4 rounded-2xl shadow w-[800px] h-[450px]">
-    <h2 class="text-lg font-semibold text-black mb-4 text-left">
-      Tren Kerusakan Sarana Prasarana Bulanan
-    </h2>
-    <canvas id="damageChart" class="h-full w-full"></canvas>
-  </div>
-
-  <!-- Grafik Pie Donut -->
-  <div class="bg-white p-6 rounded-2xl shadow w-[400px] h-[450px] flex flex-col justify-between">
-    <h2 class="text-lg font-semibold text-black mb-4 text-left">
-      Proporsi Status Kerusakan
-    </h2>
-    <div class="flex-1 relative">
-      <canvas id="damagePieChart" class="absolute top-0 left-0 w-full h-full"></canvas>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+    <div
+        class="p-4 md:p-5 min-h-[410px] flex flex-col bg-white border border-gray-200 rounded shadow lg:col-span-2 dark:bg-neutral-800 dark:border-neutral-700">
+        <!-- Header -->
+        <div class="flex flex-wrap justify-between items-center gap-2">
+            <div class="mb-4">
+                <h2 class="text-sm text-gray-500 dark:text-neutral-500">Laporan Kerusakan Bulanan</h2>
+            </div>
+        </div>
+        <!-- End Header -->
+        <div id="charts-kerusakan" class="relative w-full h-full"></div>
     </div>
-  </div>
+
+    <div
+        class="p-4 md:p-5 min-h-[410px] flex flex-col bg-white border border-gray-200 rounded shadow dark:bg-neutral-800 dark:border-neutral-700">
+        <!-- Header -->
+        <div class="flex flex-wrap justify-between items-center gap-2">
+            <div class="mb-4">
+                <h2 class="text-sm text-gray-500 dark:text-neutral-500"> Status Laporan</h2>
+            </div>
+        </div>
+        <!-- End Header -->
+        <div id="hs-statuslaporan" class="relative w-full h-full"></div>
+    </div>
 </div>
 
-<!-- Tabel Data -->
-<div class="px-6 py-2">
-  <div class="bg-white p-6 rounded-2xl shadow w-full">
-    <h2 class="text-lg font-semibold text-black mb-4 text-left">Daftar Kerusakan</h2>
-    <div class="overflow-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">No</th>
-            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Ruang</th>
-            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Fasilitas</th>
-            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Tanggal</th>
-            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Status</th>
-            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Aksi</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-100">
-          <tr>
-            <td class="px-4 py-2 text-sm text-gray-800">1</td>
-            <td class="px-4 py-2 text-sm text-gray-800">Ruang 101</td>
-            <td class="px-4 py-2 text-sm text-gray-800">Proyektor</td>
-            <td class="px-4 py-2 text-sm text-gray-800">2025-05-30</td>
-            <td class="px-4 py-2 text-sm">
-              <span class="inline-block px-2 py-1 text-xs font-semibold bg-yellow-100 text-yellow-700 rounded-full">Sedang</span>
-            </td>
-            <td class="px-4 py-2 text-sm">
-              <button class="text-blue-500 hover:underline">Detail</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+    <div
+        class="p-4 md:p-5 min-h-[410px] flex flex-col bg-white border border-gray-200 rounded shadow lg:col-span-2 dark:bg-neutral-800 dark:border-neutral-700">
+        <!-- Header -->
+        <div class="flex flex-wrap justify-between items-center gap-2">
+            <div class="mb-4">
+                <h2 class="text-sm text-gray-500 dark:text-neutral-500">Laporan per jenis kategori</h2>
+            </div>
+        </div>
+        <!-- End Header -->
+        <div id="charts-kategori" class="relative w-full h-full"></div>
     </div>
-  </div>
+
+    <!-- kepuasan pengguna -->
+    <div
+        class="p-4 md:p-5 min-h-[410px] flex flex-col bg-white border border-gray-200 rounded shadow dark:bg-neutral-800 dark:border-neutral-700">
+        <div class="flex flex-wrap justify-between items-center gap-2">
+            <div class="mb-4">
+                <h2 class="text-sm text-gray-500 dark:text-neutral-500">Kepuasan Pengguna</h2>
+            </div>
+        </div>
+
+        <div id="kepuasanChartContainer" class="relative w-full h-full"></div>
+    </div>
 </div>
 
-@endsection
+<!-- Tabel Laporan Terbaru -->
+<div class="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+    <div class="overflow-x-auto">
+        <table id="laporanTable" class="w-full table-auto text-sm text-left">
+            <thead>
+                <tr class="bg-slate-100 border-b border-slate-300 font-bold">
+                    <th class="p-3">No</th>
+                    <th class="p-3">Ruang</th>
+                    <th class="p-3">Fasilitas</th>
+                    <th class="p-3">Tanggal</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3">Aksi</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
 
-@push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-  // Line Chart
-  const ctx = document.getElementById('damageChart').getContext('2d');
-  const damageChart = new Chart(ctx, {
+  const bulanLabels = @json($bulanLaporan);
+  const totalKerusakan = @json($jumlahLaporan);
+
+  const ctx = document.createElement('canvas');
+  document.getElementById('charts-kerusakan').appendChild(ctx);
+
+  new Chart(ctx, {
     type: 'line',
     data: {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      labels: bulanLabels,
       datasets: [{
-        label: 'Jumlah Kerusakan',
-        data: [8, 12, 15, 20, 18, 16, 10, 9, 14, 13, 11, 7],
-        borderColor: '#1E40AF',
-        backgroundColor: 'rgba(30, 64, 175, 0.1)',
+        data: totalKerusakan,
         fill: true,
-        tension: 0.4,
-        pointBackgroundColor: '#1E40AF',
-        pointRadius: 4
+        borderColor: 'rgb(59, 130, 246)', 
+        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+        tension: 0.3,
+        pointRadius: 5,
+        pointHoverRadius: 7,
       }]
     },
     options: {
       responsive: true,
-      layout: {
-        padding: { top: 10, bottom: 20, left: 10, right: 10 }
-      },
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
       scales: {
-        x: { ticks: { maxRotation: 0, minRotation: 0, padding: 10 } },
-        y: { beginAtZero: true, ticks: { stepSize: 5, padding: 10 } }
-      },
-      plugins: { legend: { display: false } }
+        y: {
+          beginAtZero: true,
+          suggestedMax: 50,
+          ticks: {
+            stepSize: 10
+          },
+          grid: {
+            color: '#e5e7eb'
+          }
+        },
+        x: {
+          grid: {
+            color: '#e5e7eb'
+          }
+        }
+      }
     }
   });
 
-  // Pie Donut Chart
-  const ctxPie = document.getElementById('damagePieChart').getContext('2d');
-  const damagePieChart = new Chart(ctxPie, {
-    type: 'doughnut',
+  // Donut Chart status laporan 
+  const donutCtx = document.createElement("canvas");
+  donutCtx.style.width = "100%";
+  donutCtx.style.height = "100%";
+  document.getElementById("hs-statuslaporan").appendChild(donutCtx);
+
+  new Chart(donutCtx, {
+      type: "doughnut",
+      data: {
+          labels: ['Diverifikasi', 'Diproses', 'Selesai', 'Ditolak'],
+          datasets: [{
+              data: [40, 30, 10, 20], // Contoh data persentase
+              backgroundColor: ['#1E3A8A', '#3B82F6', '#60A5FA', '#BFDBFE'],
+              hoverOffset: 4
+          }]
+      },
+      options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+              legend: {
+                  position: 'bottom',
+                  labels: { color: "#6B7280" }
+              }
+          }
+      }
+  });
+
+  //Chart kategori fasilitas 
+  const fasilitasLabels = [
+    'AC', 'Projector', 'Kelistrikan', 'Meja', 'Kursi',
+    'WiFi', 'Printer', 'Komputer', 'Scanner', 'Dispenser'
+  ];
+  const jumlahKerusakanFasilitas = [60, 15, 12, 40, 10, 5, 62, 6, 4, 3];
+
+  const canvasKategori = document.createElement("canvas");
+  document.getElementById("charts-kategori").appendChild(canvasKategori);
+
+  new Chart(canvasKategori, {
+    type: 'bar',
     data: {
-      labels: ['Kerusakan Ringan', 'Kerusakan Sedang', 'Kerusakan Kritis', 'Sudah Diperbaiki'],
+      labels: fasilitasLabels,
       datasets: [{
-        label: 'Status Kerusakan',
-        data: [25, 40, 20, 15],
-        backgroundColor: ['#1E3A8A', '#3B82F6', '#60A5FA', '#BFDBFE'],
-        borderColor: '#fff',
-        borderWidth: 1,
-        hoverOffset: 20,
+        label: 'Jumlah Kerusakan',
+        data: jumlahKerusakanFasilitas,
+        backgroundColor: '#3B82F6',
+        borderRadius: 5,
+        barThickness: 40,
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: {
-          position: 'bottom',
-          labels: {
-            boxWidth: 12,
-            padding: 10,
-            font: { size: 12 }
-          }
+        legend: { display: false },
+        title: { display: false }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          ticks: { 
+            color: '#374151',
+            stepSize: 5
+          },
+          title: { display: true, text: 'Jumlah', color: '#6B7280' }
         },
-        tooltip: { enabled: true }
+        x: {
+          ticks: { color: '#374151' },
+          title: { display: true, text: 'Jenis Fasilitas', color: '#6B7280' }
+        }
       }
     }
   });
+
+  // Chart Kepuasan Pengguna
+const kepuasanContainer = document.getElementById('kepuasanChartContainer');
+const kepuasanCanvas = document.createElement('canvas');
+kepuasanContainer.appendChild(kepuasanCanvas);
+
+const ratingPercent = 90;
+
+new Chart(kepuasanCanvas.getContext('2d'), {
+  type: 'doughnut',
+  data: {
+    datasets: [{
+      data: [ratingPercent, 100 - ratingPercent],
+      backgroundColor: ['#2563EB', '#60A5FA'],
+      hoverBackgroundColor: ['#1E3A8A', '#3B82F6'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: true }
+    }
+  },
+  plugins: [{
+    id: 'centerText',
+    beforeDraw(chart) {
+      const { ctx, width, height } = chart;
+      ctx.save();
+      ctx.font = 'bold 2.5rem sans-serif';
+      ctx.fillStyle = '#1E3A8A';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(ratingPercent + '%', width / 2, height / 2);
+      ctx.restore();
+    }
+  }]
+});
+
 </script>
-@endpush
+
+@endsection
