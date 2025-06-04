@@ -9,6 +9,7 @@ use App\Models\t_laporan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CivitasController extends Controller
 {
@@ -164,7 +165,18 @@ class CivitasController extends Controller
                 'lapor_foto'
             )->where('user_id', Auth::id())->findOrFail($id);
 
-            $laporan->lapor_foto_url = $laporan->lapor_foto ? asset('storage/laporan/' . $laporan->laporan_id . '.jpg') : null;
+            if ($laporan->lapor_foto) {
+                $filePath = 'laporan/' . $laporan->laporan_id . '.jpg';
+                // Use Laravel's asset helper to generate the full URL
+                $laporan->lapor_foto_url = asset('storage/' . $filePath);
+
+                if (!Storage::disk('public')->exists('laporan/' . $laporan->laporan_id . '.jpg')) {
+                    // Laravel's Storage facade automatically creates parent directories if they don't exist.
+                    Storage::disk('public')->put($filePath, $laporan->lapor_foto);
+                }
+
+                $laporan->lapor_foto = null;
+            }
 
             return response()->json([
                 'success' => true,
