@@ -57,7 +57,7 @@
 						<th class="p-3 w-10">Id</th>
 						<th class="p-3 w-32">Nama Ruangan</th>
 						<th class="p-3 w-32">Fasilitas</th>
-						<th class="p-3 w-32">Lantai</th>	
+						<th class="p-3 w-32">Lantai</th>
 						<th class="p-3 w-28">Aksi</th>
 					</tr>
 				</thead>
@@ -102,7 +102,8 @@
 				<div class="space-y-2 text-slate-900">
 					<label for="select-fasilitas" class="block mb-1 font-medium">Fasilitas</label>
 					{{-- We will target this ID with JavaScript --}}
-					<select id="select-fasilitas" name="fasilitas[]" multiple placeholder="Pilih Fasilitas..." autocomplete="off">
+					<select id="select-fasilitas" name="fasilitas[]" multiple placeholder="Pilih Fasilitas..."
+						autocomplete="off">
 						{{-- The "Pilih Ruangan" is now a placeholder, not an option --}}
 						@foreach ($fasilitas as $item)
 							<option value="{{ $item->fasilitas_id }}">{{ $item->fasilitas_nama }}
@@ -274,15 +275,15 @@
 				url: '{{ url("/api/kelola-fasilitas-ruang/create") }}',
 				type: 'POST',
 				data: {
-					ruangan_id: ruanganId,	
+					ruangan_id: ruanganId,
 					fasilitas_id: dataArr
 				},
-				success: function(response) {
+				success: function (response) {
 					closeModal('addModal');
 					showSuccess('Data berhasil ditambahkan!');
 					table.ajax.reload();
 				},
-				error: function(xhr, status, error) {
+				error: function (xhr, status, error) {
 					showError('Data gagal ditambahkan!');
 				}
 			});
@@ -347,7 +348,25 @@
 					{ data: 'ruangan.ruangan_nama', name: 'ruangan_nama' },
 					{ data: 'fasilitas.fasilitas_nama', name: 'fasilitas_nama', searchable: true },
 					{ data: 'ruangan.lantai', name: 'ruangan_lantai' },
-					{ data: 'action', name: 'action', searchable: true },
+					{
+						data: null,
+						orderable: false,
+						searchable: false,
+						render: function (data) {
+							return `
+							<div class="flex gap-2">
+								<button onclick="openDetail(${data.fasilitas_id})" title="Lihat" class="text-gray-600 hover:text-blue-600">
+									<i class="fas fa-eye"></i>
+								</button>
+								<button onclick="openEdit(${data.fasilitas_id})" title="Edit" class="text-gray-600 hover:text-yellow-600">
+									<i class="fas fa-pen"></i>
+								</button>
+								<button onclick="openDelete(${data.fasilitas_id})" title="Hapus" class="text-gray-600 hover:text-red-600">
+									<i class="fas fa-trash-alt"></i>
+								</button>
+							</div>`;
+						}
+					}
 				]
 			});
 		});

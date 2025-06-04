@@ -91,7 +91,6 @@ class KelolaFasilitasRuang extends Controller
         $dataTotal = 0;
         $data = new Collection();
         if ($request->ruangan_id != '') {
-
             $query = FasilitasRuangan::query();
             $query = $query->with('fasilitas', 'ruangan');
 
