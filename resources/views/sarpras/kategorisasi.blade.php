@@ -54,8 +54,8 @@
                         <th class="p-3 w-10">No</th>
                         <th class="p-3 w-32">Ruang</th>
                         <th class="p-3 w-32">Fasilitas</th>
-                        <th class="p-3 w-28">Tanggal</th>
-                        <th class="p-3 w-28">Status</th>
+                        <th class="p-3 w-28">Tanggal Laporan Tertua</th>
+                        <th class="p-3 w-28">Jumlah</th>
                         <th class="p-3 w-28">Aksi</th>
                     </tr>
                 </thead>
@@ -76,6 +76,10 @@
                         </svg>
                     </button>
                 </div>
+
+                <select name="laporan_id" id="laporan_id" class="w-full mb-3 border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition">
+                    
+                </select>
 
                 <!-- Konten 2 Kolom -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
@@ -137,32 +141,6 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block mb-1 text-gray-600 font-medium">Jumlah Pelapor</label>
-                                <select name="pelapor"
-                                    class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-                                    required>
-                                    <option value="1">
-                                        < 5 (1)</option>
-                                    <option value="2">5-10 (2)</option>
-                                    <option value="3">11-20 (3)</option>
-                                    <option value="4">21-50 (4)</option>
-                                    <option value="5">> 50 (5)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block mb-1 text-gray-600 font-medium">Waktu Kerusakan</label>
-                                <select name="waktu_kerusakan"
-                                    class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-                                    required>
-                                    <option value="1">
-                                        < 1 hari (1)</option>
-                                    <option value="2">1-2 hari (2)</option>
-                                    <option value="3">3-5 hari (3)</option>
-                                    <option value="4">6-14 hari (4)</option>
-                                    <option value="5">> 14 hari (5)</option>
-                                </select>
-                            </div>
-                            <div>
                                 <label class="block mb-1 text-gray-600 font-medium">Waktu Perbaikan</label>
                                 <select name="waktu_perbaikan"
                                     class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
@@ -191,6 +169,9 @@
     </div>
 
     <script>
+        let currentLaporanId = '';
+        let dataLaporan = '';
+
         // MODAL HANDLING
         function openModal(id) {
             document.getElementById(id).classList.remove('hidden');
@@ -212,12 +193,26 @@
                     if (response.success) {
                         const data = response.data;
                         openModal('detailModal');
-                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang_id ?? '-';
-                        document.querySelector('.deskripsi').textContent = data.deskripsi_laporan ?? '-';
-                        document.querySelector('.tanggal').textContent = data.lapor_datetime ?
-                            new Date(data.lapor_datetime).toLocaleDateString('id-ID') : '-';
-                        document.getElementById('detail-photo').src = data.lapor_foto_url ??
-                            '{{ asset('assets/image/placeholder.jpg') }}';
+                        document.querySelector('.fasilitas').textContent = data[0].fasilitas_nama + ' - ' + data[0].ruangan_nama ?? '-';
+                        document.querySelector('.deskripsi').textContent = data[0].deskripsi_laporan ?? '-';
+                        document.querySelector('.tanggal').textContent = data[0].lapor_datetime ?
+                            new Date(data[0].lapor_datetime).toLocaleDateString('id-ID') : '-';
+                        document.getElementById('detail-photo').src = data[0].lapor_foto_url ?? '{{ asset('assets/image/placeholder.jpg') }}';
+                        document.getElementById('laporan_id').value = data[0].laporan_id;
+                        currentLaporanId = data[0].laporan_id;
+                        dataLaporan = data;
+
+                        document.getElementById('laporan_id').innerHTML = '';
+
+                        for (let i = 0; i < data.length; i++) {
+                            const element = data[i];
+                            if (element.laporan_id !== currentLaporanId) {
+                                document.getElementById('laporan_id').innerHTML += `<option value="${element.laporan_id}">${element.user_nama} - ${element.lapor_datetime}</option>`;
+                            } else {
+                                document.getElementById('laporan_id').innerHTML += `<option value="${element.laporan_id}" selected>${element.user_nama} - ${element.lapor_datetime}</option>`;
+                            }
+                        }
+
                     } else {
                         showError(response.message);
                     }
@@ -228,12 +223,27 @@
                 });
         }
 
+        document.getElementById('laporan_id').addEventListener('change', function() {
+            console.log(this.value);
+            const laporanId = this.value;
+            const laporan = dataLaporan.find((laporan) => laporan.laporan_id == laporanId);
+            console.log(laporan);
+            if (laporan) {
+                document.getElementById('detail-photo').src = laporan.lapor_foto_url ?? '{{ asset('assets/image/placeholder.jpg') }}';
+                document.querySelector('.fasilitas').textContent = laporan.fasilitas_nama + ' - ' + laporan.ruangan_nama ?? '-';
+                document.querySelector('.deskripsi').textContent = laporan.deskripsi_laporan ?? '-';
+                document.querySelector('.tanggal').textContent = laporan.lapor_datetime ?
+                    new Date(laporan.lapor_datetime).toLocaleDateString('id-ID') : '-';
+            }
+        });
+
         // SUBMIT PENILAIAN
         function submitPenilaian() {
             const form = document.getElementById('penilaianForm');
             const formData = new FormData(form);
+            formData.append('fasilitas_ruang_id', document.querySelector('.fasilitas').textContent);
             const data = Object.fromEntries(formData);
-
+            
             // Logika pengiriman data penilaian ke server (belum diimplementasikan)
             Swal.fire({
                 icon: 'success',
@@ -299,35 +309,25 @@
                         }
                     },
                     {
-                        data: 'fasilitas_ruang_id',
-                        name: 'fasilitas_ruang_id',
+                        data: 'ruangan_nama',
+                        name: 'ruangan_nama',
                         defaultContent: '-'
                     },
                     {
-                        data: 'fasilitas_ruang_id',
-                        name: 'fasilitas_ruang_id',
+                        data: 'fasilitas_nama',
+                        name: 'fasilitas_nama',
                         defaultContent: '-'
                     },
                     {
-                        data: 'lapor_datetime',
-                        name: 'lapor_datetime',
+                        data: 'oldest_lapor_datetime',
+                        name: 'oldest_lapor_datetime',
                         render: function(data) {
                             return data ? new Date(data).toLocaleDateString('id-ID') : '-';
                         }
                     },
                     {
-                        data: null,
-                        name: 'status',
-                        render: function(data, type, row) {
-                            if (row.is_done && !row.is_verified) {
-                                return '<span class="bg-red-500/20 text-red-900 text-xs px-2 py-1 rounded uppercase font-bold">Ditolak</span>';
-                            } else if (row.is_done) {
-                                return '<span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded uppercase font-bold">Selesai</span>';
-                            } else if (row.is_verified) {
-                                return '<span class="bg-blue-500/20 text-blue-900 text-xs px-2 py-1 rounded uppercase font-bold">Diproses</span>';
-                            }
-                            return '-';
-                        }
+                        data: 'jumlah_laporan',
+                        name: 'jumlah_laporan',
                     },
                     {
                         data: null,
@@ -335,7 +335,7 @@
                         searchable: false,
                         render: function(data) {
                             return `
-                                <button onclick="openDetail(${data.laporan_id})"
+                                <button onclick="openDetail('${data.fasilitas_ruang_id}')"
                                     class="bg-primary text-white rounded py-2 px-4 hover:bg-blue-700">Beri Nilai</button>
                             `;
                         }

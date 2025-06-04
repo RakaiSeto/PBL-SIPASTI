@@ -7,6 +7,8 @@ use App\Models\t_laporan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class LaporanController extends Controller
 {
@@ -24,38 +26,44 @@ class LaporanController extends Controller
     {
         try {
             $columns = [
-                0 => 'laporan_id',
-                1 => 'user_id',
-                2 => 'fasilitas_ruang_id',
-                3 => 'fasilitas_ruang_id',
-                4 => 'deskripsi_laporan',
-                5 => 'lapor_datetime',
-                6 => 'is_verified',
+                0 => 'fasilitas_ruang_id',
+                1 => 'jumlah_laporan',
+                2 => 'oldest_lapor_datetime',
+                3 => 'ruangan_nama',
+                4 => 'fasilitas_nama',
             ];
 
             $status = $request->input('status', 'pending'); // Default ke 'pending' jika tidak ada parameter
 
-            $query = t_laporan::select(
-                'laporan_id',
-                'user_id',
-                'fasilitas_ruang_id',
-                'deskripsi_laporan',
-                'lapor_datetime',
-                'is_verified',
-                'is_done'
-            );
+            $query = t_laporan::leftJoin('t_fasilitas_ruang', 't_laporan.fasilitas_ruang_id', '=', 't_fasilitas_ruang.fasilitas_ruang_id')
+                ->leftJoin('m_ruangan', 't_fasilitas_ruang.ruangan_id', '=', 'm_ruangan.ruangan_id')
+                ->leftJoin('m_fasilitas', 't_fasilitas_ruang.fasilitas_id', '=', 'm_fasilitas.fasilitas_id')
+                ->where('t_laporan.is_verified', 1)
+                ->where('t_laporan.is_done', 0)
+                ->select(
+                    't_fasilitas_ruang.fasilitas_ruang_id',
+                    DB::raw('count(*) as jumlah_laporan'),
+                    DB::raw('MIN(t_laporan.lapor_datetime) as oldest_lapor_datetime'),
+                    'm_ruangan.ruangan_nama as ruangan_nama',
+                    'm_fasilitas.fasilitas_nama as fasilitas_nama'
+                )
+                ->groupBy(
+                    't_fasilitas_ruang.fasilitas_ruang_id',
+                    'm_ruangan.ruangan_nama',
+                    'm_fasilitas.fasilitas_nama'
+                );
 
             // Filter berdasarkan status
             if ($status === 'pending') {
-                $query->where('is_verified', 0)->where('is_done', 0);
+                $query->where('t_laporan.is_verified', 0)->where('t_laporan.is_done', 0);
             } elseif ($status === 'processed') {
-                $query->where('is_verified', 1)->where('is_done', 0); // Hanya diproses (is_verified = 1, is_done = 0)
+                $query->where('t_laporan.is_verified', 1)->where('t_laporan.is_done', 0); // Hanya diproses (is_verified = 1, is_done = 0)
             } elseif ($status === 'completed') {
-                $query->where('is_verified', 1)->where('is_done', 1); // Selesai
+                $query->where('t_laporan.is_verified', 1)->where('t_laporan.is_done', 1); // Selesai
             } elseif ($status === 'rejected') {
-                $query->where('is_verified', 0)->where('is_done', 1); // Ditolak
+                $query->where('t_laporan.is_verified', 0)->where('t_laporan.is_done', 1); // Ditolak
             } elseif ($status === 'completed,rejected') {
-                $query->where('is_done', 1); // Selesai dan Ditolak
+                $query->where('t_laporan.is_done', 1); // Selesai dan Ditolak
             }
 
             $totalData = $query->count();
@@ -63,20 +71,21 @@ class LaporanController extends Controller
 
             $limit = $request->input('length', 10);
             $start = $request->input('start', 0);
-            $orderColumn = $columns[$request->input('order.0.column', 4)];
+            $orderColumn = $columns[$request->input('order.0.column', 2)]; // Default to oldest_lapor_datetime
             $orderDir = $request->input('order.0.dir', 'desc');
 
             // Filter fasilitas
             if ($request->has('fasilitas') && !empty($request->fasilitas)) {
-                $query->where('fasilitas_ruang_id', 'like', '%' . $request->fasilitas . '%');
+                $query->where('t_fasilitas_ruang.fasilitas_ruang_id', 'like', '%' . $request->fasilitas . '%');
             }
 
-            // Pencarian deskripsi
-            if ($request->has('search') && !empty($request->search)) {
-                $search = $request->search;
-                $query->where('deskripsi_laporan', 'like', '%' . $search . '%');
-                $totalFiltered = $query->count();
-            }
+            // Removed search on deskripsi_laporan as it's not in the GROUP BY clause
+            // If you need search on deskripsi_laporan, it needs to be applied BEFORE the groupBy
+            // if ($request->has('search') && !empty($request->search)) {
+            //     $search = $request->search;
+            //     $query->where('deskripsi_laporan', 'like', '%' . $search . '%');
+            //     $totalFiltered = $query->count();
+            // }
 
             $laporans = $query->offset($start)
                 ->limit($limit)
@@ -86,13 +95,11 @@ class LaporanController extends Controller
             $data = [];
             foreach ($laporans as $laporan) {
                 $data[] = [
-                    'laporan_id' => $laporan->laporan_id,
-                    'user_id' => $laporan->user_id,
                     'fasilitas_ruang_id' => $laporan->fasilitas_ruang_id,
-                    'deskripsi_laporan' => $laporan->deskripsi_laporan,
-                    'lapor_datetime' => $laporan->lapor_datetime,
-                    'is_verified' => $laporan->is_verified,
-                    'is_done' => $laporan->is_done,
+                    'ruangan_nama' => $laporan->ruangan_nama,
+                    'fasilitas_nama' => $laporan->fasilitas_nama,
+                    'jumlah_laporan' => $laporan->jumlah_laporan,
+                    'oldest_lapor_datetime' => $laporan->oldest_lapor_datetime,
                 ];
             }
 
@@ -113,17 +120,42 @@ class LaporanController extends Controller
     public function show($id)
     {
         try {
-            $laporan = t_laporan::select(
-                'laporan_id',
-                'user_id',
-                'fasilitas_ruang_id',
-                'deskripsi_laporan',
-                'lapor_datetime',
-                'is_verified',
-                'is_done'
-            )->findOrFail($id);
+            $laporan = t_laporan::leftJoin('t_fasilitas_ruang', 't_laporan.fasilitas_ruang_id', '=', 't_fasilitas_ruang.fasilitas_ruang_id')
+                ->leftJoin('m_ruangan', 't_fasilitas_ruang.ruangan_id', '=', 'm_ruangan.ruangan_id')
+                ->leftJoin('m_fasilitas', 't_fasilitas_ruang.fasilitas_id', '=', 'm_fasilitas.fasilitas_id')
+                ->leftJoin('m_user', 't_laporan.user_id', '=', 'm_user.user_id')
+                ->select(
+                    'laporan_id',
+                    't_laporan.user_id',
+                    't_fasilitas_ruang.fasilitas_ruang_id',
+                    'deskripsi_laporan',
+                    'lapor_datetime',
+                    'is_verified',
+                    'is_done',
+                    'm_ruangan.ruangan_nama as ruangan_nama',
+                    'm_fasilitas.fasilitas_nama as fasilitas_nama',
+                    'm_user.fullname as user_nama',
+                    't_laporan.lapor_foto as lapor_foto'
+                )->where('t_fasilitas_ruang.fasilitas_ruang_id', $id)
+                ->where('t_laporan.is_verified', 1)
+                ->where('t_laporan.is_done', 0)
+            ->get();
 
-            $laporan->lapor_foto_url = $laporan->lapor_foto ? asset('storage/laporan/' . $laporan->laporan_id . '.jpg') : null;
+            foreach ($laporan as $item) {
+                // Check if lapor_foto content exists in the database record
+                if ($item->lapor_foto) {
+                    $filePath = 'laporan/' . $item->laporan_id . '.jpg';
+                    // Use Laravel's asset helper to generate the full URL
+                    $item->lapor_foto_url = asset('storage/' . $filePath);
+
+                    if (!Storage::disk('public')->exists('laporan/' . $item->laporan_id . '.jpg')) {
+                        // Laravel's Storage facade automatically creates parent directories if they don't exist.
+                        Storage::disk('public')->put($filePath, $item->lapor_foto);
+                    }
+
+                    $item->lapor_foto = null;
+                }
+            }
 
             return response()->json([
                 'success' => true,
