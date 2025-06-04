@@ -129,7 +129,7 @@ Route::group(['middleware' => ['auth.refresh', 'role:Civitas'], 'prefix' => 'civ
     Route::get('/laporkan', [CivitasController::class, 'laporkan'])->name('civitas.laporkan');
     Route::get('/status', [CivitasController::class, 'status'])->name('civitas.status');
     Route::post('/status/list', [CivitasController::class, 'list'])->name('civitas.status-laporan.list');
-    Route::get('/status/{id}', [CivitasController::class, 'show'])->name('civitas.status-laporan.show');
+    Route::get('/status-laporan/{id}', [CivitasController::class, 'show'])->name('civitas.status-laporan.show');
     Route::get('/rating', [CivitasController::class, 'rating'])->name('civitas.rating');
     Route::post('/rating/list', [CivitasController::class, 'ratingList'])->name('civitas.rating.list');
     Route::post('/rating/submit', [CivitasController::class, 'submitRating'])->name('civitas.rating.submit');
