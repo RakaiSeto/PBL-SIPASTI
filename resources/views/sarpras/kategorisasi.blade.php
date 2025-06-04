@@ -77,8 +77,9 @@
                     </button>
                 </div>
 
-                <select name="laporan_id" id="laporan_id" class="w-full mb-3 border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition">
-                    
+                <select name="laporan_id" id="laporan_id"
+                    class="w-full mb-3 border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition">
+
                 </select>
 
                 <!-- Konten 2 Kolom -->
@@ -102,59 +103,57 @@
                     </div>
 
                     <!-- Kanan: Form Penilaian -->
-                    <form id="penilaianForm" class="space-y-4 text-sm">
-                        <div class="grid grid-cols-1 gap-3">
-                            <div>
-                                <label class="block mb-1 text-gray-600 font-medium">Kerusakan</label>
-                                <select name="kerusakan"
-                                    class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-                                    required>
-                                    <option value="1">Sangat ringan (1)</option>
-                                    <option value="2">Ringan (2)</option>
-                                    <option value="3">Sedang (3)</option>
-                                    <option value="4">Berat (4)</option>
-                                    <option value="5">Sangat berat (5)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block mb-1 text-gray-600 font-medium">Dampak</label>
-                                <select name="dampak"
-                                    class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-                                    required>
-                                    <option value="1">Sangat rendah (1)</option>
-                                    <option value="2">Rendah (2)</option>
-                                    <option value="3">Sedang (3)</option>
-                                    <option value="4">Tinggi (4)</option>
-                                    <option value="5">Sangat tinggi (5)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block mb-1 text-gray-600 font-medium">Frekuensi</label>
-                                <select name="frekuensi"
-                                    class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-                                    required>
-                                    <option value="1">Sangat jarang (1)</option>
-                                    <option value="2">Jarang (2)</option>
-                                    <option value="3">Sering (3)</option>
-                                    <option value="4">Sangat sering (4)</option>
-                                    <option value="5">Selalu digunakan (5)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block mb-1 text-gray-600 font-medium">Waktu Perbaikan</label>
-                                <select name="waktu_perbaikan"
-                                    class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-                                    required>
-                                    <option value="1">
-                                        < 24 jam (1)</option>
-                                    <option value="2">1-2 hari (2)</option>
-                                    <option value="3">3-5 hari (3)</option>
-                                    <option value="4">1 minggu (4)</option>
-                                    <option value="5">> 1 minggu (5)</option>
-                                </select>
-                            </div>
+                    <div class="grid grid-cols-1 gap-3">
+                        <div>
+                            <label class="block mb-1 text-gray-600 font-medium">Kerusakan</label>
+                            <select name="kerusakan" id="kerusakan"
+                                class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                                required>
+                                <option value="1">Sangat ringan (1)</option>
+                                <option value="2">Ringan (2)</option>
+                                <option value="3">Sedang (3)</option>
+                                <option value="4">Berat (4)</option>
+                                <option value="5">Sangat berat (5)</option>
+                            </select>
                         </div>
-                    </form>
+                        <div>
+                            <label class="block mb-1 text-gray-600 font-medium">Dampak</label>
+                            <select name="dampak" id="dampak"
+                                class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                                required>
+                                <option value="1">Sangat rendah (1)</option>
+                                <option value="2">Rendah (2)</option>
+                                <option value="3">Sedang (3)</option>
+                                <option value="4">Tinggi (4)</option>
+                                <option value="5">Sangat tinggi (5)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-600 font-medium">Frekuensi</label>
+                            <select name="frekuensi" id="frekuensi"
+                                class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                                required>
+                                <option value="1">Sangat jarang (1)</option>
+                                <option value="2">Jarang (2)</option>
+                                <option value="3">Sering (3)</option>
+                                <option value="4">Sangat sering (4)</option>
+                                <option value="5">Selalu digunakan (5)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-600 font-medium">Waktu Perbaikan</label>
+                            <select name="waktu_perbaikan" id="waktu_perbaikan"
+                                class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                                required>
+                                <option value="1">
+                                    < 24 jam (1)</option>
+                                <option value="2">1-2 hari (2)</option>
+                                <option value="3">3-5 hari (3)</option>
+                                <option value="4">1 minggu (4)</option>
+                                <option value="5">> 1 minggu (5)</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Footer: Tombol -->
@@ -183,11 +182,11 @@
 
         function openDetail(id) {
             fetch(`/sarpras/laporan/${id}`, {
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json'
-                    }
-                })
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                }
+            })
                 .then(res => res.json())
                 .then(response => {
                     if (response.success) {
@@ -223,7 +222,7 @@
                 });
         }
 
-        document.getElementById('laporan_id').addEventListener('change', function() {
+        document.getElementById('laporan_id').addEventListener('change', function () {
             console.log(this.value);
             const laporanId = this.value;
             const laporan = dataLaporan.find((laporan) => laporan.laporan_id == laporanId);
@@ -239,11 +238,26 @@
 
         // SUBMIT PENILAIAN
         function submitPenilaian() {
-            const form = document.getElementById('penilaianForm');
-            const formData = new FormData(form);
-            formData.append('fasilitas_ruang_id', document.querySelector('.fasilitas').textContent);
-            const data = Object.fromEntries(formData);
-            
+            $.ajax({
+                url: '{{ route('sarpras.laporan.penilaian') }}',
+                type: 'POST',
+                data: {
+                    _token: document.querySelector('meta[name="csrf-token"]').content,
+                    laporan_id: currentLaporanId,
+                    kerusakan: document.getElementById('kerusakan').value,
+                    dampak: document.getElementById('dampak').value,
+                    frekuensi: document.getElementById('frekuensi').value,
+                    waktu_perbaikan: document.getElementById('waktu_perbaikan').value,
+                },
+                success: function (response) {
+                    console.log(response);
+                    window.location.reload();
+                },
+                error: function (xhr) {
+                    showError('Gagal mengirim data penilaian');
+                }
+            });
+
             // Logika pengiriman data penilaian ke server (belum diimplementasikan)
             Swal.fire({
                 icon: 'success',
@@ -279,7 +293,7 @@
         }
 
         // DATA TABLE INITIALIZATION
-        $(document).ready(function() {
+        $(document).ready(function () {
             const table = $('#kategorisasiTable').DataTable({
                 searching: false,
                 lengthChange: false,
@@ -289,7 +303,7 @@
                 ajax: {
                     type: "POST",
                     url: '{{ route('sarpras.laporan.list') }}',
-                    data: function(d) {
+                    data: function (d) {
                         d.fasilitas = $('#filterFasilitas').val();
                         d.search = $('#searchInput').val();
                         d.status = 'processed'; // Tambahkan parameter status
@@ -297,57 +311,57 @@
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         showError('Gagal mengambil data laporan');
                     }
                 },
                 columns: [{
-                        data: null,
-                        name: 'no',
-                        render: function(data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-                    {
-                        data: 'ruangan_nama',
-                        name: 'ruangan_nama',
-                        defaultContent: '-'
-                    },
-                    {
-                        data: 'fasilitas_nama',
-                        name: 'fasilitas_nama',
-                        defaultContent: '-'
-                    },
-                    {
-                        data: 'oldest_lapor_datetime',
-                        name: 'oldest_lapor_datetime',
-                        render: function(data) {
-                            return data ? new Date(data).toLocaleDateString('id-ID') : '-';
-                        }
-                    },
-                    {
-                        data: 'jumlah_laporan',
-                        name: 'jumlah_laporan',
-                    },
-                    {
-                        data: null,
-                        orderable: false,
-                        searchable: false,
-                        render: function(data) {
-                            return `
-                                <button onclick="openDetail('${data.fasilitas_ruang_id}')"
-                                    class="bg-primary text-white rounded py-2 px-4 hover:bg-blue-700">Beri Nilai</button>
-                            `;
-                        }
+                    data: null,
+                    name: 'no',
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
                     }
+                },
+                {
+                    data: 'ruangan_nama',
+                    name: 'ruangan_nama',
+                    defaultContent: '-'
+                },
+                {
+                    data: 'fasilitas_nama',
+                    name: 'fasilitas_nama',
+                    defaultContent: '-'
+                },
+                {
+                    data: 'oldest_lapor_datetime',
+                    name: 'oldest_lapor_datetime',
+                    render: function (data) {
+                        return data ? new Date(data).toLocaleDateString('id-ID') : '-';
+                    }
+                },
+                {
+                    data: 'jumlah_laporan',
+                    name: 'jumlah_laporan',
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: function (data) {
+                        return `
+                                    <button onclick="openDetail('${data.fasilitas_ruang_id}')"
+                                        class="bg-primary text-white rounded py-2 px-4 hover:bg-blue-700">Beri Nilai</button>
+                                `;
+                    }
+                }
                 ]
             });
 
-            window.filterTable = function() {
+            window.filterTable = function () {
                 table.ajax.reload();
             };
 
-            $('#tampilData').on('change', function() {
+            $('#tampilData').on('change', function () {
                 table.page.len($(this).val()).draw();
             });
         });

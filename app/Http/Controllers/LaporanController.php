@@ -40,6 +40,10 @@ class LaporanController extends Controller
                 ->leftJoin('m_fasilitas', 't_fasilitas_ruang.fasilitas_id', '=', 'm_fasilitas.fasilitas_id')
                 ->where('t_laporan.is_verified', 1)
                 ->where('t_laporan.is_done', 0)
+                ->where('spk_kerusakan', null)
+                ->where('spk_dampak', null)
+                ->where('spk_frekuensi', null)
+                ->where('spk_waktu_perbaikan', null)
                 ->select(
                     't_fasilitas_ruang.fasilitas_ruang_id',
                     DB::raw('count(*) as jumlah_laporan'),
@@ -139,6 +143,10 @@ class LaporanController extends Controller
                 )->where('t_fasilitas_ruang.fasilitas_ruang_id', $id)
                 ->where('t_laporan.is_verified', 1)
                 ->where('t_laporan.is_done', 0)
+                ->where('spk_kerusakan', null)
+                ->where('spk_dampak', null)
+                ->where('spk_frekuensi', null)
+                ->where('spk_waktu_perbaikan', null)
             ->get();
 
             foreach ($laporan as $item) {
@@ -180,6 +188,7 @@ class LaporanController extends Controller
         try {
             $laporan = t_laporan::findOrFail($id);
             $laporan->is_verified = 1;
+            $laporan->verifikasi_datetime = now();
             $laporan->save();
 
             return response()->json([
@@ -206,6 +215,7 @@ class LaporanController extends Controller
             $laporan = t_laporan::findOrFail($id);
             $laporan->is_verified = 1;
             $laporan->is_done = 1;
+            $laporan->selesai_datetime = now();
             $laporan->save();
 
             return response()->json([
@@ -239,6 +249,7 @@ class LaporanController extends Controller
 
             $laporan->is_done = true;
             $laporan->is_verified = false;
+            $laporan->selesai_datetime = now();
             $laporan->save();
 
             return response()->json([
@@ -255,6 +266,43 @@ class LaporanController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat menolak laporan'
+            ], 500);
+        }
+    }
+
+    public function penilaian(Request $request)
+    {
+        
+        try {
+            $fasilitas_ruang_id = t_laporan::where('laporan_id', $request->laporan_id)->first()->fasilitas_ruang_id;
+
+            $laporans = t_laporan::where('fasilitas_ruang_id', $fasilitas_ruang_id)
+            ->where('is_verified', 1)
+            ->where('is_done', 0)
+            ->get();
+
+            foreach ($laporans as $laporan) {
+                $laporan->spk_kerusakan = $request->kerusakan;
+                $laporan->spk_dampak = $request->dampak;
+                $laporan->spk_frekuensi = $request->frekuensi;
+                $laporan->spk_waktu_perbaikan = $request->waktu_perbaikan;
+                $laporan->save();
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Penilaian berhasil disimpan'
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Laporan tidak ditemukan'
+            ], 404);
+        } catch (\Exception $e) {
+            Log::error('Gagal menyimpan penilaian: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menyimpan penilaian'
             ], 500);
         }
     }

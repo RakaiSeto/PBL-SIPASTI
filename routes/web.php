@@ -63,6 +63,7 @@ Route::middleware(['auth', 'role:Sarpras'])->prefix('sarpras/laporan')->name('sa
     Route::get('/export-pdf', function () {
         return response()->json(['message' => 'Export PDF belum diimplementasikan']);
     })->name('export_pdf');
+    Route::post('/penilaian', [LaporanController::class, 'penilaian'])->name('penilaian');
 });
 
 // Group Admin
@@ -143,6 +144,8 @@ Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sar
     Route::get('/kelolaLaporan', function () {
         return view('sarpras.kelolaLaporan');
     })->name('sarpras.kelolaLaporan');
+
+
 
     Route::get('/proses_spk', function () {
         return view('sarpras.proses_spk');
