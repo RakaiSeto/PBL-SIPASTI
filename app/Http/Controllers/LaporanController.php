@@ -41,6 +41,7 @@ class LaporanController extends Controller
                 ->leftJoin('m_user', 't_laporan.user_id', '=', 'm_user.user_id')
                 ->where('t_laporan.is_verified', 0)
                 ->select(
+                    't_laporan.laporan_id',
                     't_fasilitas_ruang.fasilitas_ruang_id',
                     DB::raw('count(*) as jumlah_laporan'),
                     DB::raw('MIN(t_laporan.lapor_datetime) as oldest_lapor_datetime'),
@@ -51,6 +52,7 @@ class LaporanController extends Controller
                     't_laporan.deskripsi_laporan as deskripsi_laporan'
                 )
                 ->groupBy(
+                    't_laporan.laporan_id',
                     't_fasilitas_ruang.fasilitas_ruang_id',
                     'm_ruangan.ruangan_nama',
                     'm_fasilitas.fasilitas_nama',
@@ -101,6 +103,7 @@ class LaporanController extends Controller
             $data = [];
             foreach ($laporans as $laporan) {
                 $data[] = [
+                    'laporan_id' => $laporan->laporan_id,
                     'fasilitas_ruang_id' => $laporan->fasilitas_ruang_id,
                     'ruangan_nama' => $laporan->ruangan_nama,
                     'fasilitas_nama' => $laporan->fasilitas_nama,
@@ -285,6 +288,28 @@ class LaporanController extends Controller
                 'message' => 'Terjadi kesalahan saat mengambil data'
             ], 500);
         }
+    }
+
+    public function detail($id)
+    {
+        $laporan = t_laporan::with('user', 'fasilitas_ruang.ruangan', 'fasilitas_ruang.fasilitas')->where('laporan_id', $id)->first();
+        if ($laporan->lapor_foto) {
+            $filePath = 'laporan/' . $laporan->laporan_id . '.jpg';
+            // Use Laravel's asset helper to generate the full URL
+            $laporan->lapor_foto_url = asset('storage/' . $filePath);
+
+            if (!Storage::disk('public')->exists('laporan/' . $laporan->laporan_id . '.jpg')) {
+                // Laravel's Storage facade automatically creates parent directories if they don't exist.
+                Storage::disk('public')->put($filePath, $laporan->lapor_foto);
+            }
+
+            $laporan->lapor_foto = null;
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $laporan
+        ]);
     }
 
     public function verify($id)

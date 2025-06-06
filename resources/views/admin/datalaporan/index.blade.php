@@ -130,15 +130,15 @@
                             <ul class="space-y-2 text-sm text-gray-700">
                                 <li class="flex items-center gap-2">
                                     <i class="fas fa-flag text-gray-500 w-4"></i>
-                                    <span><strong>Baru:</strong> <span class="statusBaru">-</span></span>
+                                    <span><strong>Baru:</strong> <span id="statusBaru">-</span></span>
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <i class="fas fa-spinner text-yellow-500 w-4"></i>
-                                    <span><strong>Diproses:</strong> <span class="statusProses">-</span></span>
+                                    <span><strong>Diproses:</strong> <span id="statusProses">-</span></span>
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <i class="fas fa-check-circle text-green-600 w-4"></i>
-                                    <span><strong>Selesai:</strong> <span class="statusSelesai">-</span></span>
+                                    <span><strong>Selesai:</strong> <span id="statusSelesai">-</span></span>
                                 </li>
                             </ul>
                         </div>
@@ -165,7 +165,7 @@
         }
 
         function openDetail(id) {
-            fetch(`/admin/laporan/${id}`, {
+            fetch(`/admin/laporan/detail/${id}`, {
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         'Accept': 'application/json'
@@ -177,8 +177,11 @@
                         const data = response.data;
                         openModal('detailModal');
                         document.querySelector('.user_id').textContent = data.user_id ?? '-';
-                        document.querySelector('.ruang').textContent = data.fasilitas_ruang_id ?? '-';
-                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang_id ?? '-';
+                        document.querySelector('.ruang').textContent = data.fasilitas_ruang.ruangan.ruangan_nama ?
+                            data.fasilitas_ruang.ruangan.ruangan_nama + ' - lantai ' + data.fasilitas_ruang.ruangan.lantai :
+                            '-';
+                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang.fasilitas.fasilitas_nama ??
+                            '-';
                         document.querySelector('.deskripsi').textContent = data.deskripsi_laporan ?? '-';
                         document.querySelector('.tanggal').textContent = data.lapor_datetime ?
                             new Date(data.lapor_datetime).toLocaleDateString('id-ID') :
@@ -190,6 +193,10 @@
                             data.is_verified ?
                             'Diproses' :
                             'Menunggu Verifikasi';
+
+                        document.getElementById('statusBaru').textContent = data.lapor_datetime ?? '-';
+                        document.getElementById('statusProses').textContent = data.verifikasi_datetime ?? '-';
+                        document.getElementById('statusSelesai').textContent = data.selesai_datetime ?? '-';
 
                         // Ganti foto laporan
                         const img = document.getElementById('detail-photo');
@@ -243,8 +250,8 @@
                         }
                     },
                     {
-                        data: 'user_id',
-                        name: 'user_id',
+                        data: 'user_nama',
+                        name: 'user_nama',
                         defaultContent: '-'
                     },
                     {
@@ -284,13 +291,13 @@
                         }
                     },
                     {
-                        data: null,
+                        data: 'laporan_id',
                         orderable: false,
                         searchable: false,
                         render: function(data) {
                             return `
                                 <div class="flex gap-2">
-                                    <button onclick="openDetail(${data.laporan_id})" title="Detail"
+                                    <button onclick="openDetail(${data})" title="Detail"
                                         class="flex items-center gap-1 px-3 py-1 text-white bg-blue-600 hover:bg-blue-700 rounded">
                                         <i class="fas fa-eye"></i> Detail
                                     </button>
