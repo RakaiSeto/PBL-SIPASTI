@@ -265,18 +265,18 @@
                         }
                     },
                     {
-                        data: 'user_id',
-                        name: 'user_id',
+                        data: 'user_nama',
+                        name: 'user_nama',
                         defaultContent: '-'
                     },
                     {
-                        data: 'fasilitas_ruang_id',
-                        name: 'fasilitas_ruang_id',
+                        data: 'ruangan_nama',
+                        name: 'ruangan_nama',
                         defaultContent: '-'
                     },
                     {
-                        data: 'fasilitas_ruang_id',
-                        name: 'fasilitas_ruang_id',
+                        data: 'fasilitas_nama',
+                        name: 'fasilitas_nama',
                         defaultContent: '-'
                     },
                     {
