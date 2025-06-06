@@ -28,9 +28,26 @@ class StatistikController extends Controller
             $bulanLaporan[] = date('M', strtotime("$tahun-$bulan-01")); // Contoh: Jan, Feb, ...
             $jumlahLaporan[] = Laporan::where('lapor_datetime', 'like', "$tahun-$bulan%")->count();
         }
+            $totalLaporanDiverifikasi = Laporan::where('is_verified', 1)
+                ->where('is_done', 0)
+                ->count();
+
+            $totalLaporanTolak = Laporan::where('is_done', 1)
+                ->where('is_verified', 0)
+                ->count();
+
+            $totalLaporanProses = Laporan::where('is_verified', 1)
+                ->where('is_done', 0)
+                ->count();
+
+            $totalLaporanSelesai = Laporan::where('is_done', 1)
+                ->where('is_verified', 1)
+                ->count();
+
         
 
-            return view('admin.laporanstatistik.index', compact('totalLaporan', 'totalLaporanDitolak', 'totalFasilitas', 'bulanLaporan', 'jumlahLaporan', 'totalLaporanSelesai'));
+
+            return view('admin.laporanstatistik.index', compact('totalLaporan', 'totalLaporanDitolak', 'totalFasilitas', 'bulanLaporan', 'jumlahLaporan', 'totalLaporanSelesai', 'totalLaporanDiverifikasi', 'totalLaporanProses'));
         }
 
 }   
