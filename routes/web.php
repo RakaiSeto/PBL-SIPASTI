@@ -37,6 +37,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin/laporan')->name('admin.
     Route::get('/', [LaporanController::class, 'index'])->name('index');
     Route::post('/list', [LaporanController::class, 'list'])->name('list');
     Route::get('/{id}', [LaporanController::class, 'show'])->name('show');
+    Route::get('/detail/{id}', [LaporanController::class, 'detail'])->name('detail');
     Route::put('/verify/{id}', [LaporanController::class, 'verify'])->name('verify');
     Route::put('/complete/{id}', [LaporanController::class, 'complete'])->name('complete');
     Route::put('/reject/{id}', [LaporanController::class, 'reject'])->name('reject');
@@ -52,7 +53,9 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin/laporan')->name('admin.
 Route::middleware(['auth', 'role:Sarpras'])->prefix('sarpras/laporan')->name('sarpras.laporan.')->group(function () {
     Route::get('/', [LaporanController::class, 'index'])->name('index');
     Route::post('/list', [LaporanController::class, 'list'])->name('list');
+    Route::post('/list-kategorisasi', [LaporanController::class, 'listKategorisasi'])->name('listKategorisasi');
     Route::get('/{id}', [LaporanController::class, 'show'])->name('show');
+    Route::get('/detail/{id}', [LaporanController::class, 'detail'])->name('detail');
     Route::put('/verify/{id}', [LaporanController::class, 'verify'])->name('verify');
     Route::put('/complete/{id}', [LaporanController::class, 'complete'])->name('complete');
     Route::put('/reject/{id}', [LaporanController::class, 'reject'])->name('reject');

@@ -302,7 +302,7 @@
                 pageLength: 10,
                 ajax: {
                     type: "POST",
-                    url: '{{ route('sarpras.laporan.list') }}',
+                    url: '{{ route('sarpras.laporan.listKategorisasi') }}',
                     data: function (d) {
                         d.fasilitas = $('#filterFasilitas').val();
                         d.search = $('#searchInput').val();
