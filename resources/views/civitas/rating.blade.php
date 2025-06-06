@@ -50,7 +50,8 @@
                         <th class="p-3">No</th>
                         <th class="p-3">Ruang</th>
                         <th class="p-3">Fasilitas</th>
-                        <th class="p-3">Tanggal</th>
+                        <th class="p-3">Tanggal Dibuat</th>
+                        <th class="p-3">Tanggal Selesai</th>
                         <th class="p-3">Status</th>
                         <th class="p-3">Aksi</th>
                     </tr>
@@ -58,6 +59,84 @@
             </table>
         </div>
     </div>
+
+    <!-- MODAL: DETAIL LAPORAN + FEEDBACK -->
+    <div id="modalLihatFeedback" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg w-full max-w-3xl shadow-lg p-6 relative overflow-y-auto max-h-[95vh]">
+            <!-- Header -->
+            <div class="relative mb-4">
+                <h2 class="text-2xl font-bold">Detail Laporan & Umpan Balik</h2>
+                <button class="absolute right-2 top-2 text-gray-500 hover:text-red-500 text-xl"
+                    onclick="tutupModalFeedback()">✕</button>
+            </div>
+
+            <!-- Informasi Laporan -->
+            <div class="space-y-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Info Utama -->
+                    <div class="space-y-2">
+                        <div>
+                            <h4 class="text-sm text-gray-500 font-medium">Pelapor</h4>
+                            <p class="pelapor text-gray-800 text-base">-</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm text-gray-500 font-medium">Ruangan</h4>
+                            <p class="ruang text-gray-800 text-base">-</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm text-gray-500 font-medium">Fasilitas</h4>
+                            <p class="fasilitas text-gray-800 text-base">-</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm text-gray-500 font-medium mb-1">Deskripsi</h4>
+                            <p class="deskripsi text-gray-800 text-base">-</p>
+                        </div>
+                    </div>
+
+                    <!-- Foto -->
+                    <div>
+                        <h4 class="text-sm text-gray-500 font-medium mb-1">Foto Fasilitas</h4>
+                        <div class="rounded overflow-hidden shadow border">
+                            <img id="detail-photo" src="{{ asset('assets/profile/default.jpg') }}" alt="Foto Fasilitas"
+                                class="w-full h-auto object-cover">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Riwayat Status -->
+                <div>
+                    <h4 class="text-sm text-gray-500 font-medium mb-2">Riwayat Status</h4>
+                    <div class="bg-gray-50 p-4 rounded border">
+                        <ul class="space-y-2 text-sm text-gray-700" id="riwayatStatus">
+                            <!-- Riwayat akan dimuat di sini -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Umpan Balik -->
+                <div class="border-t pt-4">
+                    <h3 class="text-lg font-semibold mb-3">Umpan Balik</h3>
+                    <div class="mb-3">
+                        <label class="block text-sm font-medium text-gray-700">Rating:</label>
+                        <div id="lihatRating" class="text-yellow-500 text-lg">⭐️⭐️⭐️⭐️⭐️</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-sm font-medium text-gray-700">Komentar:</label>
+                        <p id="lihatKomentar" class="text-gray-800 mt-1">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombol Tutup -->
+            <div class="flex justify-end">
+                <button onclick="tutupModalFeedback()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+
 
     <!-- Modal Feedback -->
     <div id="feedbackModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
@@ -222,18 +301,25 @@
                         }
                     },
                     {
-                        data: 'fasilitas_ruang_id',
-                        name: 'fasilitas_ruang_id',
+                        data: 'ruangan_nama',
+                        name: 'ruangan_nama',
                         defaultContent: '-'
                     },
                     {
-                        data: 'fasilitas_ruang_id',
-                        name: 'fasilitas_ruang_id',
+                        data: 'fasilitas_nama',
+                        name: 'fasilitas_nama',
                         defaultContent: '-'
                     },
                     {
                         data: 'lapor_datetime',
                         name: 'lapor_datetime',
+                        render: function(data) {
+                            return data ? new Date(data).toLocaleDateString('id-ID') : '-';
+                        }
+                    },
+                    {
+                        data: 'selesai_datetime',
+                        name: 'selesai_datetime',
                         render: function(data) {
                             return data ? new Date(data).toLocaleDateString('id-ID') : '-';
                         }
@@ -251,16 +337,22 @@
                         searchable: false,
                         render: function(data) {
                             if (data.review_pelapor !== null) {
-                                return '<span class="text-gray-500 text-xs px-2 py-1 rounded uppercase font-bold">Sudah Dinilai</span>';
+                                return `
+                <button onclick="lihatFeedback(${data.laporan_id})"
+                    class="bg-gray-500 text-white rounded py-2 px-4 hover:bg-gray-600">
+                    Lihat Umpan Balik
+                </button>
+            `;
                             }
                             return `
-                                <button onclick="bukaModal(${data.laporan_id})"
-                                    class="bg-primary text-white rounded py-2 px-4 hover:bg-blue-600">
-                                    Beri Feedback
-                                </button>
-                            `;
+            <button onclick="bukaModal(${data.laporan_id})"
+                class="bg-primary text-white rounded py-2 px-4 hover:bg-blue-600">
+                Beri Feedback
+            </button>
+        `;
                         }
                     }
+
                 ]
             });
 
@@ -274,5 +366,62 @@
                 table.ajax.reload();
             };
         });
+
+        function lihatFeedback(laporanId) {
+            fetch(`/civitas/rating/detail/${laporanId}`, {
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(response => {
+                    if (!response.success) {
+                        throw new Error(response.message || 'Gagal ambil data');
+                    }
+
+                    const data = response.data;
+
+                    // Show modal
+                    document.getElementById('modalLihatFeedback').classList.remove('hidden');
+
+                    // DETAIL LAPORAN
+                    document.querySelector('.pelapor').textContent = data.user_fullname;
+                    document.querySelector('.ruang').textContent = data.ruangan_nama;
+                    document.querySelector('.fasilitas').textContent = data.fasilitas_nama;
+                    document.querySelector('.deskripsi').textContent = data.deskripsi_laporan;
+                    document.getElementById('detail-photo').src = data.lapor_foto_url;
+
+                    // RIWAYAT STATUS
+                    const riwayatStatus = document.getElementById('riwayatStatus');
+                    riwayatStatus.innerHTML = '';
+                    data.riwayat.forEach(item => {
+                        riwayatStatus.innerHTML += `
+                <li class="flex items-center gap-2">
+                    <i class="fas ${item.icon} w-4"></i>
+                    <span><strong>${item.status}:</strong> ${item.tanggal}</span>
+                </li>`;
+                    });
+
+                    // FEEDBACK
+                    document.getElementById('lihatRating').innerText = data.rating;
+                    document.getElementById('lihatKomentar').innerText = data.komentar;
+                })
+                .catch(error => {
+                    console.error('Gagal ambil data:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: error.message || 'Terjadi kesalahan',
+                        timer: 3000,
+                        showConfirmButton: true
+                    });
+                });
+        }
+
+
+        function tutupModalFeedback() {
+            document.getElementById('modalLihatFeedback').classList.add('hidden');
+        }
     </script>
 @endsection

@@ -87,41 +87,47 @@ class CivitasController extends Controller
     {
         try {
             $columns = [
-                0 => 'laporan_id',
-                1 => 'fasilitas_ruang_id',
-                2 => 'fasilitas_ruang_id',
-                3 => 'lapor_datetime',
-                4 => 'is_verified',
+                0 => 't_laporan.laporan_id',
+                1 => 'm_ruangan.ruangan_nama',
+                2 => 'm_fasilitas.fasilitas_nama',
+                3 => 't_laporan.lapor_datetime',
+                4 => 't_laporan.is_verified',
             ];
-
-            $totalData = t_laporan::where('user_id', Auth::id())->count();
-            $totalFiltered = $totalData;
 
             $limit = $request->input('length', 5);
             $start = $request->input('start', 0);
             $orderColumn = $columns[$request->input('order.0.column', 3)];
             $orderDir = $request->input('order.0.dir', 'desc');
 
-            $query = t_laporan::select(
-                'laporan_id',
-                'fasilitas_ruang_id',
-                'deskripsi_laporan',
-                'lapor_datetime',
-                'is_verified',
-                'is_done'
-            )->where('user_id', Auth::id());
+            $query = t_laporan::leftJoin('t_fasilitas_ruang', 't_laporan.fasilitas_ruang_id', '=', 't_fasilitas_ruang.fasilitas_ruang_id')
+                ->leftJoin('m_ruangan', 't_fasilitas_ruang.ruangan_id', '=', 'm_ruangan.ruangan_id')
+                ->leftJoin('m_fasilitas', 't_fasilitas_ruang.fasilitas_id', '=', 'm_fasilitas.fasilitas_id')
+                ->where('t_laporan.user_id', Auth::id());
 
-            if ($request->has('fasilitas') && !empty($request->fasilitas)) {
-                $query->where('fasilitas_ruang_id', 'like', '%' . $request->fasilitas . '%');
-            }
+            $totalData = $query->count();
 
             if ($request->has('search') && !empty($request->search)) {
                 $search = $request->search;
-                $query->where('deskripsi_laporan', 'like', '%' . $search . '%');
-                $totalFiltered = $query->count();
+                $query->where(function ($q) use ($search) {
+                    $q->where('m_ruangan.ruangan_nama', 'like', "%$search%")
+                        ->orWhere('m_fasilitas.fasilitas_nama', 'like', "%$search%")
+                        ->orWhere('t_laporan.deskripsi_laporan', 'like', "%$search%");
+                });
             }
 
-            $laporans = $query->offset($start)
+            $totalFiltered = $query->count();
+
+            $laporans = $query->select(
+                't_laporan.laporan_id',
+                't_laporan.fasilitas_ruang_id',
+                't_laporan.deskripsi_laporan',
+                't_laporan.lapor_datetime',
+                't_laporan.is_verified',
+                't_laporan.is_done',
+                'm_ruangan.ruangan_nama',
+                'm_fasilitas.fasilitas_nama'
+            )
+                ->offset($start)
                 ->limit($limit)
                 ->orderBy($orderColumn, $orderDir)
                 ->get();
@@ -135,6 +141,8 @@ class CivitasController extends Controller
                     'lapor_datetime' => $laporan->lapor_datetime,
                     'is_verified' => $laporan->is_verified,
                     'is_done' => $laporan->is_done,
+                    'ruangan_nama' => $laporan->ruangan_nama,
+                    'fasilitas_nama' => $laporan->fasilitas_nama,
                 ];
             }
 
@@ -145,26 +153,39 @@ class CivitasController extends Controller
                 'data' => $data,
             ]);
         } catch (\Exception $e) {
-            Log::error('Gagal mengambil list status laporan: ' . $e->getMessage());
+            Log::error('Gagal mengambil list laporan (join): ' . $e->getMessage());
             return response()->json([
                 'error' => 'Terjadi kesalahan saat mengambil data'
             ], 500);
         }
     }
 
+
     public function show($id)
     {
         try {
-            $laporan = t_laporan::select(
-                'laporan_id',
-                'fasilitas_ruang_id',
-                'deskripsi_laporan',
-                'lapor_datetime',
-                'is_verified',
-                'is_done',
-                'lapor_foto'
-            )->where('user_id', Auth::id())->findOrFail($id);
+            $laporan = t_laporan::leftJoin('t_fasilitas_ruang', 't_laporan.fasilitas_ruang_id', '=', 't_fasilitas_ruang.fasilitas_ruang_id')
+                ->leftJoin('m_ruangan', 't_fasilitas_ruang.ruangan_id', '=', 'm_ruangan.ruangan_id')
+                ->leftJoin('m_fasilitas', 't_fasilitas_ruang.fasilitas_id', '=', 'm_fasilitas.fasilitas_id')
+                ->leftJoin('m_user', 't_laporan.user_id', '=', 'm_user.user_id')
+                ->select(
+                    't_laporan.laporan_id',
+                    't_laporan.fasilitas_ruang_id',
+                    't_laporan.deskripsi_laporan',
+                    't_laporan.lapor_datetime',
+                    't_laporan.verifikasi_datetime',
+                    't_laporan.is_verified',
+                    't_laporan.is_done',
+                    't_laporan.lapor_foto',
+                    'm_ruangan.ruangan_nama as ruangan_nama',
+                    'm_fasilitas.fasilitas_nama as fasilitas_nama',
+                    'm_user.fullname as user_fullname'
+                )
+                ->where('t_laporan.user_id', Auth::id())
+                ->where('t_laporan.laporan_id', $id)
+                ->firstOrFail();
 
+            // Cek dan proses foto jika ada
             if ($laporan->lapor_foto) {
                 $filePath = 'laporan/' . $laporan->laporan_id . '.jpg';
                 // Use Laravel's asset helper to generate the full URL
@@ -188,13 +209,14 @@ class CivitasController extends Controller
                 'message' => 'Laporan tidak ditemukan atau bukan milik Anda'
             ], 404);
         } catch (\Exception $e) {
-            Log::error('Gagal mengambil detail status laporan: ' . $e->getMessage());
+            Log::error('Gagal mengambil detail laporan: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat mengambil data'
             ], 500);
         }
     }
+
 
     public function rating()
     {
@@ -205,11 +227,12 @@ class CivitasController extends Controller
     {
         try {
             $columns = [
-                0 => 'laporan_id',
-                1 => 'fasilitas_ruang_id',
-                2 => 'fasilitas_ruang_id',
-                3 => 'lapor_datetime',
-                4 => 'is_verified',
+                0 => 't_laporan.laporan_id',
+                1 => 'm_ruangan.ruangan_nama',
+                2 => 'm_fasilitas.fasilitas_nama',
+                3 => 't_laporan.lapor_datetime',
+                4 => 't_laporan.selesai_datetime',
+                5 => 't_laporan.is_verified',
             ];
 
             $totalData = t_laporan::where('user_id', Auth::id())
@@ -223,16 +246,10 @@ class CivitasController extends Controller
             $orderColumn = $columns[$request->input('order.0.column', 3)];
             $orderDir = $request->input('order.0.dir', 'desc');
 
-            $query = t_laporan::select(
-                'laporan_id',
-                'fasilitas_ruang_id',
-                'deskripsi_laporan',
-                'lapor_datetime',
-                'is_verified',
-                'is_done',
-                'review_pelapor'
-            )
-                ->where('user_id', Auth::id())
+            $query = t_laporan::leftJoin('t_fasilitas_ruang', 't_laporan.fasilitas_ruang_id', '=', 't_fasilitas_ruang.fasilitas_ruang_id')
+                ->leftJoin('m_ruangan', 't_fasilitas_ruang.ruangan_id', '=', 'm_ruangan.ruangan_id')
+                ->leftJoin('m_fasilitas', 't_fasilitas_ruang.fasilitas_id', '=', 'm_fasilitas.fasilitas_id')
+                ->where('t_laporan.user_id', Auth::id())
                 ->where('is_done', 1)
                 ->where('is_verified', 1);
 
@@ -254,9 +271,13 @@ class CivitasController extends Controller
                     'fasilitas_ruang_id' => $laporan->fasilitas_ruang_id,
                     'deskripsi_laporan' => $laporan->deskripsi_laporan,
                     'lapor_datetime' => $laporan->lapor_datetime,
+                    'selesai_datetime' => $laporan->selesai_datetime,
                     'is_verified' => $laporan->is_verified,
                     'is_done' => $laporan->is_done,
+                    'ruangan_nama' => $laporan->ruangan_nama,
+                    'fasilitas_nama' => $laporan->fasilitas_nama,
                     'review_pelapor' => $laporan->review_pelapor,
+                    'review_komentar' => $laporan->review_komentar,
                 ];
             }
 
@@ -317,5 +338,70 @@ class CivitasController extends Controller
                 'message' => 'Terjadi kesalahan saat menyimpan umpan balik.'
             ], 500);
         }
+    }
+
+    public function getRatingDetail($id)
+    {
+        $laporan = t_laporan::with('user', 'ruangan', 'fasilitas')
+            ->where('laporan_id', $id)
+            ->where('user_id', Auth::id()) // opsional, untuk batasi hanya yang buat bisa lihat
+            ->first();
+
+        if (!$laporan) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data laporan tidak ditemukan'
+            ], 404);
+        }
+
+        // Format tanggal helper
+        $formatTanggal = fn($tgl) => $tgl
+            ? \Carbon\Carbon::parse($tgl)->locale('id')->translatedFormat('d F Y')
+            : '-';
+
+        // Riwayat status
+        $riwayat = [];
+
+        $riwayat[] = [
+            'status'  => 'Baru',
+            'icon'    => 'fa-flag text-gray-500',
+            'tanggal' => $formatTanggal($laporan->lapor_datetime),
+        ];
+
+        if ($laporan->is_verified || $laporan->is_done) {
+            $riwayat[] = [
+                'status'  => 'Diproses',
+                'icon'    => 'fa-spinner text-yellow-500',
+                'tanggal' => $formatTanggal($laporan->verifikasi_datetime),
+            ];
+        }
+
+        if ($laporan->is_done) {
+            $status = $laporan->is_verified ? 'Selesai' : 'Ditolak';
+            $icon = $laporan->is_verified ? 'fa-check-circle text-green-600' : 'fa-times-circle text-red-600';
+            $riwayat[] = [
+                'status'  => $status,
+                'icon'    => $icon,
+                'tanggal' => $formatTanggal($laporan->verifikasi_datetime),
+            ];
+        }
+
+        // Rating (dalam bentuk angka dan emoji)
+        $rating = (int) $laporan->review_pelapor;
+        $stars = str_repeat('⭐️', $rating) . str_repeat('☆', 5 - $rating);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user_fullname'     => $laporan->user->fullname ?? '-',
+                'ruangan_nama'      => $laporan->ruangan->ruangan_nama ?? '-',
+                'fasilitas_nama'    => $laporan->fasilitas->fasilitas_nama ?? '-',
+                'deskripsi_laporan' => $laporan->deskripsi_laporan ?? '-',
+                'lapor_foto_url'    => $laporan->foto_url ?? asset('assets/profile/default.jpg'),
+                'riwayat'           => $riwayat,
+                'rating'            => $stars,
+                'komentar'          => $laporan->review_komentar ?? '-',
+            ]
+        ]);
     }
 }

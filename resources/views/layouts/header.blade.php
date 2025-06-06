@@ -33,13 +33,29 @@
 @endphp
 <header class="sticky top-0 z-40 flex justify-between items-center bg-white px-6 py-4 shadow">
 
+    {{-- Tombol Hamburger --}}
     <button id="toggleSidebar" class="md:hidden text-2xl">☰</button>
-    <h2 class="text-2xl font-semibold">{{ $pageTitle }}</h2>
 
-    {{-- <h2 class="text-2xl font-semibold">{{ Auth::user()->role->role_nama }}</h2> --}}
+    {{-- Judul halaman (hanya tampil di layar md ke atas) --}}
+    <h2 class="text-xl font-semibold hidden md:block">
+        {{ $pageTitle }}
+    </h2>
 
-    <!-- Profil & Dropdown -->
-    @include('component.profile')
-    @include('component.gantipassword')
+    {{-- Judul pendek saat mobile --}}
+    <span class="text-xl font-semibold block md:hidden">SIPASTI</span>
+
+    {{-- Profil lengkap (tampilkan hanya di desktop) --}}
+    <div class="hidden md:block">
+        @include('component.profile')
+    </div>
+
+    {{-- Foto profil saja saat mobile --}}
+    <div class="block md:hidden">
+        <button id="profileToggleMobile" type="button"
+            class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-blue-500 focus:outline-none">
+            <img src="{{ Auth::user()->profile_picture ? asset('assets/profile/' . Auth::user()->profile_picture) : asset('assets/profile/default.jpg') }}"
+                alt="Foto Profil" class="w-full h-full object-cover">
+        </button>
+    </div>
 
 </header>

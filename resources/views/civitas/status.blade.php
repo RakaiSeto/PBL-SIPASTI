@@ -38,7 +38,7 @@
 
                 <input id="searchInput"
                     class="w-full sm:max-w-sm pr-11 h-10 pl-3 py-2 text-sm border border-slate-200 rounded"
-                    placeholder="Cari Deskripsi..." onkeyup="filterTable()" />
+                    placeholder="Cari Fasilitas..." onkeyup="filterTable()" />
             </div>
 
             <!-- Dropdown Tampilkan Data -->
@@ -86,21 +86,25 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
                         <div>
+                            <h4 class="text-sm text-gray-500 font-medium">Pelapor</h4>
+                            <p class="pelapor text-gray-800 text-base">-</p>
+                        </div>
+                        <div>
                             <h4 class="text-sm text-gray-500 font-medium">Ruangan</h4>
-                            <p class="ruang text-gray-800 text-base font-semibold">-</p>
+                            <p class="ruang text-gray-800 text-base">-</p>
                         </div>
                         <div>
                             <h4 class="text-sm text-gray-500 font-medium">Fasilitas</h4>
-                            <p class="fasilitas text-gray-800 text-base font-semibold">-</p>
+                            <p class="fasilitas text-gray-800 text-base">-</p>
                         </div>
                         <div>
                             <h4 class="text-sm text-gray-500 font-medium mb-1">Deskripsi</h4>
-                            <p class="deskripsi text-gray-800">-</p>
+                            <p class="deskripsi text-gray-800 text-base">-</p>
                         </div>
-                        <div>
+                        {{-- <div>
                             <h4 class="text-sm text-gray-500 font-medium mb-1">Kategori</h4>
                             <p class="kategori text-gray-800">-</p>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <!-- Foto -->
@@ -149,11 +153,11 @@
                         const data = response.data;
                         document.getElementById('detailModal').classList.remove('hidden');
 
-                        // Isi data
-                        document.querySelector('.ruang').textContent = data.fasilitas_ruang_id ?? '-';
-                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang_id ?? '-';
+                        // Isi data yang sudah di-join
+                        document.querySelector('.pelapor').textContent = data.user_fullname ?? '-';
+                        document.querySelector('.ruang').textContent = data.ruangan_nama ?? '-';
+                        document.querySelector('.fasilitas').textContent = data.fasilitas_nama ?? '-';
                         document.querySelector('.deskripsi').textContent = data.deskripsi_laporan ?? '-';
-                        document.querySelector('.kategori').textContent = mapFasilitas(data.fasilitas_ruang_id) ?? '-';
 
                         // Ganti foto
                         const img = document.getElementById('detail-photo');
@@ -162,29 +166,38 @@
                         // Riwayat Status
                         const riwayatStatus = document.getElementById('riwayatStatus');
                         let riwayatHtml = `
-                            <li class="flex items-center gap-2">
-                                <i class="fas fa-flag text-gray-500 w-4"></i>
-                                <span><strong>Baru:</strong> ${data.lapor_datetime ? new Date(data.lapor_datetime).toLocaleDateString('id-ID') : '-'}</span>
-                            </li>
-                        `;
+                <li class="flex items-center gap-2">
+                    <i class="fas fa-flag text-gray-500 w-4"></i>
+                    <span><strong>Baru:</strong>
+                        ${data.lapor_datetime ?
+                        new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                .format(new Date(data.lapor_datetime)) : '-'}
+                        </span>
+                </li>
+            `;
                         if (data.is_verified || data.is_done) {
                             riwayatHtml += `
-                                <li class="flex items-center gap-2">
-                                    <i class="fas fa-spinner text-yellow-500 w-4"></i>
-                                    <span><strong>Diproses:</strong> ${data.lapor_datetime ? new Date(data.lapor_datetime).toLocaleDateString('id-ID') : '-'}</span>
-                                </li>
-                            `;
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-spinner text-yellow-500 w-4"></i>
+                        <span><strong>Diproses:</strong>
+                            ${data.verifikasi_datetime ?
+                                new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                                    .format(new Date(data.verifikasi_datetime)) : '-'}
+                        </span>
+                    </li>
+                `;
                         }
                         if (data.is_done) {
                             const status = data.is_verified ? 'Selesai' : 'Ditolak';
                             const icon = data.is_verified ? 'fa-check-circle text-green-600' :
                                 'fa-times-circle text-red-600';
                             riwayatHtml += `
-                                <li class="flex items-center gap-2">
-                                    <i class="fas ${icon} w-4"></i>
-                                    <span><strong>${status}:</strong> ${data.lapor_datetime ? new Date(data.lapor_datetime).toLocaleDateString('id-ID') : '-'}</span>
-                                </li>
-                            `;
+
+                    <li class="flex items-center gap-2">
+                        <i class="fas ${icon} w-4"></i>
+                        <span><strong>${status}:</strong> ${data.lapor_datetime ? new Date(data.lapor_datetime).toLocaleDateString('id-ID') : '-'}</span>
+                    </li>
+                `;
                         }
                         riwayatStatus.innerHTML = riwayatHtml;
                     } else {
@@ -208,6 +221,7 @@
                     });
                 });
         }
+
 
         function tutupDetailModal() {
             document.getElementById('detailModal').classList.add('hidden');
@@ -249,13 +263,13 @@
                         }
                     },
                     {
-                        data: 'fasilitas_ruang_id',
-                        name: 'fasilitas_ruang_id',
+                        data: 'ruangan_nama',
+                        name: 'ruangan_nama',
                         defaultContent: '-'
                     },
                     {
-                        data: 'fasilitas_ruang_id',
-                        name: 'fasilitas_ruang_id',
+                        data: 'fasilitas_nama',
+                        name: 'fasilitas_nama',
                         defaultContent: '-'
                     },
                     {

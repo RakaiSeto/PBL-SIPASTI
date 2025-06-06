@@ -134,6 +134,7 @@ Route::group(['middleware' => ['auth.refresh', 'role:Civitas'], 'prefix' => 'civ
     Route::get('/rating', [CivitasController::class, 'rating'])->name('civitas.rating');
     Route::post('/rating/list', [CivitasController::class, 'ratingList'])->name('civitas.rating.list');
     Route::post('/rating/submit', [CivitasController::class, 'submitRating'])->name('civitas.rating.submit');
+    Route::get('/rating/detail/{id}', [CivitasController::class, 'getRatingDetail'])->name('civitas.rating.detail');
 });
 // Group Sarpras
 Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sarpras'], function () {
