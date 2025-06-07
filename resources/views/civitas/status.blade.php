@@ -80,9 +80,7 @@
                     onclick="tutupDetailModal()">✕</button>
             </div>
 
-            <!-- Informasi Laporan -->
             <div class="space-y-6 mb-6">
-                <!-- Info Utama -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
                         <div>
@@ -101,17 +99,12 @@
                             <h4 class="text-sm text-gray-500 font-medium mb-1">Deskripsi</h4>
                             <p class="deskripsi text-gray-800 text-base">-</p>
                         </div>
-                        {{-- <div>
-                            <h4 class="text-sm text-gray-500 font-medium mb-1">Kategori</h4>
-                            <p class="kategori text-gray-800">-</p>
-                        </div> --}}
                     </div>
 
-                    <!-- Foto -->
                     <div>
                         <h4 class="text-sm text-gray-500 font-medium mb-1">Foto Fasilitas</h4>
                         <div class="rounded overflow-hidden shadow border">
-                            <img id="detail-photo" src="{{ asset('assets/profile/default.jpg') }}" alt="Foto Fasilitas"
+                            <img id="detail-photo" src="{{ asset('assets/profile/dafault2.jpg') }}" alt="Foto Fasilitas"
                                 class="w-full h-auto object-cover">
                         </div>
                     </div>
@@ -122,7 +115,6 @@
                     <h4 class="text-sm text-gray-500 font-medium mb-2">Riwayat Status</h4>
                     <div class="bg-gray-50 p-4 rounded border">
                         <ul class="space-y-2 text-sm text-gray-700" id="riwayatStatus">
-                            <!-- Riwayat akan dimuat di sini -->
                         </ul>
                     </div>
                 </div>
@@ -139,95 +131,7 @@
     </div>
 
     <script>
-        // MODAL HANDLING
-        function bukaDetailModal(id) {
-            fetch(`/civitas/status-laporan/${id}`, {
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(res => res.json())
-                .then(response => {
-                    if (response.success) {
-                        const data = response.data;
-                        document.getElementById('detailModal').classList.remove('hidden');
-
-                        // Isi data yang sudah di-join
-                        document.querySelector('.pelapor').textContent = data.user_fullname ?? '-';
-                        document.querySelector('.ruang').textContent = data.ruangan_nama ?? '-';
-                        document.querySelector('.fasilitas').textContent = data.fasilitas_nama ?? '-';
-                        document.querySelector('.deskripsi').textContent = data.deskripsi_laporan ?? '-';
-
-                        // Ganti foto
-                        const img = document.getElementById('detail-photo');
-                        img.src = data.lapor_foto_url ?? "{{ asset('assets/profile/default.jpg') }}";
-
-                        // Riwayat Status
-                        const riwayatStatus = document.getElementById('riwayatStatus');
-                        let riwayatHtml = `
-                <li class="flex items-center gap-2">
-                    <i class="fas fa-flag text-gray-500 w-4"></i>
-                    <span><strong>Baru:</strong>
-                        ${data.lapor_datetime ?
-                        new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-                .format(new Date(data.lapor_datetime)) : '-'}
-                        </span>
-                </li>
-            `;
-                        if (data.is_verified || data.is_done) {
-                            riwayatHtml += `
-                    <li class="flex items-center gap-2">
-                        <i class="fas fa-spinner text-yellow-500 w-4"></i>
-                        <span><strong>Diproses:</strong>
-                            ${data.verifikasi_datetime ?
-                                new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-                                    .format(new Date(data.verifikasi_datetime)) : '-'}
-                        </span>
-                    </li>
-                `;
-                        }
-                        if (data.is_done) {
-                            const status = data.is_verified ? 'Selesai' : 'Ditolak';
-                            const icon = data.is_verified ? 'fa-check-circle text-green-600' :
-                                'fa-times-circle text-red-600';
-                            riwayatHtml += `
-
-                    <li class="flex items-center gap-2">
-                        <i class="fas ${icon} w-4"></i>
-                        <span><strong>${status}:</strong> ${data.lapor_datetime ? new Date(data.lapor_datetime).toLocaleDateString('id-ID') : '-'}</span>
-                    </li>
-                `;
-                        }
-                        riwayatStatus.innerHTML = riwayatHtml;
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Kesalahan',
-                            text: response.message,
-                            timer: 3000,
-                            showConfirmButton: true
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Gagal ambil data:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Kesalahan',
-                        text: 'Gagal mengambil detail laporan',
-                        timer: 3000,
-                        showConfirmButton: true
-                    });
-                });
-        }
-
-
-        function tutupDetailModal() {
-            document.getElementById('detailModal').classList.add('hidden');
-        }
-
-        // DATA TABLE INITIALIZATION
+        // TABEL
         $(document).ready(function() {
             const table = $('#laporanTable').DataTable({
                 searching: false,
@@ -312,15 +216,97 @@
                 ]
             });
 
-            // Update page length when tampilData changes
             $('#tampilData').on('change', function() {
                 table.page.len(parseInt(this.value)).draw();
             });
 
-            // Filter table
             window.filterTable = function() {
                 table.ajax.reload();
             };
         });
+
+        // Modal Detail
+        function bukaDetailModal(id) {
+            fetch(`/civitas/status-laporan/${id}`, {
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(response => {
+                    if (response.success) {
+                        const data = response.data;
+                        document.getElementById('detailModal').classList.remove('hidden');
+
+                        document.querySelector('.pelapor').textContent = data.user_fullname ?? '-';
+                        document.querySelector('.ruang').textContent = data.ruangan_nama ?? '-';
+                        document.querySelector('.fasilitas').textContent = data.fasilitas_nama ?? '-';
+                        document.querySelector('.deskripsi').textContent = data.deskripsi_laporan ?? '-';
+
+                        const img = document.getElementById('detail-photo');
+                        img.src = data.lapor_foto_url ?? "{{ asset('assets/profile/dafault2.jpg') }}";
+
+                        const riwayatStatus = document.getElementById('riwayatStatus');
+                        let riwayatHtml = `
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-flag text-gray-500 w-4"></i>
+                                    <span><strong>Baru:</strong>
+                                        ${data.lapor_datetime ?
+                                        new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                                .format(new Date(data.lapor_datetime)) : '-'}
+                                        </span>
+                                </li>
+                            `;
+                        if (data.is_verified || data.is_done) {
+                            riwayatHtml += `
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-spinner text-yellow-500 w-4"></i>
+                                    <span><strong>Diproses:</strong>
+                                        ${data.verifikasi_datetime ?
+                                            new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                                                .format(new Date(data.verifikasi_datetime)) : '-'}
+                                    </span>
+                                </li>
+                            `;
+                        }
+                        if (data.is_done) {
+                            const status = data.is_verified ? 'Selesai' : 'Ditolak';
+                            const icon = data.is_verified ? 'fa-check-circle text-green-600' :
+                                'fa-times-circle text-red-600';
+                            riwayatHtml += `
+                                <li class="flex items-center gap-2">
+                                    <i class="fas ${icon} w-4"></i>
+                                    <span><strong>${status}:</strong> ${data.lapor_datetime ? new Date(data.lapor_datetime).toLocaleDateString('id-ID') : '-'}</span>
+                                </li>
+                            `;
+                        }
+                        riwayatStatus.innerHTML = riwayatHtml;
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Kesalahan',
+                            text: response.message,
+                            timer: 3000,
+                            showConfirmButton: true
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Gagal ambil data:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Kesalahan',
+                        text: 'Gagal mengambil detail laporan',
+                        timer: 3000,
+                        showConfirmButton: true
+                    });
+                });
+        }
+
+
+        function tutupDetailModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
     </script>
 @endsection
