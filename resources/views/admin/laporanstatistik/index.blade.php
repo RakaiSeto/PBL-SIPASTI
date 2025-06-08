@@ -126,7 +126,7 @@
         <!-- Header -->
         <div class="flex flex-wrap justify-between items-center gap-2">
             <div class="mb-4">
-                <h2 class="text-sm text-gray-500 dark:text-neutral-500">Laporan per jenis kategori</h2>
+                <h2 class="text-sm text-gray-500 dark:text-neutral-500">Laporan Jumlah Kerusakan Fasilitas</h2>
             </div>
         </div>
         <!-- End Header -->
@@ -212,32 +212,39 @@
   });
 
   // Donut Chart status laporan 
-  const donutCtx = document.createElement("canvas");
-  donutCtx.style.width = "100%";
-  donutCtx.style.height = "100%";
-  document.getElementById("hs-statuslaporan").appendChild(donutCtx);
+  // Ambil data dari Blade ke JS
+const totalDiverifikasi = {{ $totalLaporanDiverifikasi }};
+const totalProses = {{ $totalLaporanProses }};
+const totalSelesai = {{ $totalLaporanSelesai }};
+const totalTolak = {{ $totalLaporanDitolak }};
 
-  new Chart(donutCtx, {
-      type: "doughnut",
-      data: {
-          labels: ['Diverifikasi', 'Diproses', 'Selesai', 'Ditolak'],
-          datasets: [{
-              data: [40, 30, 10, 20], // Contoh data persentase
-              backgroundColor: ['#1E3A8A', '#3B82F6', '#60A5FA', '#BFDBFE'],
-              hoverOffset: 4
-          }]
-      },
-      options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-              legend: {
-                  position: 'bottom',
-                  labels: { color: "#6B7280" }
-              }
-          }
-      }
-  });
+const donutCtx = document.createElement("canvas");
+donutCtx.style.width = "100%";
+donutCtx.style.height = "100%";
+document.getElementById("hs-statuslaporan").appendChild(donutCtx);
+
+new Chart(donutCtx, {
+    type: "doughnut",
+    data: {
+        labels: ['Diverifikasi', 'Diproses', 'Selesai', 'Ditolak'],
+        datasets: [{
+            data: [totalDiverifikasi, totalProses, totalSelesai, totalTolak],
+            backgroundColor: ['#1E3A8A', '#3B82F6', '#60A5FA', '#BFDBFE'],
+            hoverOffset: 4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: { color: "#6B7280" }
+            }
+        }
+    }
+});
+
 
   //Chart kategori fasilitas 
   const fasilitasLabels = [
@@ -287,28 +294,27 @@
   });
 
   // Chart Kepuasan Pengguna
-const kepuasanContainer = document.getElementById('kepuasanChartContainer');
 const kepuasanCanvas = document.createElement('canvas');
-kepuasanContainer.appendChild(kepuasanCanvas);
+document.getElementById('kepuasanChartContainer').appendChild(kepuasanCanvas);
 
-const ratingPercent = 90;
+const totalRating = 90;
 
 new Chart(kepuasanCanvas.getContext('2d'), {
   type: 'doughnut',
   data: {
-    datasets: [{
-      data: [ratingPercent, 100 - ratingPercent],
-      backgroundColor: ['#2563EB', '#60A5FA'],
-      hoverBackgroundColor: ['#1E3A8A', '#3B82F6'],
-      borderWidth: 0
-    }]
-  },
+  datasets: [{
+    data: [90,10], // 25% progress
+    backgroundColor: ['#06B6D4', '#E5E7EB'], // warna & sisa transparan
+    borderWidth: 0,
+    cutout: '75%',
+  }]
+},
   options: {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
-      tooltip: { enabled: true }
+      tooltip: { enabled: false }
     }
   },
   plugins: [{
@@ -316,15 +322,19 @@ new Chart(kepuasanCanvas.getContext('2d'), {
     beforeDraw(chart) {
       const { ctx, width, height } = chart;
       ctx.save();
-      ctx.font = 'bold 2.5rem sans-serif';
-      ctx.fillStyle = '#1E3A8A';
+      ctx.font = 'bold 1rem sans-serif';
+      ctx.fillStyle = '#9CA3AF';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(ratingPercent + '%', width / 2, height / 2);
+      ctx.fillText('Income', width / 2, height / 2 - 10);
+      ctx.font = 'bold 1.5rem sans-serif';
+      ctx.fillStyle = '#111827';
+      ctx.fillText('$16,968', width / 2, height / 2 + 12);
       ctx.restore();
     }
   }]
 });
+
 
 </script>
 

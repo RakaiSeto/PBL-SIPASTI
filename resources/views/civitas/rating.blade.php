@@ -97,7 +97,7 @@
                     <div>
                         <h4 class="text-sm text-gray-500 font-medium mb-1">Foto Fasilitas</h4>
                         <div class="rounded overflow-hidden shadow border">
-                            <img id="detail-photo" src="{{ asset('assets/profile/default.jpg') }}" alt="Foto Fasilitas"
+                            <img id="detail-photo" src="{{ asset('assets/profile/dafault2.jpg') }}" alt="Foto Fasilitas"
                                 class="w-full h-auto object-cover">
                         </div>
                     </div>
@@ -140,17 +140,62 @@
 
     <!-- Modal Feedback -->
     <div id="feedbackModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-        <div class="bg-white p-6 rounded shadow-lg w-[90%] max-w-lg">
+        <div class="bg-white rounded-lg w-full max-w-3xl shadow-lg p-6 relative overflow-y-auto max-h-[95vh]">
             <!-- Header -->
             <div class="relative mb-4">
                 <h2 class="text-2xl font-bold">Umpan Balik</h2>
-                <p class="text-sm text-gray-600">Berikan penilaian untuk laporan yang sudah selesai.</p>
                 <button class="absolute right-2 top-2 text-gray-500 hover:text-red-500" onclick="tutupModal()">✕</button>
+            </div>
+
+            <!-- Informasi Laporan -->
+            <div class="space-y-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Info Utama -->
+                    <div class="space-y-2">
+                        <div>
+                            <h4 class="text-sm text-gray-500 font-medium">Pelapor</h4>
+                            <p class="pelapor text-gray-800 text-base">-</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm text-gray-500 font-medium">Ruangan</h4>
+                            <p class="ruang text-gray-800 text-base">-</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm text-gray-500 font-medium">Fasilitas</h4>
+                            <p class="fasilitas text-gray-800 text-base">-</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm text-gray-500 font-medium mb-1">Deskripsi</h4>
+                            <p class="deskripsi text-gray-800 text-base">-</p>
+                        </div>
+                    </div>
+
+                    <!-- Foto -->
+                    <div>
+                        <h4 class="text-sm text-gray-500 font-medium mb-1">Foto Fasilitas</h4>
+                        <div class="rounded overflow-hidden shadow border">
+                            <img id="detail-photo" src="{{ asset('assets/profile/dafault2.jpg') }}" alt="Foto Fasilitas"
+                                class="w-full max-h-60 object-cover">
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Riwayat Status -->
+                <div>
+                    <h4 class="text-sm text-gray-500 font-medium mb-2">Riwayat Status</h4>
+                    <div class="bg-gray-50 p-4 rounded border">
+                        <ul class="space-y-2 text-sm text-gray-700" id="riwayatStatus">
+                            <!-- Riwayat akan dimuat di sini -->
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <!-- Form -->
             <form id="feedbackForm" class="space-y-4" onsubmit="kirimUmpanBalik(event)">
                 <input type="hidden" id="laporan_id" name="laporan_id">
+
                 <!-- Dropdown Rating -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Rating (1–5)</label>
@@ -183,13 +228,61 @@
         </div>
     </div>
 
+
     <script>
         let currentLaporanId = null;
 
         function bukaModal(laporanId) {
             currentLaporanId = laporanId;
             document.getElementById('laporan_id').value = laporanId;
-            document.getElementById('feedbackModal').classList.remove('hidden');
+
+            // Ambil data laporan dari server
+            fetch(`/civitas/rating/detail/${laporanId}`, {
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(response => {
+                    if (!response.success) {
+                        throw new Error(response.message || 'Gagal ambil data');
+                    }
+
+                    const data = response.data;
+
+                    // Isi detail laporan di modal
+                    document.querySelector('#feedbackModal .pelapor').textContent = data.user_fullname || '-';
+                    document.querySelector('#feedbackModal .ruang').textContent = data.ruangan_nama || '-';
+                    document.querySelector('#feedbackModal .fasilitas').textContent = data.fasilitas_nama || '-';
+                    document.querySelector('#feedbackModal .deskripsi').textContent = data.deskripsi_laporan || '-';
+                    document.querySelector('#feedbackModal #detail-photo').src = data.lapor_foto_url ||
+                        '{{ asset('assets/profile/dafault2.jpg') }}';
+
+                    // Isi riwayat status
+                    const riwayatStatus = document.querySelector('#feedbackModal #riwayatStatus');
+                    riwayatStatus.innerHTML = '';
+                    data.riwayat.forEach(item => {
+                        riwayatStatus.innerHTML += `
+                <li class="flex items-center gap-2">
+                    <i class="fas ${item.icon} w-4"></i>
+                    <span><strong>${item.status}:</strong> ${item.tanggal}</span>
+                </li>`;
+                    });
+
+                    // Tampilkan modal setelah data terisi
+                    document.getElementById('feedbackModal').classList.remove('hidden');
+                })
+                .catch(error => {
+                    console.error('Gagal ambil data laporan:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: error.message || 'Terjadi kesalahan saat mengambil data laporan',
+                        timer: 3000,
+                        showConfirmButton: true
+                    });
+                });
         }
 
         function tutupModal() {
