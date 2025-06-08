@@ -141,9 +141,7 @@ Route::group(['middleware' => ['auth.refresh', 'role:Civitas'], 'prefix' => 'civ
 });
 // Group Sarpras
 Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sarpras'], function () {
-    Route::get('/', function () {
-        return view('sarpras.index');
-    })->name('sarpras.dashboard');
+    Route::get('/', [DashboardController::class, 'sarpras'])->name('sarpras.dashboard');
 
     Route::get('/kelolaLaporan', function () {
         return view('sarpras.kelolaLaporan');

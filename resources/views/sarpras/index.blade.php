@@ -7,8 +7,8 @@
       <div class="bg-white p-4 rounded shadow">
         <div class="flex justify-between items-center">
           <div>
-            <h3 class="text-sm text-gray-500">Laporan Aktif</h3>
-            <p class="text-lg font-bold">3</p>
+            <h3 class="text-sm text-gray-500">Total Fasilitas</h3>
+            <p class="text-lg font-bold">{{ $totalFasilitas }}</p>
           </div>
           <div class="bg-primary text-white p-2 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -21,8 +21,8 @@
       <div class="bg-white p-4 rounded shadow">
         <div class="flex justify-between items-center">
           <div>
-            <h3 class="text-sm text-gray-500">Laporan fs</h3>
-            <p class="text-lg font-bold">1,240</p>
+            <h3 class="text-sm text-gray-500">Total Laporan</h3>
+            <p class="text-lg font-bold">{{ $totalLaporan }}</p>
           </div>
           <div class="bg-primary text-white p-2 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -35,8 +35,8 @@
       <div class="bg-white p-4 rounded shadow">
         <div class="flex justify-between items-center">
           <div>
-            <h3 class="text-sm text-gray-500">Laporan Selesai</h3>
-            <p class="text-lg font-bold">15</p>
+            <h3 class="text-sm text-gray-500">Total Laporan Selesai</h3>
+            <p class="text-lg font-bold">{{ $totalLaporanSelesai }}</p>
           </div>
           <div class="bg-primary text-white p-2 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -89,17 +89,23 @@
     new Chart(incomeCtx, {
       type: "bar",
       data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        labels: [@foreach ($bulanLaporan as $item)
+          "{{ $item }}",
+        @endforeach],
         datasets: [
           {
-            label: "Income",
-            data: [18, 22, 19, 25, 26, 31],
+            label: "Jumlah Laporan",
+            data: [@foreach ($jumlahLaporan as $item)
+              {{ $item }},
+            @endforeach],
             backgroundColor: "#1652B7",
             borderRadius: 5,
           },
           {
-            label: "Income",
-            data: [10, 20, 11, 21, 20, 30],
+            label: "Jumlah Laporan Selesai",
+            data: [@foreach ($jumlahLaporanSelesai as $item)
+              {{ $item }},
+            @endforeach],
             backgroundColor: "#ea8a14",
             borderRadius: 5,
           },
@@ -127,11 +133,15 @@
     new Chart(visitorCtx, {
       type: "line",
       data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        labels: [@foreach ($hariLaporan as $item)
+          "{{ $item }}",
+        @endforeach],
         datasets: [
           {
-            label: "Visitors",
-            data: [6, 15, 12, 17, 10, 18],
+            label: "Jumlah Laporan Harian",
+            data: [@foreach ($jumlahLaporanMingguan as $item)
+              {{ $item }},
+            @endforeach],
             fill: true,
             backgroundColor: "rgba(22, 82, 183, 0.1)",
             borderColor: "#1652B7",

@@ -63,128 +63,81 @@
         </div>
 
         <!-- Modal Detail -->
-        <div id="detailModal"
-            class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50 transition-opacity duration-300">
-            <div class="bg-white rounded-xl p-6 w-[95%] max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col">
+        <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+            <div class="bg-white p-6 rounded shadow-lg w-[90%] max-w-2xl overflow-y-auto max-h-[90vh]">
                 <!-- Header -->
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800">Penilaian SPK</h2>
-                    <button class="text-gray-500 hover:text-red-500 transition" onclick="closeModal('detailModal')">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+                <div class="relative mb-4">
+                    <h2 class="text-2xl font-bold">Detail Laporan Sarpras</h2>
+                    <button class="absolute right-2 top-2 text-gray-500 hover:text-red-500"
+                        onclick="closeModal('detailModal')">✕</button>
                 </div>
 
-                <!-- Konten 2 Kolom -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
-                    <!-- Kiri: Info Kerusakan -->
-                    <div class="space-y-4">
-                        <img id="detail-photo" src="{{ asset('assets/image/placeholder.jpg') }}" alt="Foto Kerusakan"
-                            class="rounded border w-full object-cover h-60 shadow-sm">
-                        <div>
-                            <p class="text-sm text-gray-500">Nama Fasilitas</p>
-                            <p class="fasilitas text-gray-800 font-medium">-</p>
+                <!-- Informasi Laporan -->
+                <div class="space-y-6 mb-6">
+                    <!-- Info Utama -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <div>
+                                <h4 class="text-sm text-gray-500 font-medium">Pelapor</h4>
+                                <p class="user_id text-gray-800 text-base font-semibold">-</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm text-gray-500 font-medium">Ruangan</h4>
+                                <p class="ruang text-gray-800 text-base font-semibold">-</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm text-gray-500 font-medium">Fasilitas</h4>
+                                <p class="fasilitas text-gray-800 text-base font-semibold">-</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm text-gray-500 font-medium mb-1">Deskripsi</h4>
+                                <p class="deskripsi text-gray-800">-</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm text-gray-500 font-medium mb-1">Tanggal</h4>
+                                <p class="tanggal text-gray-800">-</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm text-gray-500 font-medium mb-1">Status</h4>
+                                <p class="status text-gray-800">-</p>
+                            </div>
                         </div>
+
+                        <!-- Foto -->
                         <div>
-                            <p class="text-sm text-gray-500">Keterangan</p>
-                            <p class="deskripsi text-gray-800 font-medium">-</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Tanggal Laporan</p>
-                            <p class="tanggal text-gray-800 font-medium">-</p>
+                            <h4 class="text-sm text-gray-500 font-medium mb-1">Foto Fasilitas</h4>
+                            <div class="rounded overflow-hidden shadow border">
+                                <img id="detail-photo" src="/assets/image/placeholder.jpg" alt="Foto Fasilitas"
+                                    class="w-full h-auto object-cover">
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Kanan: Form Penilaian -->
-                    <form id="penilaianForm" class="space-y-4 text-sm">
-                        <div class="grid grid-cols-1 gap-3">
-                            <div>
-                                <label class="block mb-1 text-gray-600 font-medium">Kerusakan</label>
-                                <select name="kerusakan"
-                                    class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-                                    required>
-                                    <option value="1">Sangat ringan (1)</option>
-                                    <option value="2">Ringan (2)</option>
-                                    <option value="3">Sedang (3)</option>
-                                    <option value="4">Berat (4)</option>
-                                    <option value="5">Sangat berat (5)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block mb-1 text-gray-600 font-medium">Dampak</label>
-                                <select name="dampak"
-                                    class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-                                    required>
-                                    <option value="1">Sangat rendah (1)</option>
-                                    <option value="2">Rendah (2)</option>
-                                    <option value="3">Sedang (3)</option>
-                                    <option value="4">Tinggi (4)</option>
-                                    <option value="5">Sangat tinggi (5)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block mb-1 text-gray-600 font-medium">Frekuensi</label>
-                                <select name="frekuensi"
-                                    class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-                                    required>
-                                    <option value="1">Sangat jarang (1)</option>
-                                    <option value="2">Jarang (2)</option>
-                                    <option value="3">Sering (3)</option>
-                                    <option value="4">Sangat sering (4)</option>
-                                    <option value="5">Selalu digunakan (5)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block mb-1 text-gray-600 font-medium">Jumlah Pelapor</label>
-                                <select name="pelapor"
-                                    class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-                                    required>
-                                    <option value="1">
-                                        < 5 (1)</option>
-                                    <option value="2">5-10 (2)</option>
-                                    <option value="3">11-20 (3)</option>
-                                    <option value="4">21-50 (4)</option>
-                                    <option value="5">> 50 (5)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block mb-1 text-gray-600 font-medium">Waktu Kerusakan</label>
-                                <select name="waktu_kerusakan"
-                                    class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-                                    required>
-                                    <option value="1">
-                                        < 1 hari (1)</option>
-                                    <option value="2">1-2 hari (2)</option>
-                                    <option value="3">3-5 hari (3)</option>
-                                    <option value="4">6-14 hari (4)</option>
-                                    <option value="5">> 14 hari (5)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block mb-1 text-gray-600 font-medium">Waktu Perbaikan</label>
-                                <select name="waktu_perbaikan"
-                                    class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-                                    required>
-                                    <option value="1">
-                                        < 24 jam (1)</option>
-                                    <option value="2">1-2 hari (2)</option>
-                                    <option value="3">3-5 hari (3)</option>
-                                    <option value="4">1 minggu (4)</option>
-                                    <option value="5">> 1 minggu (5)</option>
-                                </select>
-                            </div>
+                    <!-- Riwayat Status (optional section, bisa diisi dinamis pakai JS juga) -->
+                    <div>
+                        <h4 class="text-sm text-gray-500 font-medium mb-2">Riwayat Status</h4>
+                        <div class="bg-gray-50 p-4 rounded border">
+                            <ul class="space-y-2 text-sm text-gray-700">
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-flag text-gray-500 w-4"></i>
+                                    <span><strong>Baru:</strong> <span id="statusBaru">-</span></span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-spinner text-yellow-500 w-4"></i>
+                                    <span><strong>Diproses:</strong> <span id="statusProses">-</span></span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check-circle text-green-600 w-4"></i>
+                                    <span><strong>Selesai:</strong> <span id="statusSelesai">-</span></span>
+                                </li>
+                            </ul>
                         </div>
-                    </form>
+                    </div>
                 </div>
 
-                <!-- Footer: Tombol -->
-                <div class="flex justify-end gap-3 pt-6 border-t border-gray-200 mt-6">
-                    <button type="button" onclick="closeModal('detailModal')"
-                        class="px-6 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">Batal</button>
-                    <button type="submit" form="penilaianForm" onclick="submitPenilaian()"
-                        class="px-6 py-2 bg-primary text-white rounded transition">Beri Nilai</button>
+                <!-- Footer Actions -->
+                <div class="flex justify-end gap-3 border-t pt-4" id="modalActions">
+                    <!-- Tombol aksi akan dimuat via JS -->
                 </div>
             </div>
         </div>
@@ -201,23 +154,48 @@
         }
 
         function openDetail(id) {
-            fetch(`/sarpras/laporan/${id}`, {
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json'
-                    }
-                })
+            fetch(`/sarpras/laporan/detail/${id}`, {
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                }
+            })
                 .then(res => res.json())
                 .then(response => {
                     if (response.success) {
                         const data = response.data;
                         openModal('detailModal');
-                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang_id ?? '-';
+                        document.querySelector('.user_id').textContent = data.user_id ?? '-';
+                        document.querySelector('.ruang').textContent = data.fasilitas_ruang.ruangan.ruangan_nama ?
+                            data.fasilitas_ruang.ruangan.ruangan_nama + ' - lantai ' + data.fasilitas_ruang.ruangan.lantai :
+                            '-';
+                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang.fasilitas.fasilitas_nama ??
+                            '-';
                         document.querySelector('.deskripsi').textContent = data.deskripsi_laporan ?? '-';
                         document.querySelector('.tanggal').textContent = data.lapor_datetime ?
-                            new Date(data.lapor_datetime).toLocaleDateString('id-ID') : '-';
-                        document.getElementById('detail-photo').src = data.lapor_foto_url ??
-                            '{{ asset('assets/image/placeholder.jpg') }}';
+                            new Date(data.lapor_datetime).toLocaleDateString('id-ID') :
+                            '-';
+                        document.querySelector('.status').textContent = data.is_done && !data.is_verified ?
+                            'Ditolak' :
+                            data.is_done ?
+                                'Selesai' :
+                                data.is_verified ?
+                                    'Diproses' :
+                                    'Menunggu Verifikasi';
+
+                        document.getElementById('statusBaru').textContent = data.lapor_datetime ?? '-';
+                        document.getElementById('statusProses').textContent = data.verifikasi_datetime ?? '-';
+                        document.getElementById('statusSelesai').textContent = data.selesai_datetime ?? '-';
+
+                        // Ganti foto laporan
+                        const img = document.getElementById('detail-photo');
+                        img.src = data.lapor_foto_url ?? '/assets/profile/default.jpg';
+
+                        document.getElementById('modalActions').innerHTML = `
+                            <button onclick="closeModal('detailModal')"
+                                class="flex items-center gap-2 bg-gray-200 text-gray-700 py-2 px-4 rounded hover:bg-gray-300 transition">
+                                <i class="fas fa-times"></i> Tutup
+                            </button>`
                     } else {
                         showError(response.message);
                     }
@@ -269,7 +247,7 @@
         }
 
         // DATA TABLE INITIALIZATION
-        $(document).ready(function() {
+        $(document).ready(function () {
             const table = $('#kategorisasiTable').DataTable({
                 searching: false,
                 lengthChange: false,
@@ -279,7 +257,7 @@
                 ajax: {
                     type: "POST",
                     url: '{{ route('sarpras.laporan.list') }}',
-                    data: function(d) {
+                    data: function (d) {
                         d.fasilitas = $('#filterFasilitas').val();
                         d.search = $('#searchInput').val();
                         d.status = 'completed,rejected'; // Filter untuk Selesai dan Ditolak
@@ -287,65 +265,71 @@
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         showError('Gagal mengambil data laporan');
                     }
                 },
                 columns: [{
-                        data: null,
-                        name: 'no',
-                        render: function(data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-                    {
-                        data: 'fasilitas_ruang_id',
-                        name: 'fasilitas_ruang_id',
-                        defaultContent: '-'
-                    },
-                    {
-                        data: 'fasilitas_ruang_id',
-                        name: 'fasilitas_ruang_id',
-                        defaultContent: '-'
-                    },
-                    {
-                        data: 'lapor_datetime',
-                        name: 'lapor_datetime',
-                        render: function(data) {
-                            return data ? new Date(data).toLocaleDateString('id-ID') : '-';
-                        }
-                    },
-                    {
-                        data: null,
-                        name: 'status',
-                        render: function(data, type, row) {
-                            if (row.is_done && !row.is_verified) {
-                                return '<span class="bg-red-500/20 text-red-900 text-xs px-2 py-1 rounded uppercase font-bold">Ditolak</span>';
-                            } else if (row.is_done) {
-                                return '<span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded uppercase font-bold">Selesai</span>';
-                            }
-                            return '-';
-                        }
-                    },
-                    {
-                        data: null,
-                        orderable: false,
-                        searchable: false,
-                        render: function(data) {
-                            return `
-                            <button onclick="openDetail(${data.laporan_id})"
-                                class="bg-primary text-white rounded py-2 px-4 hover:bg-blue-700">Beri Nilai</button>
-                        `;
-                        }
+                    data: null,
+                    name: 'no',
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
                     }
+                },
+                {
+                    data: 'ruangan_nama',
+                    name: 'ruangan_nama',
+                    defaultContent: '-'
+                },
+                {
+                    data: 'fasilitas_nama',
+                    name: 'fasilitas_nama',
+                    defaultContent: '-'
+                },
+                {
+                    data: 'lapor_datetime',
+                    name: 'lapor_datetime',
+                    render: function (data) {
+                        return data ? new Date(data).toLocaleDateString('id-ID') : '-';
+                    }
+                },
+                {
+                    data: null,
+                    name: 'status',
+                    render: function (data, type, row) {
+                        if (row.status == 'completed') {
+                            return '<span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded uppercase font-bold">Selesai</span>';
+                        } else if (row.status == 'rejected') {
+                            return '<span class="bg-red-500/20 text-red-900 text-xs px-2 py-1 rounded uppercase font-bold">Ditolak</span>';
+                        } else if (row.status == 'processed') {
+                            return '<span class="bg-yellow-500/20 text-yellow-900 text-xs px-2 py-1 rounded uppercase font-bold">Diproses</span>';
+                        }
+                        return '-';
+                    }
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: function (data) {
+                        return `
+                                <div class="flex gap-2" >
+                                    <button onclick="openDetail(${data.laporan_id})" title="Detail"
+                                        class="flex items-center gap-1 px-3 py-1 text-white bg-blue-600 hover:bg-blue-700 rounded">
+                                        <i class="fas fa-eye"></i> Detail
+                                    </button>
+                                        </div>
+                                `;
+                    }
+                }
                 ]
             });
 
-            window.filterTable = function() {
+            window.filterTable = function () {
                 table.ajax.reload();
             };
 
-            $('#tampilData').on('change', function() {
+            $('#tampilData').on('change', function () {
                 table.page.len($(this).val()).draw();
             });
         });

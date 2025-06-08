@@ -26,7 +26,7 @@ class LaporanController extends Controller
     {
         try {
             $columns = [
-                0 => 'fasilitas_ruang_id',
+                0 => 't_laporan.fasilitas_ruang_id',
                 1 => 'jumlah_laporan',
                 2 => 'oldest_lapor_datetime',
                 3 => 'ruangan_nama',
@@ -39,7 +39,6 @@ class LaporanController extends Controller
                 ->leftJoin('m_ruangan', 't_fasilitas_ruang.ruangan_id', '=', 'm_ruangan.ruangan_id')
                 ->leftJoin('m_fasilitas', 't_fasilitas_ruang.fasilitas_id', '=', 'm_fasilitas.fasilitas_id')
                 ->leftJoin('m_user', 't_laporan.user_id', '=', 'm_user.user_id')
-                ->where('t_laporan.is_verified', 0)
                 ->select(
                     't_laporan.laporan_id',
                     't_fasilitas_ruang.fasilitas_ruang_id',
@@ -49,7 +48,9 @@ class LaporanController extends Controller
                     'm_fasilitas.fasilitas_nama as fasilitas_nama',
                     'm_user.fullname as user_nama',
                     't_laporan.lapor_datetime as lapor_datetime',
-                    't_laporan.deskripsi_laporan as deskripsi_laporan'
+                    't_laporan.deskripsi_laporan as deskripsi_laporan',
+                    't_laporan.is_verified as is_verified',
+                    't_laporan.is_done as is_done'
                 )
                 ->groupBy(
                     't_laporan.laporan_id',
@@ -60,6 +61,8 @@ class LaporanController extends Controller
                     't_laporan.lapor_datetime',
                     't_laporan.deskripsi_laporan'
                 );
+
+            $totalData = $query->count();
 
             // Filter berdasarkan status
             if ($status === 'pending') {
@@ -74,34 +77,34 @@ class LaporanController extends Controller
                 $query->where('t_laporan.is_done', 1); // Selesai dan Ditolak
             }
 
-            $totalData = $query->count();
-            $totalFiltered = $totalData;
+            // Filter fasilitas
+            if ($request->has('fasilitas') && !empty($request->fasilitas)) {
+                $query->where('t_fasilitas_ruang.fasilitas_ruang_id', 'like', '%' . $request->fasilitas . '%');
+            }
+
+            $totalFiltered = $query->count();
 
             $limit = $request->input('length', 10);
             $start = $request->input('start', 0);
             $orderColumn = $columns[$request->input('order.0.column', 2)]; // Default to oldest_lapor_datetime
             $orderDir = $request->input('order.0.dir', 'desc');
 
-            // Filter fasilitas
-            if ($request->has('fasilitas') && !empty($request->fasilitas)) {
-                $query->where('t_fasilitas_ruang.fasilitas_ruang_id', 'like', '%' . $request->fasilitas . '%');
-            }
-
-            // Removed search on deskripsi_laporan as it's not in the GROUP BY clause
-            // If you need search on deskripsi_laporan, it needs to be applied BEFORE the groupBy
-            // if ($request->has('search') && !empty($request->search)) {
-            //     $search = $request->search;
-            //     $query->where('deskripsi_laporan', 'like', '%' . $search . '%');
-            //     $totalFiltered = $query->count();
-            // }
-
-            $laporans = $query->offset($start)
+            $query->offset($start)
                 ->limit($limit)
-                ->orderBy($orderColumn, $orderDir)
-                ->get();
+                ->orderBy($orderColumn, $orderDir);
+
+            $laporans = $query->get();
 
             $data = [];
             foreach ($laporans as $laporan) {
+                $status = 'pending';
+                if ($laporan->is_verified == 1 && $laporan->is_done == 0) {
+                    $status = 'processed';
+                } else if ($laporan->is_verified == 1 && $laporan->is_done == 1) {
+                    $status = 'completed';
+                } else if ($laporan->is_verified == 0 && $laporan->is_done == 1) {
+                    $status = 'rejected';
+                }
                 $data[] = [
                     'laporan_id' => $laporan->laporan_id,
                     'fasilitas_ruang_id' => $laporan->fasilitas_ruang_id,
@@ -111,7 +114,8 @@ class LaporanController extends Controller
                     'oldest_lapor_datetime' => $laporan->oldest_lapor_datetime,
                     'user_nama' => $laporan->user_nama,
                     'lapor_datetime' => $laporan->lapor_datetime,
-                    'deskripsi_laporan' => $laporan->deskripsi_laporan
+                    'deskripsi_laporan' => $laporan->deskripsi_laporan,
+                    'status' => $status,
                 ];
             }
 
@@ -164,6 +168,8 @@ class LaporanController extends Controller
                     'm_fasilitas.fasilitas_nama'
                 );
 
+            $totalData = $query->count();
+
             // Filter berdasarkan status
             if ($status === 'pending') {
                 $query->where('t_laporan.is_verified', 0)->where('t_laporan.is_done', 0);
@@ -177,26 +183,17 @@ class LaporanController extends Controller
                 $query->where('t_laporan.is_done', 1); // Selesai dan Ditolak
             }
 
-            $totalData = $query->count();
-            $totalFiltered = $totalData;
-
-            $limit = $request->input('length', 10);
-            $start = $request->input('start', 0);
-            $orderColumn = $columns[$request->input('order.0.column', 2)]; // Default to oldest_lapor_datetime
-            $orderDir = $request->input('order.0.dir', 'desc');
-
             // Filter fasilitas
             if ($request->has('fasilitas') && !empty($request->fasilitas)) {
                 $query->where('t_fasilitas_ruang.fasilitas_ruang_id', 'like', '%' . $request->fasilitas . '%');
             }
 
-            // Removed search on deskripsi_laporan as it's not in the GROUP BY clause
-            // If you need search on deskripsi_laporan, it needs to be applied BEFORE the groupBy
-            // if ($request->has('search') && !empty($request->search)) {
-            //     $search = $request->search;
-            //     $query->where('deskripsi_laporan', 'like', '%' . $search . '%');
-            //     $totalFiltered = $query->count();
-            // }
+            $totalFiltered = $query->count();
+
+            $limit = $request->input('length', 10);
+            $start = $request->input('start', 0);
+            $orderColumn = $columns[$request->input('order.0.column', 2)]; // Default to oldest_lapor_datetime
+            $orderDir = $request->input('order.0.dir', 'desc');
 
             $laporans = $query->offset($start)
                 ->limit($limit)
@@ -254,7 +251,7 @@ class LaporanController extends Controller
                 ->where('spk_dampak', null)
                 ->where('spk_frekuensi', null)
                 ->where('spk_waktu_perbaikan', null)
-            ->get();
+                ->get();
 
             foreach ($laporan as $item) {
                 // Check if lapor_foto content exists in the database record
@@ -401,14 +398,15 @@ class LaporanController extends Controller
 
     public function penilaian(Request $request)
     {
-        
+
         try {
             $fasilitas_ruang_id = t_laporan::where('laporan_id', $request->laporan_id)->first()->fasilitas_ruang_id;
 
             $laporans = t_laporan::where('fasilitas_ruang_id', $fasilitas_ruang_id)
-            ->where('is_verified', 1)
-            ->where('is_done', 0)
-            ->get();
+                ->where('is_verified', 1)
+                ->where('teknisi_id', null)
+                ->where('is_done', 0)
+                ->get();
 
             foreach ($laporans as $laporan) {
                 $laporan->spk_kerusakan = $request->kerusakan;

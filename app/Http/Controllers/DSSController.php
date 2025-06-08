@@ -33,6 +33,7 @@ class DSSController extends Controller
             ->where('spk_dampak', '!=', null)
             ->where('spk_frekuensi', '!=', null)
             ->where('spk_waktu_perbaikan', '!=', null)
+            ->where('teknisi_id', null)
             ->select(
                 't_fasilitas_ruang.fasilitas_ruang_id',
                 DB::raw('count(*) as jumlah_laporan'),
@@ -259,6 +260,7 @@ class DSSController extends Controller
             ->where('spk_dampak', '!=', null)
             ->where('spk_frekuensi', '!=', null)
             ->where('spk_waktu_perbaikan', '!=', null)
+            ->where('teknisi_id', null)
             ->select(
                 't_fasilitas_ruang.fasilitas_ruang_id',
                 DB::raw('count(*) as jumlah_laporan'),
