@@ -10,6 +10,18 @@ use function PHPSTORM_META\map;
 
 class DSSController extends Controller
 {
+    public function proses()
+    {
+        // convert to array
+        $saw = $this->saw();
+        $moora = $this->moora();
+
+        return view('sarpras.proses_spk', [
+            'saw' => $saw,
+            'moora' => $moora,
+        ]);
+    }
+
     public function saw()
     {
         $query = t_laporan::leftJoin('t_fasilitas_ruang', 't_laporan.fasilitas_ruang_id', '=', 't_fasilitas_ruang.fasilitas_ruang_id')
@@ -97,7 +109,7 @@ class DSSController extends Controller
                 ]
             ];
         }
-        
+
 
         $maxMin = [];
 
@@ -107,7 +119,14 @@ class DSSController extends Controller
             foreach ($alternatif as $alternative) {
                 $scoreCriteria[] = $alternative['values'][$key - 1];
             }
-            $maxMin[$key] = $value['type'] == 'benefit' ? max($scoreCriteria) : min($scoreCriteria);
+            $max = max($scoreCriteria);
+            $min = min($scoreCriteria);
+            $maxMin[$key] = [
+                'name' => $criteria[$key]['name'],
+                'type' => $criteria[$key]['type'],
+                'max' => $max,
+                'min' => $min,
+            ];
         }
 
         $original = $alternatif;
@@ -116,9 +135,9 @@ class DSSController extends Controller
         foreach ($alternatif as $key => $value) {
             foreach ($value['values'] as $key2 => $value2) {
                 if ($criteria[$key2 + 1]['type'] == 'benefit') {
-                    $alternatif[$key]['values'][$key2] = $value2 / $maxMin[$key2 + 1];
+                    $alternatif[$key]['values'][$key2] = $value2 / $maxMin[$key2 + 1]['max'];
                 } else {
-                    $alternatif[$key]['values'][$key2] = $maxMin[$key2 + 1] / $value2;
+                    $alternatif[$key]['values'][$key2] = $maxMin[$key2 + 1]['min'] / $value2;
                 }
             }
         }
@@ -219,14 +238,14 @@ class DSSController extends Controller
             return $b['value'] <=> $a['value'];
         });
 
-        return response()->json([
+        return [
             'criteria' => $criteria,
             'alternatif' => $original,
             'maxMin' => $maxMin,
             'normalisasi' => $alternatif,
             'preferensi' => $preferensi,
             'rank' => $rank,
-        ]);
+        ];
     }
 
     public function moora()
@@ -435,13 +454,13 @@ class DSSController extends Controller
             return $b['value'] <=> $a['value'];
         });
 
-        return response()->json([
+        return [
             'sqrt' => $sqrt,
             'alternatif' => $original,
             'criteria' => $criteria,
             'preferensi' => $preferensi,
             'normalisasi' => $alternatif,
             'rank' => $rank,
-        ]);
+        ];
     }
 }

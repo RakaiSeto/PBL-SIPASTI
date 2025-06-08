@@ -13,7 +13,7 @@ use App\Http\Controllers\RoleRuanganController;
 use App\Http\Controllers\CivitasController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\StatistikController;
-use App\Http\Controllers\StatusLaporanController;
+use App\Http\Controllers\DSSController;
 
 // Halaman utama
 Route::get('/', function () {
@@ -151,9 +151,7 @@ Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sar
 
 
 
-    Route::get('/proses_spk', function () {
-        return view('sarpras.proses_spk');
-    })->name('sarpras.proses_spk');
+    Route::get('/proses_spk', [DSSController::class, 'proses'])->name('sarpras.proses_spk');
 
     Route::get('/statistik', function () {
         return view('sarpras.statistik');
