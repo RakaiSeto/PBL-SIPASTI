@@ -115,6 +115,8 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
     })->name('admin.roleruangan');
 
     Route::get('/ruanganfasilitas', [RuanganFasilitasController::class, 'index'])->name('admin.ruanganfasilitas');
+    Route::get('/ruanganfasilitas/export_pdf', [RuanganFasilitasController::class, 'exportPdf'])->name('admin.ruanganfasilitas.export_pdf');
+    Route::get('/admin/ruanganfasilitas/export_excel', [RuanganFasilitasController::class, 'exportExcel'])->name('admin.ruanganfasilitas.export_excel');
 
     Route::get('/laporanstatistik', [StatistikController::class, 'laporanStatistik'])->name('admin.laporanstatistik');
 
