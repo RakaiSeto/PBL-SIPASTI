@@ -14,6 +14,7 @@ use App\Http\Controllers\CivitasController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\StatistikController;
 use App\Http\Controllers\DSSController;
+use App\Http\Controllers\StatistikSarprasController;
 use App\Models\m_user;
 
 // Halaman utama
@@ -156,13 +157,11 @@ Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sar
         return view('sarpras.kelolaLaporan');
     })->name('sarpras.kelolaLaporan');
 
-
+    Route::get('statistiklaporan/export_pdf', [StatistikSarprasController::class, 'exportPDF'])->name('sarpras.export_pdf');
 
     Route::get('/proses_spk', [DSSController::class, 'proses'])->name('sarpras.proses_spk');
 
-    Route::get('/statistik', function () {
-        return view('sarpras.statistik');
-    })->name('sarpras.statistik');
+    Route::get('/statistik', [StatistikSarprasController::class, 'Statistik'])->name('sarpras.statistik');
 
     Route::get('/status', function () {
         return view('sarpras.status');

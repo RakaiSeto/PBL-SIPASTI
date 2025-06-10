@@ -5,23 +5,20 @@
 <div class="flex items-center justify-between py-4 px-4 mb-4 bg-white rounded shadow">
     <div>
 <label for="filterTahun" class="mr-2 font-semibold text-gray-700 text-sm">Filter Tahun:</label>
-<select id="filterTahun" name="tahun" class="border border-gray-300 rounded px-3 py-1 pr-8">
-    <option value="">Semua Tahun</option>
-    @php
-        $startYear = 2025;
-        $endYear = date('Y') + 3; // 3 tahun ke depan dari tahun sekarang
-    @endphp
+        <select id="filterTahun" name="tahun" class="border border-gray-300 rounded px-3 py-1 pr-8">
+          <option value="">Semua Tahun</option>
+          @php
+              $startYear = 2025;
+              $endYear = date('Y') + 3; 
+          @endphp
 
-    @for ($year = $startYear; $year <= $endYear; $year++)
-        <option value="{{ $year }}" {{ request('tahun') == $year ? 'selected' : '' }}>{{ $year }}</option>
-    @endfor
-</select>
-
-
-
-    </div>
-   <div>
-  <form method="GET">
+          @for ($year = $startYear; $year <= $endYear; $year++)
+              <option value="{{ $year }}" {{ request('tahun') == $year ? 'selected' : '' }}>{{ $year }}</option>
+          @endfor
+        </select>
+      </div>
+      <div>
+    <form method="GET" action="{{ route('sarpras.export_pdf') }}">
       <input type="hidden" name="tahun" id="exportTahun" value="{{ request('tahun') }}">
       <button type="submit"
           class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm flex items-center">
@@ -33,8 +30,7 @@
 </div>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-    
-    <!-- Card: Total Laporan Kerusakan -->
+
     <div class="bg-[#1652b7]  text-white rounded p-5 flex items-center justify-between shadow-md">
         <div class="flex items-center space-x-4">
             <div class="bg-white bg-opacity-20 p-3 rounded-full">
@@ -46,7 +42,7 @@
             </div>
             <div>
                 <p class="text-sm text-white text-opacity-80">Total Laporan Kerusakan</p>
-                <p id="jumlahLaporan" class="text-2xl font-bold text-white">{{ $totalLaporanTahunan }}</p>
+                <p id="jumlahLaporan" class="text-2xl font-bold text-white">{{ $totalLaporan }}</p>
             </div>
         </div>
         <div class="text-white text-2xl">:</div>
@@ -64,12 +60,12 @@
             </div>
             <div>
                 <p class="text-sm text-opacity-80">Laporan Diproses</p>
-                <p id="jumlahFasilitas" class="text-2xl font-bold">437</p>
+                <p id="jumlahFasilitas" class="text-2xl font-bold">{{$totalLaporanDiproses}}</p>
             </div>
         </div>
         <div class="text-2xl">:</div>
     </div>
-    <!-- Card: Perbaikan Selesai -->
+
     <div class="bg-white rounded p-5 flex items-center justify-between shadow-md text-black">
         <div class="flex items-center space-x-4">
             <div class="bg-[#1652b7]  p-3 rounded-full text-white">
@@ -79,16 +75,15 @@
                           d="M5 13l4 4L19 7"/>
                 </svg>
             </div>
+
             <div>
                 <p class="text-sm text-opacity-80">Perbaikan Selesai</p>
-                <p id="selesaiDiperbaiki" class="text-2xl font-bold">69</p>
+                <p id="selesaiDiperbaiki" class="text-2xl font-bold">{{$totalLaporanSelesai}}</p>
             </div>
         </div>
         <div class="text-2xl">:</div>
     </div>
 
-    <!-- Card: Total Fasilitas -->
-        <!-- Card: Laporan Ditolak -->
     <div class="bg-white rounded p-5 flex items-center justify-between shadow-md text-black">
         <div class="flex items-center space-x-4">
             <div class="bg-[#1652b7]  p-3 rounded-full text-white">
@@ -98,15 +93,18 @@
                           d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </div>
+            
             <div>
                 <p class="text-sm text-opacity-80">Laporan Ditolak</p>
-                <p id="laporanditolak" class="text-2xl font-bold">40</p>
+                <p id="laporanditolak" class="text-2xl font-bold">{{$totalLaporanDitolak}}</p>
             </div>
         </div>
         <div class="text-2xl">:</div>
     </div>
 </div>
+
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+
     <div
         class="p-4 md:p-5 min-h-[410px] flex flex-col bg-white border border-gray-200 rounded shadow lg:col-span-2 dark:bg-neutral-800 dark:border-neutral-700">
         <div class="flex flex-wrap justify-between items-center gap-2">
@@ -116,6 +114,7 @@
         </div>
         <div id="charts-kerusakan" class="relative w-full h-full"></div>
     </div>
+
     <div
         class="p-4 md:p-5 min-h-[410px] flex flex-col bg-white border border-gray-200 rounded shadow dark:bg-neutral-800 dark:border-neutral-700">
         <div class="flex flex-wrap justify-between items-center gap-2">
@@ -125,21 +124,21 @@
         </div>
         <div id="hs-statuslaporan" class="relative w-full h-full"></div>
     </div>
+
 </div>
+
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+
     <div
         class="p-4 md:p-5 min-h-[410px] flex flex-col bg-white border border-gray-200 rounded shadow lg:col-span-2 dark:bg-neutral-800 dark:border-neutral-700">
-        <!-- Header -->
         <div class="flex flex-wrap justify-between items-center gap-2">
             <div class="mb-4">
                 <h2 class="text-sm text-gray-500 dark:text-neutral-500">Laporan Jumlah Kerusakan Fasilitas</h2>
             </div>
         </div>
-        <!-- End Header -->
         <div id="charts-kategori" class="relative w-full h-full"></div>
     </div>
 
-    <!-- kepuasan pengguna -->
     <div
         class="p-4 md:p-5 min-h-[410px] flex flex-col bg-white border border-gray-200 rounded shadow dark:bg-neutral-800 dark:border-neutral-700">
         <div class="flex flex-wrap justify-between items-center gap-2">
@@ -147,7 +146,6 @@
                 <h2 class="text-sm text-gray-500 dark:text-neutral-500">Kepuasan Pengguna</h2>
             </div>
         </div>
-
         <div id="kepuasanChartContainer" class="relative w-full h-full"></div>
     </div>
 </div>
@@ -165,13 +163,47 @@
                   <th class="p-3">Terakhir Dilaporkan</th>
               </tr>
           </thead>
+          <tbody class="text-sm font-normal leading-none text-slate-500">
+              @if ($kerusakanRuangan->isEmpty())
+                  <tr>
+                      <td colspan="5" class="py-4 text-center text-gray-500">Tidak ada data laporan</td>
+                  </tr>
+              @else
+                  @foreach ($kerusakanRuangan as $index => $item)
+                  <tr class="{{ $index % 2 == 0 ? 'bg-gray-50' : '' }}">
+                      <td class="p-3">{{ $index + 1 }}</td>
+                      <td class="p-3">{{ $item->ruangan_nama }}</td>
+                      <td class="p-3">{{ $item->fasilitas_nama }}</td>
+                      <td class="p-3">{{ $item->jumlah_laporan }}</td>
+                      <td class="p-3">{{ date('Y-m-d', strtotime($item->terakhir_dilaporkan)) }}</td>
+                  </tr>
+                  @endforeach
+              @endif
+          </tbody>
         </table>
     </div>
 </div>
 
 <script>
-  const totalKerusakan = [12, 19, 3, 5, 20, 3, 5, 2, 10, 3, 4, 5];
-  const bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+  document.getElementById('filterTahun').addEventListener('change', function () {
+    const selectedYear = this.value;
+    const url = new URL(window.location.href);
+    if (selectedYear) {
+        url.searchParams.set('tahun', selectedYear);
+    } else {
+        url.searchParams.delete('tahun');
+    }
+    // Update hidden input export tahun
+    const exportInput = document.getElementById('exportTahun');
+    if (exportInput) {
+        exportInput.value = selectedYear;
+    }
+    window.location.href = url.toString();
+  });
+
+  const jumlahLaporan = @json($jumlahLaporan);
+  const bulanLaporan = @json($bulanLaporan);
 
   const ctx = document.createElement('canvas');
   document.getElementById('charts-kerusakan').appendChild(ctx);
@@ -179,9 +211,9 @@
   new Chart(ctx, {
   type: 'line',
   data: {
-    labels: bulanLabels,
+    labels: bulanLaporan,
     datasets: [{
-      data: totalKerusakan,
+      data: jumlahLaporan,
       fill: true,
       borderColor: '#1652b7',
       backgroundColor: 'rgba(22, 82, 183, 0.2)',
@@ -196,7 +228,6 @@
       plugins: { legend: { display: false } },
       scales: {
         y: {
-          beginAtZero: true,
           suggestedMax: 20,
           ticks: {
             stepSize:2
@@ -214,8 +245,15 @@
     }
   });
 
+const totalDiverifikasi = {{ $totalLaporanDiverifikasi ?? 0 }};
+const totalProses = {{ $totalLaporanDiproses ?? 0 }};
+const totalSelesai = {{ $totalLaporanSelesai ?? 0 }};
+const totalTolak = {{ $totalLaporanDitolak ?? 0 }};
 
-const donutData = [12, 19, 3, 5];
+const rawData = [totalDiverifikasi, totalProses, totalSelesai, totalTolak];
+
+// Supaya grafik tetap muncul, angka nol diganti 0.0001
+const donutData = rawData.map(val => val === 0 ? 0.0001 : val);
 const donutLabels = ['Diverifikasi', 'Diproses', 'Selesai', 'Ditolak'];
 
 const donutCtx = document.createElement("canvas");
@@ -257,8 +295,8 @@ new Chart(donutCtx, {
 });
 
 //Chart kategori fasilitas 
-  const fasilitasLabels = ['ac', 'pintu', 'lantai', 'meja', 'kursi','led'];
-  const jumlahKerusakanFasilitas = [12, 19, 3, 5, 20, 3, 5, 2, 10, 3, 4, 5];   
+  const namafasilitas = @json($namafasilitas);
+  const jumlahKerusakanFasilitas = @json($jumlahkerusakanfasilitas);
 
   const canvasKategori = document.createElement("canvas");
   document.getElementById("charts-kategori").appendChild(canvasKategori);
@@ -266,7 +304,7 @@ new Chart(donutCtx, {
   new Chart(canvasKategori, {
     type: 'bar',
     data: {
-      labels: fasilitasLabels,
+      labels: namafasilitas,
       datasets: [{
         label: 'Jumlah Kerusakan',
         data: jumlahKerusakanFasilitas,
@@ -285,10 +323,9 @@ new Chart(donutCtx, {
       scales: {
         y: {
           beginAtZero: true,
-          max: 16,
           ticks: { 
             color: '#6B7280',
-            stepSize: 2
+            stepSize: 1
           },
           
         },
@@ -300,20 +337,21 @@ new Chart(donutCtx, {
     }
   });
 
-
   // chart kepuasan pengguna
+const rataKepuasan = @json($rataKepuasan ?? 0);
+const persenKepuasan = Math.round((rataKepuasan / 5) * 100);
+const validPersen = Math.min(Math.max(persenKepuasan, 0), 100);
 
-const validPersen = 80;
 const kepuasanCanvas = document.createElement('canvas');
 const container = document.getElementById('kepuasanChartContainer');
 container.innerHTML = '';
 container.appendChild(kepuasanCanvas);
 
-// Jika nilai 0, tetap tampilkan 100% biru
+// Jika nilai 0,  tampilkan 100% biru
 const dataValues = [validPersen > 0 ? validPersen : 100];
 const dataColors = ['#1652b7'];
 
-// Jika nilai > 0, tambahkan bagian abu-abu
+// Jika nilai > 0,  bagian abu-abu
 if (validPersen > 0) {
   dataValues.push(100 - validPersen);
   dataColors.push('#E5E7EB');
@@ -358,8 +396,5 @@ new Chart(kepuasanCanvas.getContext('2d'), {
     }
   }]
 });
-
-
 </script>
 @endsection
-

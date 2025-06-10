@@ -34,23 +34,18 @@
 @endphp
 <header class="sticky top-0 z-40 flex justify-between items-center bg-white px-6 py-4 shadow">
 
-    {{-- Tombol Hamburger --}}
     <button id="toggleSidebar" class="md:hidden text-2xl">☰</button>
 
-    {{-- Judul halaman (hanya tampil di layar md ke atas) --}}
     <h2 class="text-xl font-semibold hidden md:block">
         {{ $pageTitle }}
     </h2>
 
-    {{-- Judul pendek saat mobile --}}
     <span class="text-xl font-semibold block md:hidden">SIPASTI</span>
 
-    {{-- Profil lengkap (tampilkan hanya di desktop) --}}
     <div class="hidden md:block">
         @include('component.profile')
     </div>
 
-    {{-- Foto profil saja saat mobile --}}
     <div class="block md:hidden">
         <button id="profileToggleMobile" type="button"
             class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-blue-500 focus:outline-none">
