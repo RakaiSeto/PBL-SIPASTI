@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\m_ruangan;
+use App\Models\m_fasilitas;
 use App\Models\t_fasilitas_ruang;
 use App\Models\t_laporan;
 use Illuminate\Support\Facades\Log;
@@ -29,38 +30,52 @@ class CivitasController extends Controller
     {
         try {
             $userId = Auth::id();
-            $laporanAktif = t_laporan::where('user_id', $userId)->where('is_verified', 0)->where('is_done', 0)->count();
-            $laporanDiproses = t_laporan::where('user_id', $userId)->where('is_verified', 1)->where('is_done', 0)->count();
-            $laporanSelesai = t_laporan::where('user_id', $userId)->where('is_done', 1)->where('is_verified', 1)->count();
-            $laporanDitolak = t_laporan::where('user_id', $userId)->where('is_done', 1)->where('is_verified', 0)->count();
-            $totalLaporan = $laporanAktif + $laporanDiproses + $laporanSelesai + $laporanDitolak;
 
-            $lineChartData = t_laporan::select(
+            // Ambil semua laporan user dalam satu query untuk efisiensi
+            $laporan = t_laporan::where('user_id', $userId)->get();
+
+            // Hitung status berdasarkan koleksi
+            $laporanAktif   = $laporan->where('is_verified', 0)->where('is_done', 0)->count();
+            $laporanDiproses = $laporan->where('is_verified', 1)->where('is_done', 0)->count();
+            $laporanSelesai  = $laporan->where('is_verified', 1)->where('is_done', 1)->count();
+            $laporanDitolak  = $laporan->where('is_verified', 0)->where('is_done', 1)->count();
+            $totalLaporan    = $laporan->count();
+
+            // Data Line Chart (7 hari terakhir)
+            $lineChartRaw = t_laporan::select(
                 DB::raw('DATE(lapor_datetime) as tanggal'),
                 DB::raw('COUNT(*) as jumlah')
             )
                 ->where('user_id', $userId)
-                ->where('lapor_datetime', '>=', now()->subDays(7))
+                ->where('lapor_datetime', '>=', now()->subDays(6)->startOfDay())
                 ->groupBy('tanggal')
                 ->orderBy('tanggal')
-                ->get()
                 ->pluck('jumlah', 'tanggal')
                 ->toArray();
 
+            // Format data untuk chart (tanggal & jumlah)
             $labelsLine = [];
             $dataLine = [];
             for ($i = 6; $i >= 0; $i--) {
-                $date = now()->subDays($i)->format('Y-m-d');
+                $tanggal = now()->subDays($i)->format('Y-m-d');
                 $labelsLine[] = now()->subDays($i)->format('d M');
-                $dataLine[] = $lineChartData[$date] ?? 0;
+                $dataLine[] = $lineChartRaw[$tanggal] ?? 0;
             }
 
+            // Data Donat Chart
             $dataDoughnut = [
                 'Menunggu' => $totalLaporan ? round(($laporanAktif / $totalLaporan) * 100, 1) : 0,
                 'Diproses' => $totalLaporan ? round(($laporanDiproses / $totalLaporan) * 100, 1) : 0,
-                'Selesai' => $totalLaporan ? round(($laporanSelesai / $totalLaporan) * 100, 1) : 0,
-                'Ditolak' => $totalLaporan ? round(($laporanDitolak / $totalLaporan) * 100, 1) : 0,
+                'Selesai'  => $totalLaporan ? round(($laporanSelesai / $totalLaporan) * 100, 1) : 0,
+                'Ditolak'  => $totalLaporan ? round(($laporanDitolak / $totalLaporan) * 100, 1) : 0,
             ];
+
+            // Ambil 5 laporan terbaru dengan relasi fasilitas & ruangan
+            $laporanTerbaru = t_laporan::with(['fasilitas', 'ruangan'])
+                ->where('user_id', $userId)
+                ->latest('lapor_datetime')
+                ->take(5)
+                ->get();
 
             return view('civitas.index', compact(
                 'laporanAktif',
@@ -70,13 +85,15 @@ class CivitasController extends Controller
                 'totalLaporan',
                 'labelsLine',
                 'dataLine',
-                'dataDoughnut'
+                'dataDoughnut',
+                'laporanTerbaru'
             ));
         } catch (\Exception $e) {
             Log::error('Gagal memuat dashboard civitas: ' . $e->getMessage());
-            return view('civitas.index')->with('error', 'Gagal memuat data: ' . $e->getMessage());
+            return view('civitas.index')->with('error', 'Gagal memuat data dashboard.');
         }
     }
+
 
     public function status()
     {
