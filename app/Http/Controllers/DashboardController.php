@@ -19,27 +19,27 @@ class DashboardController extends Controller
 
         // get last 6 months name
         $bulanLaporan = [];
-        for ($i = 6; $i > 0; $i--) {
+        for ($i = 5; $i >= 0; $i--) {
             $bulanLaporan[] = date('M', strtotime('-' . $i . ' months'));
         }
 
         $jumlahLaporan = [];
-        for ($i = 6; $i > 0; $i--) {
+        for ($i = 5; $i >= 0; $i--) {
             $jumlahLaporan[] = Laporan::where('lapor_datetime', 'like', date('Y-m', strtotime('-' . $i . ' months')) . '%')->count();
         }
 
         $jumlahLaporanSelesai = [];
-        for ($i = 6; $i > 0; $i--) {
+        for ($i = 5; $i >= 0; $i--) {
             $jumlahLaporanSelesai[] = Laporan::where('is_done', 1)->where('lapor_datetime', 'like', date('Y-m', strtotime('-' . $i . ' months')) . '%')->count();
         }
 
         $hariLaporan = [];
-        for ($i = 6; $i >= 0; $i--) {
+        for ($i = 5; $i >= 0; $i--) {
             $hariLaporan[] = date('d-M', strtotime('-' . $i . ' days'));
         }
 
         $jumlahLaporanMingguan = [];
-        for ($i = 6; $i >= 0; $i--) {
+        for ($i = 5; $i >= 0; $i--) {
             $jumlahLaporanMingguan[] = Laporan::where('lapor_datetime', 'like', date('Y-m-d', strtotime('-' . $i . ' days')) . '%')->count();
         }
 
