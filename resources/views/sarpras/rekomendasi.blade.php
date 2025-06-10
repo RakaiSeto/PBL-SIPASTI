@@ -36,10 +36,10 @@
             <h2 class="text-xl font-semibold mb-4 text-slate-800">Pilih Teknisi</h2>
             <select id="teknisi-select-modal"
                 class="w-full border border-gray-300 rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-[#1652b7]">
-                <option value="">-- Pilih Teknisi --</option>
-                <option value="1">Teknisi A</option>
-                <option value="2">Teknisi B</option>
-                <option value="3">Teknisi C</option>
+                <option value="" selected>-- Pilih Teknisi --</option>
+                @foreach ($teknisi as $item)
+                    <option value="{{ $item->user_id }}">{{ $item->fullname }}</option>
+                @endforeach
             </select>
             <div class="flex justify-end gap-3">
                 <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
@@ -51,13 +51,14 @@
     </div>
 
     <script>
-        $(document).ready(function() {
+        var currentKasus = null;
+        $(document).ready(function () {
             showTab('saw');
             loadCards('saw');
             loadCards('moora');
 
             // Event listener untuk filter dan pencarian
-            $('#filterFasilitas, #tampilData, #searchInput').on('change keyup', function() {
+            $('#filterFasilitas, #tampilData, #searchInput').on('change keyup', function () {
                 loadCards('saw');
                 loadCards('moora');
             });
@@ -99,51 +100,51 @@
                     length: pageLength,
                     search: searchQuery
                 },
-                success: function(response) {
+                success: function (response) {
                     container.empty();
                     const rankData = response.rank || [];
                     rankData.forEach((item, index) => {
                         const rank = index + 1;
                         const card = `
-                            <div class="relative bg-white border border-gray-200 rounded-lg shadow-md p-5 hover:shadow-lg transition-shadow duration-300">
-                                <div class="flex items-start gap-3">
-                                    <div class="flex-1">
-                                        <div class="flex items-center justify-between mb-3">
-                                            <h3 class="text-lg font-semibold text-slate-800">${item.name || 'Unknown'}</h3>
-                                            <span class="text-sm font-bold text-[#1652b7] bg-[#e6edf8] px-2 py-1 rounded-full">Rank ${rank}</span>
-                                        </div>
-                                        <p class="text-sm text-slate-600 mb-4"><strong>Skor DSS:</strong> ${item.value ? item.value.toFixed(3) : '-'}</p>
-                                        <div class="flex items-center gap-2">
-                                        <button class="toggle-details bg-gray-200 text-gray-700 font-semibold py-1 px-3 rounded-lg hover:bg-gray-300 transition-colors w-full"
-                                            onclick="toggleDetails(this, '${item.id}')">
-                                            Lihat Detail
-                                        </button>
-                                        <button class="bg-[#1652b7] text-white p-2 rounded-full hover:bg-[#123d8f] transition-colors"
-                                        onclick="openModal('${item.id || ''}')" title="Tugaskan Teknisi">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                            </svg>
-                                        </button>
-                                        </div>
-                                        <div class="details hidden mt-4 text-sm border-t border-gray-200 pt-3">
-                                            <div class="grid grid-cols-2 gap-3">
-                                                <p><strong>C1 (Kerusakan):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[0] : '-'}</p>
-                                                <p><strong>C2 (Dampak):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[1] : '-'}</p>
-                                                <p><strong>C3 (Frekuensi):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[2] : '-'}</p>
-                                                <p><strong>C4 (Laporan):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[3] : '-'}</p>
-                                                <p><strong>C5 (Waktu Kerusakan):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[4] : '-'}</p>
-                                                <p><strong>C6 (Waktu Perbaikan):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[5] : '-'}</p>
+                                <div class="relative bg-white border border-gray-200 rounded-lg shadow-md p-5 hover:shadow-lg transition-shadow duration-300">
+                                    <div class="flex items-start gap-3">
+                                        <div class="flex-1">
+                                            <div class="flex items-center justify-between mb-3">
+                                                <h3 class="text-lg font-semibold text-slate-800">${item.name || 'Unknown'}</h3>
+                                                <span class="text-sm font-bold text-[#1652b7] bg-[#e6edf8] px-2 py-1 rounded-full">Rank ${rank}</span>
                                             </div>
-                                            <p class="mt-3 font-semibold"><strong>Skor DSS:</strong> ${item.value ? item.value.toFixed(3) : '-'}</p>
+                                            <p class="text-sm text-slate-600 mb-4"><strong>Skor DSS:</strong> ${item.value ? item.value.toFixed(3) : '-'}</p>
+                                            <div class="flex items-center gap-2">
+                                            <button class="toggle-details bg-gray-200 text-gray-700 font-semibold py-1 px-3 rounded-lg hover:bg-gray-300 transition-colors w-full"
+                                                onclick="toggleDetails(this, '${item.id}')">
+                                                Lihat Detail
+                                            </button>
+                                            <button class="bg-[#1652b7] text-white p-2 rounded-full hover:bg-[#123d8f] transition-colors"
+                                            onclick="openModal('${item.id || ''}')" title="Tugaskan Teknisi">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                                </svg>
+                                            </button>
+                                            </div>
+                                            <div class="details hidden mt-4 text-sm border-t border-gray-200 pt-3" id="details-${item.id}">
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <p><strong>C1 (Kerusakan):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[0] : '-'}</p>
+                                                    <p><strong>C2 (Dampak):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[1] : '-'}</p>
+                                                    <p><strong>C3 (Frekuensi):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[2] : '-'}</p>
+                                                    <p><strong>C4 (Laporan):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[3] : '-'}</p>
+                                                    <p><strong>C5 (Waktu Kerusakan):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[4] : '-'}</p>
+                                                    <p><strong>C6 (Waktu Perbaikan):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[5] : '-'}</p>
+                                                </div>
+                                                <p class="mt-3 font-semibold"><strong>Skor DSS:</strong> ${item.value ? item.value.toFixed(3) : '-'}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        `;
+                            `;
                         container.append(card);
                     });
                 },
-                error: function() {
+                error: function () {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
@@ -154,7 +155,8 @@
         }
 
         function toggleDetails(button, itemId) {
-            const details = button.nextElementSibling;
+            id = 'details-' + itemId;
+            const details = document.getElementById(id);
             const isHidden = details.classList.contains('hidden');
             details.classList.toggle('hidden');
             button.textContent = isHidden ? 'Sembunyikan Detail' : 'Lihat Detail';
@@ -163,13 +165,13 @@
         let currentItemId = null;
 
         function openModal(itemId) {
-            currentItemId = itemId;
+            currentKasus = itemId;
             document.getElementById("modal-teknisi").classList.remove("hidden");
         }
 
         function closeModal() {
             document.getElementById("modal-teknisi").classList.add("hidden");
-            currentItemId = null;
+            currentKasus = null;
         }
 
         function kirimTeknisi() {
@@ -184,15 +186,31 @@
                 return;
             }
 
-            // Simulasi pengiriman data ke backend
-            console.log("Menugaskan teknisi ID:", teknisiId, "untuk item ID:", currentItemId);
-            Swal.fire({
-                icon: 'success',
-                title: 'Sukses',
-                text: 'Berhasil menugaskan teknisi!'
+            $.ajax({
+                url: '/api/tugaskan-teknisi',
+                type: 'POST',
+                data: {
+                    fasilitas_ruang_id: currentKasus,
+                    teknisi_id: teknisiId
+                },
+                success: function (response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sukses',
+                        text: 'Berhasil menugaskan teknisi!'
+                    });
+                    window.location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Gagal menugaskan teknisi!'
+                    });
+                }
             });
-
-            closeModal();
         }
     </script>
 

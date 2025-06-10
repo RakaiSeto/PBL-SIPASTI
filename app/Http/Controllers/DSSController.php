@@ -229,6 +229,7 @@ class DSSController extends Controller
             }
 
             $rank[$key] = [
+                'id' => $data[$key-1]['fasilitas_ruang_id'],
                 'name' => $alternatif[$key]['name'],
                 'alternatif' => $ketAlt,
                 'value' => $value,

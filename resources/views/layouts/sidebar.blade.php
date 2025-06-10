@@ -162,11 +162,11 @@
                 <i class="fa-solid fa-lightbulb mr-2"></i> Rekomendasi Perbaikan
             </a>
 
-            <a href="{{ route('sarpras.tugaskan') }}"
+            {{-- <a href="{{ route('sarpras.tugaskan') }}"
                 class="block p-3 rounded font-semibold
           {{ request()->routeIs('sarpras.tugaskan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
                 <i class="fa-solid fa-user-cog mr-2"></i> Tugaskan Teknisi
-            </a>
+            </a> --}}
 
             <a href="{{ route('sarpras.status') }}"
                 class="block p-3 rounded font-semibold
