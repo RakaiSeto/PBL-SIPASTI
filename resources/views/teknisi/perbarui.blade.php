@@ -7,34 +7,19 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <div class="bg-white p-4 rounded shadow">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
-            <div class="relative w-full md:w-3/4 lg:w-1/4">
-                <input type="text" placeholder="Cari data..."
-                    class="w-full pr-12 pl-4 py-2 text-sm border border-slate-200 rounded-md focus:ring-2 focus:ring-blue-500"
-                    id="searchInput" onkeyup="searchTable()" />
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 absolute right-3 top-2" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-4.35-4.35M18 10a8 8 0 10-8 8 8 8 0 008-8z" />
-                </svg>
-            </div>
-        </div>
-
         <div class="overflow-x-auto">
-            <div class="overflow-x-auto">
-                <table class="min-w-full table-auto text-sm text-left" id="tugasTable">
-                    <thead class="bg-slate-100">
-                        <tr>
-                            <th class="p-3">No</th>
-                            <th class="p-3">Fasilitas</th>
-                            <th class="p-3">Ruangan</th>
-                            <th class="p-3">Tanggal Tugas</th>
-                            <th class="p-3">Status</th>
-                            <th class="p-3">Aksi</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+            <table class="min-w-full table-auto text-sm text-left" id="tugasTable">
+                <thead class="bg-slate-100">
+                    <tr>
+                        <th class="p-3">No</th>
+                        <th class="p-3">Fasilitas</th>
+                        <th class="p-3">Ruangan</th>
+                        <th class="p-3">Tanggal Tugas</th>
+                        <th class="p-3">Status</th>
+                        <th class="p-3">Aksi</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </div>
 
