@@ -40,8 +40,8 @@
                         </td>
                         <td class="p-3">2025-05-11</td>
                         <td class="p-3 flex gap-2">
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetail('T001')">
-                                <i class="fas fa-info-circle"></i> Detail
+                            <button class="flex items-center gap-1 px-3 py-1 text-white bg-blue-600 hover:bg-blue-700 rounded" onclick="openDetail('T001')">
+                                <i class="fas fa-eye"></i> Detail
                             </button>                            
                         </td>
                     </tr>
@@ -53,9 +53,9 @@
                         </td>
                         <td class="p-3">2025-05-12</td>
                         <td class="p-3 flex gap-2">
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetail('T002')">
-                                <i class="fas fa-info-circle"></i> Detail
-                            </button>                            
+                            <button class="flex items-center gap-1 px-3 py-1 text-white bg-blue-600 hover:bg-blue-700 rounded" onclick="openDetail('T002')">
+                                <i class="fas fa-eye"></i> Detail
+                            </button>                           
                         </td>
                     </tr>
                     <tr class="hover:bg-slate-50">
@@ -66,9 +66,9 @@
                         </td>
                         <td class="p-3">2025-05-13</td>
                         <td class="p-3 flex gap-2">
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetail('T003')">
-                                <i class="fas fa-info-circle"></i> Detail
-                            </button>                            
+                            <button class="flex items-center gap-1 px-3 py-1 text-white bg-blue-600 hover:bg-blue-700 rounded" onclick="openDetail('T003')">
+                                <i class="fas fa-eye"></i> Detail
+                            </button>                             
                         </td>
                     </tr>
                 </tbody>
@@ -210,9 +210,9 @@
                 deskripsi_laporan: 'Lampu berkedip.',
                 lapor_datetime: '2025-05-12T10:00:00',
                 is_verified: true,
-                is_done: true,
+                is_done: false,
                 verifikasi_datetime: '2025-05-13T10:00:00',
-                selesai_datetime: '2025-05-14T10:00:00',
+                selesai_datetime: null,
                 lapor_foto_url: '/assets/image/lamp.jpg'
             },
             'T003': {
@@ -228,9 +228,9 @@
                 },
                 deskripsi_laporan: 'Engsel pintu rusak.',
                 lapor_datetime: '2025-05-13T11:00:00',
-                is_verified: false,
+                is_verified: true,
                 is_done: false,
-                verifikasi_datetime: null,
+                verifikasi_datetime: '2025-05-12T09:00:00',
                 selesai_datetime: null,
                 lapor_foto_url: '/assets/image/pintu.jpg'
             }
@@ -262,9 +262,6 @@
                 <button onclick="closeModal('detailModal')" class="flex items-center gap-2 bg-gray-200 text-gray-700 py-2 px-4 rounded hover:bg-gray-300 transition">
                         <i class="fas fa-times"></i> Tutup</button>
                 <div class="space-x-2">
-                    ${!data.is_verified
-                        ? `<button onclick="alert('Kerjakan laporan ${id}')" class="bg-yellow-600 text-white px-4 py-2 rounded">Verifikasi</button>`
-                        : ''}
                     ${data.is_verified && !data.is_done
                         ? `<button onclick="alert('Selesaikan laporan ${id}')" class="flex items-center gap-2 bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700 transition">
                             <i class="fas fa-check"></i>Kerjakan</button>`
