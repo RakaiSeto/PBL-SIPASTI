@@ -40,11 +40,8 @@
                         </td>
                         <td class="p-3">2025-05-11</td>
                         <td class="p-3 flex gap-2">
-                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
-                                <i class="fas fa-check-circle"></i> Terima
-                            </button>
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">
-                                <i class="fas fa-info-circle"></i> Detail
+                            <button class="flex items-center gap-1 px-3 py-1 text-white bg-blue-600 hover:bg-blue-700 rounded" onclick="openDetail('T001')">
+                                <i class="fas fa-eye"></i> Detail
                             </button>                            
                         </td>
                     </tr>
@@ -56,12 +53,9 @@
                         </td>
                         <td class="p-3">2025-05-12</td>
                         <td class="p-3 flex gap-2">
-                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
-                                <i class="fas fa-check-circle"></i> Terima
-                            </button>
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">
-                                <i class="fas fa-info-circle"></i> Detail
-                            </button>                            
+                            <button class="flex items-center gap-1 px-3 py-1 text-white bg-blue-600 hover:bg-blue-700 rounded" onclick="openDetail('T002')">
+                                <i class="fas fa-eye"></i> Detail
+                            </button>                           
                         </td>
                     </tr>
                     <tr class="hover:bg-slate-50">
@@ -72,12 +66,9 @@
                         </td>
                         <td class="p-3">2025-05-13</td>
                         <td class="p-3 flex gap-2">
-                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openTerimaModal()">
-                                <i class="fas fa-check-circle"></i> Terima
-                            </button>
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-xs flex items-center gap-2" onclick="openDetailModal('T001')">
-                                <i class="fas fa-info-circle"></i> Detail
-                            </button>                            
+                            <button class="flex items-center gap-1 px-3 py-1 text-white bg-blue-600 hover:bg-blue-700 rounded" onclick="openDetail('T003')">
+                                <i class="fas fa-eye"></i> Detail
+                            </button>                             
                         </td>
                     </tr>
                 </tbody>
@@ -95,44 +86,74 @@
     </div>
 </div>
 
-<!-- Modal Konfirmasi Terima -->
-<div id="terimaModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white p-8 rounded shadow-lg w-128">
-        <h3 class="text-lg font-semibold mb-4 text-center">Konfirmasi Terima Tugas</h3>
-        <p>Apakah Anda yakin ingin menerima tugas ini?</p>
-        <div class="mt-4 flex justify-center gap-4">
-            <button class="px-4 py-2 bg-green-500 text-white rounded" onclick="terimaTugas()">Terima</button>
-            <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded" onclick="closeModal('terimaModal')">Batal</button>
-        </div>
+<!-- Modal Detail -->
+<div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+  <div class="bg-white p-6 rounded shadow-lg w-[90%] max-w-2xl overflow-y-auto max-h-[90vh]">
+
+    <!-- Header -->
+    <div class="relative mb-4">
+      <h2 class="text-2xl font-bold">Detail Laporan Teknisi</h2>
+      <button class="absolute right-2 top-2 text-gray-500 hover:text-red-500" onclick="closeModal('detailModal')">✕</button>
     </div>
+
+    <!-- Informasi Laporan -->
+    <div class="space-y-6 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Kolom kiri -->
+        <div class="space-y-2">
+                <div>
+                    <h4 class="text-sm text-gray-500 font-medium">Pelapor</h4>
+                    <p class="user_id text-gray-800 text-base font-semibold">-</p>
+                </div>
+                <div>
+                    <h4 class="text-sm text-gray-500 font-medium">Ruangan</h4>
+                    <p class="ruang text-gray-800 text-base font-semibold">-</p>
+                </div>
+                <div>
+                    <h4 class="text-sm text-gray-500 font-medium">Fasilitas</h4>
+                    <p class="fasilitas text-gray-800 text-base font-semibold">-</p>
+                </div>
+                <div>
+                    <h4 class="text-sm text-gray-500 font-medium mb-1">Deskripsi</h4>
+                    <p class="deskripsi text-gray-800">-</p>
+                </div>
+                <div>
+                    <h4 class="text-sm text-gray-500 font-medium mb-1">Tanggal</h4>
+                    <p class="tanggal text-gray-800">-</p>
+                </div>
+                <div>
+                    <h4 class="text-sm text-gray-500 font-medium mb-1">Status</h4>
+                    <p class="status text-gray-800">-</p>
+                </div>
+        </div>
+
+        <!-- Kolom kanan - Foto -->
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Foto Fasilitas</p>
+          <div class="border rounded overflow-hidden shadow">
+            <img id="detail-photo" src="/assets/image/placeholder.jpg" alt="Foto Fasilitas" class="w-full h-auto object-cover">
+          </div>
+        </div>
+      </div>
+
+      <!-- Riwayat Status -->
+      <div>
+        <h4 class="text-sm text-gray-500 font-medium mb-2">Riwayat Status</h4>
+        <ul class="bg-gray-50 p-4 rounded border space-y-2 text-sm text-gray-700">
+          <li><i class="fas fa-flag w-4 inline-block"></i> <strong>Baru:</strong> <span id="statusBaru">-</span></li>
+          <li><i class="fas fa-spinner text-yellow-500 w-4 inline-block"></i> <strong>Diproses:</strong> <span id="statusProses">-</span></li>
+          <li><i class="fas fa-check-circle text-green-600 w-4 inline-block"></i> <strong>Selesai:</strong> <span id="statusSelesai">-</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Tombol Aksi -->
+    <div class="flex justify-end gap-3 border-t pt-4" id="modalActions">
+      <!-- Tombol aksi akan dimuat dinamis lewat JS -->
+    </div>
+  </div>
 </div>
 
-<div id="detailModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-xl w-full max-w-md p-6 relative shadow-lg ring-1 ring-gray-200 max-h-[90vh] overflow-y-auto">
-        <button onclick="tutupDetailModal()" class="absolute top-2 right-2 text-gray-400 hover:text-black text-xl">
-            &times;
-        </button>
-        <h2 class="text-xl font-bold text-black-700 mb-4 flex items-center gap-2">
-            <i class="fas fa-file-alt"></i> Detail Laporan
-        </h2>
-        <div class="space-y-4 text-sm">
-            <div class="bg-gray-50 p-3 rounded border">
-                <p><span class="font-semibold text-gray-600">Ruangan:</span> <span id="detailRuangan" class="text-gray-800"></span></p>
-                <p><span class="font-semibold text-gray-600">Fasilitas:</span> <span id="detailFasilitas" class="text-gray-800"></span></p>
-                <p><span class="font-semibold text-gray-600">Deskripsi:</span> <span id="detailDeskripsi" class="text-gray-800"></span></p>
-                <p><span class="font-semibold text-gray-600">Kategori:</span> <span id="detailKategori" class="text-gray-800"></span></p>
-            </div>
-            <div class="bg-gray-50 p-3 rounded border">
-                <strong class="text-gray-600">Foto:</strong><br>
-                <img id="detailFoto" src="" alt="Foto Fasilitas" class="mt-2 rounded-lg border w-full">
-            </div>
-            <div class="bg-gray-50 p-3 rounded border">
-                <strong class="text-gray-600 block mb-2">Riwayat Status:</strong>
-                <ul id="riwayatStatus" class="space-y-2"></ul>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
     function searchTable() {
@@ -145,90 +166,115 @@
         });
     }
 
-    function openTerimaModal() {
-        document.getElementById('terimaModal').classList.remove('hidden');
+    function openModal(id) {
+        document.getElementById(id).classList.remove('hidden');
     }
 
-    function openPerbaruiModal() {
-        document.getElementById('perbaruiModal').classList.remove('hidden');
+    function closeModal(id) {
+        document.getElementById(id).classList.add('hidden');
     }
 
-    function closeModal(modalId) {
-        document.getElementById(modalId).classList.add('hidden');
-    }
+    function openDetail(id) {
+        // Data dummy
+        const dummyData = {
+            'T001': {
+                user_id: 'Admin1',
+                fasilitas_ruang: {
+                    ruangan: {
+                        ruangan_nama: 'Kelas A',
+                        lantai: 1
+                    },
+                    fasilitas: {
+                        fasilitas_nama: 'AC Ruang Kelas A'
+                    }
+                },
+                deskripsi_laporan: 'AC tidak dingin.',
+                lapor_datetime: '2025-05-11T08:00:00',
+                is_verified: true,
+                is_done: false,
+                verifikasi_datetime: '2025-05-12T09:00:00',
+                selesai_datetime: null,
+                lapor_foto_url: '/assets/image/ac.jpg'
+            },
+            'T002': {
+                user_id: 'Admin2',
+                fasilitas_ruang: {
+                    ruangan: {
+                        ruangan_nama: 'Ruang B',
+                        lantai: 2
+                    },
+                    fasilitas: {
+                        fasilitas_nama: 'Lampu Ruang B'
+                    }
+                },
+                deskripsi_laporan: 'Lampu berkedip.',
+                lapor_datetime: '2025-05-12T10:00:00',
+                is_verified: true,
+                is_done: false,
+                verifikasi_datetime: '2025-05-13T10:00:00',
+                selesai_datetime: null,
+                lapor_foto_url: '/assets/image/lamp.jpg'
+            },
+            'T003': {
+                user_id: 'Admin3',
+                fasilitas_ruang: {
+                    ruangan: {
+                        ruangan_nama: 'Ruang C',
+                        lantai: 3
+                    },
+                    fasilitas: {
+                        fasilitas_nama: 'Pintu Ruang C'
+                    }
+                },
+                deskripsi_laporan: 'Engsel pintu rusak.',
+                lapor_datetime: '2025-05-13T11:00:00',
+                is_verified: true,
+                is_done: false,
+                verifikasi_datetime: '2025-05-12T09:00:00',
+                selesai_datetime: null,
+                lapor_foto_url: '/assets/image/pintu.jpg'
+            }
+        };
 
-    function terimaTugas() {
-        alert('Tugas telah diterima!');
-        closeModal('terimaModal');
-    }
+        const data = dummyData[id];
 
-    function perbaruiStatus() {
-        const status = document.getElementById('status').value;
-        const catatan = document.getElementById('catatan').value;
-        alert(`Status telah diperbarui menjadi: ${status}\nCatatan: ${catatan}`);
-        closeModal('perbaruiModal');
-    }
+        if (!data) return alert("Data tidak ditemukan!");
 
-    const tugasDetailData = {
-        'T001': {
-            ruangan: 'Ruang Kelas A',
-            fasilitas: 'AC',
-            deskripsi: 'AC tidak menyala dan mengeluarkan suara keras.',
-            kategori: 'Elektronik',
-            foto: "{{ asset('assets/image/6.jpg') }}",
-            riwayat: [
-                { status: 'Masuk', tanggal: '06-05-2025', icon: 'fas fa-flag', color: 'text-gray-500' },
-                { status: 'Diproses', tanggal: '06-05-2025', icon: 'fas fa-spinner', color: 'text-yellow-500' },
-            ]
-        },
-        'T002': {
-            ruangan: 'Ruang B',
-            fasilitas: 'Lampu',
-            deskripsi: 'Lampu sering mati nyala.',
-            kategori: 'Listrik',
-            foto: "{{ asset('assets/image/6.jpg') }}",
-            riwayat: [
-                { status: 'Masuk', tanggal: '06-05-2025', icon: 'fas fa-flag', color: 'text-gray-500' },
-            ]
-        },
-        'T003': {
-            ruangan: 'Ruang C',
-            fasilitas: 'Pintu',
-            deskripsi: 'Engsel pintu longgar.',
-            kategori: 'Bangunan',
-            foto: "{{ asset('assets/image/6.jpg') }}",
-            riwayat: [
-                { status: 'Masuk', tanggal: '06-05-2025', icon: 'fas fa-flag', color: 'text-gray-500' },
-                { status: 'Diproses', tanggal: '06-05-2025', icon: 'fas fa-spinner', color: 'text-yellow-500' },
-                { status: 'Selesai', tanggal: '07-05-2025', icon: 'fas fa-check-circle', color: 'text-green-600' },
-            ]
-        }
-    };
+        document.querySelector('.user_id').textContent = data.user_id ?? '-';
+        document.querySelector('.ruang').textContent = data.fasilitas_ruang?.ruangan?.ruangan_nama + ' - lantai ' + data.fasilitas_ruang?.ruangan?.lantai ?? '-';
+        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang?.fasilitas?.fasilitas_nama ?? '-';
+        document.querySelector('.deskripsi').textContent = data.deskripsi_laporan ?? '-';
+        document.querySelector('.tanggal').textContent = data.lapor_datetime ? new Date(data.lapor_datetime).toLocaleDateString('id-ID') : '-';
+        document.querySelector('.status').textContent =
+            data.is_done && !data.is_verified ? 'Ditolak' :
+            data.is_done ? 'Selesai' :
+            data.is_verified ? 'Diproses' : 'Menunggu Verifikasi';
 
-    function openDetailModal(id) {
-        const data = tugasDetailData[id];
-        if (!data) return alert('Data tidak ditemukan');
+        document.getElementById('statusBaru').textContent = data.lapor_datetime ?? '-';
+        document.getElementById('statusProses').textContent = data.verifikasi_datetime ?? '-';
+        document.getElementById('statusSelesai').textContent = data.selesai_datetime ?? '-';
 
-        document.getElementById('detailRuangan').textContent = data.ruangan;
-        document.getElementById('detailFasilitas').textContent = data.fasilitas;
-        document.getElementById('detailDeskripsi').textContent = data.deskripsi;
-        document.getElementById('detailKategori').textContent = data.kategori;
-        document.getElementById('detailFoto').src = data.foto;
+        document.getElementById('detail-photo').src = data.lapor_foto_url ?? '/assets/image/placeholder.jpg';
 
-        const riwayatList = document.getElementById('riwayatStatus');
-        riwayatList.innerHTML = '';
-        data.riwayat.forEach(item => {
-            const li = document.createElement('li');
-            li.className = 'flex items-center gap-2';
-            li.innerHTML = `<i class="${item.icon} ${item.color} w-4"></i> <span><strong>${item.status}:</strong> ${item.tanggal}</span>`;
-            riwayatList.appendChild(li);
-        });
+        // Tombol aksi
+        let actions = `
+            <div class="flex justify-between w-full items-center">
+                <button onclick="closeModal('detailModal')" class="flex items-center gap-2 bg-gray-200 text-gray-700 py-2 px-4 rounded hover:bg-gray-300 transition">
+                        <i class="fas fa-times"></i> Tutup</button>
+                <div class="space-x-2">
+                    ${data.is_verified && !data.is_done
+                        ? `<button onclick="alert('Selesaikan laporan ${id}')" class="flex items-center gap-2 bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700 transition">
+                            <i class="fas fa-check"></i>Kerjakan</button>`
+                        : ''}
+                </div>
+            </div>
+            `;
 
-        document.getElementById('detailModal').classList.remove('hidden');
-    }
+            document.getElementById('modalActions').innerHTML = actions;
 
-    function tutupDetailModal() {
-        document.getElementById('detailModal').classList.add('hidden');
+
+        openModal('detailModal');
     }
 </script>
+
 @endsection

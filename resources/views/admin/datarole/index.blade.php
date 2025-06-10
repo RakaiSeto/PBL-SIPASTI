@@ -1,20 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- jQuery (required by DataTables) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-    <!-- DataTables CSS & JS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
         integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
         crossorigin="anonymous">
 
-    <!-- SweetAlert2 for notifications -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
@@ -213,7 +209,7 @@
             try {
                 table = $('#roleTable').DataTable({
                     searching: false,
-                    lengthChange: true,
+                    lengthChange: false,
                     processing: true,
                     serverSide: true,
                     ajax: {
@@ -320,7 +316,7 @@
                         closeModal('addModal');
                         showSuccess('Role berhasil ditambahkan!');
                         if (table) {
-                            table.ajax.reload(null, false); // Refresh DataTable tanpa reset paging
+                            table.ajax.reload(null, false);
                         } else {
                             console.error('DataTable tidak tersedia untuk disegarkan');
                             location.reload(); // Fallback ke reload halaman
@@ -334,7 +330,7 @@
                     showError('Terjadi kesalahan saat mengirim data: ' + error.message);
                     if (table) {
                         table.ajax.reload(null,
-                        false); // Coba segarkan tabel untuk memeriksa apakah data tersimpan
+                            false);
                     }
                 });
         });
@@ -392,7 +388,7 @@
                     showError('Terjadi kesalahan saat update: ' + error.message);
                     if (table) {
                         table.ajax.reload(null,
-                        false); // Coba segarkan tabel untuk memeriksa apakah data tersimpan
+                            false); // Coba segarkan tabel untuk memeriksa apakah data tersimpan
                     }
                 });
         });
