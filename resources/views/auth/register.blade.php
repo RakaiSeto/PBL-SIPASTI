@@ -6,6 +6,7 @@
     <title>Register - SIPASTI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="icon" href="{{ asset('assets/image/logo.svg') }}" type="image/x-icon">
     <script src="https://unpkg.com/alpinejs" defer></script>
 </head>
@@ -23,13 +24,13 @@
                     <div class="w-full border-t-2 border-[#1652B7] mt-1 mb-4"></div>
                     <p class="text-sm text-center text-gray-600">Silahkan masukkan detail Anda untuk mendaftar</p>
                 </div>
-                <form method="POST" action="/register" class="space-y-6">
+                <form method="POST" action="/api/register" class="space-y-6">
                     @csrf
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
                             <i class="fa-solid fa-layer-group"></i>
                         </span>
-                        <select name="level"
+                        <select name="level" id="level"
                             class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md 
                             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:shadow-md 
                             hover:shadow-lg transition-shadow duration-300 text-gray-700">
@@ -71,7 +72,7 @@
                             <i class="fas fa-eye" id="eyeIcon"></i>
                         </div>
                     </div>
-                    <button type="submit"
+                    <button type="submit" id="registerButton"
                         class="w-full bg-[#1652B7] hover:bg-[#143f8a] text-white font-semibold py-2 
                         rounded-md transition-all duration-300 shadow hover:shadow-lg">
                         REGISTER
@@ -98,6 +99,7 @@
         const toggle = document.getElementById('togglePassword');
         const password = document.getElementById('password');
         const eyeIcon = document.getElementById('eyeIcon');
+        const registerButton = document.getElementById('registerButton');
 
         // Toggle password visibility
         toggle.addEventListener('click', () => {
@@ -110,6 +112,29 @@
         // Close modal when close button is clicked
         modalCloseBtn.addEventListener('click', () => {
             modal.classList.add('hidden');
+        });
+
+        registerButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            $.ajax({
+                url: '/api/do-register',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    level: document.getElementById('level').value,
+                    nama: document.getElementById('nama').value,
+                    username: document.getElementById('username').value,
+                    password: document.getElementById('password').value,
+                },
+                success: function(response) {
+                    if (!response.success) {
+                        showModal(response.message, 'error');
+                    } else {
+                        showModal('Berhasil mendaftar, silahkan login', 'success');
+                        window.location.href = '/login';
+                    }
+                },
+            });
         });
 
         // Function to display modal with dynamic message and type

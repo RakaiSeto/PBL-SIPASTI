@@ -9,6 +9,9 @@ use OpenApi\Attributes as OA;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Validator;
 use App\Helper\Helper;
+use Illuminate\Support\Facades\Hash;
+use App\Models\m_user as User;
+
 #[OA\Info(
     version: '1.0.0',
     title: 'PBL SIPASTI API',
@@ -104,7 +107,7 @@ class AuthController extends Controller
                 description: 'Logout successful',
             )
         ]
-    )] 
+    )]
 
     public function logout(Request $request)
     {
@@ -115,5 +118,43 @@ class AuthController extends Controller
         ], 200)->withCookie($cookie);
     }
 
-    
+
+    public function doRegister(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'level' => 'required|string',
+            'nama' => 'required|string',
+            'username' => 'required|string|unique:m_user,username',
+            'password' => 'required|string|min:8',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+        }
+
+        if ($request->level == 'Teknisi') {
+            $role = '3';
+        } else if ($request->level == 'mahasiswa') {
+            $role = '4';
+        } else if ($request->level == 'dosen') {
+            $role = '4';
+        } else if ($request->level == 'tendik') {
+            $role = '4';
+        } else if ($request->level == 'sarpras') {
+            $role = '2';
+        }
+
+        $user = User::create([
+            'role_id' => $role,
+            'fullname' => $request->nama,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+        ]);
+
+        if ($user) {
+            return response()->json(['success' => true, 'message' => 'Berhasil mendaftar']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Gagal mendaftar']);
+        }
+    }
 }

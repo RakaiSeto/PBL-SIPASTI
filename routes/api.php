@@ -25,7 +25,8 @@ use App\Http\Controllers\DSSController;
 
 
 Route::get('/test', TestController::class);
-
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/do-register', [AuthController::class, 'doRegister']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth.refresh')->get('/user', function (Request $request) {
     return $request->user();
