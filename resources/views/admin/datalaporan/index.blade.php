@@ -247,53 +247,61 @@
                         name: 'no',
                         render: function(data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
-                        }
+                        },
+                        orderable: false,
                     },
                     {
                         data: 'user_nama',
                         name: 'user_nama',
-                        defaultContent: '-'
+                        defaultContent: '-',
+                        orderable: false,
                     },
                     {
                         data: 'fasilitas_ruang_id',
                         name: 'fasilitas_ruang_id',
-                        defaultContent: '-'
+                        defaultContent: '-',
+                        orderable: false,
                     },
                     {
                         data: 'fasilitas_ruang_id',
                         name: 'fasilitas_ruang_id',
-                        defaultContent: '-'
+                        defaultContent: '-',
+                        orderable: false,
                     },
                     {
                         data: 'deskripsi_laporan',
-                        name: 'deskripsi_laporan'
+                        name: 'deskripsi_laporan',
+                        orderable: false,
                     },
                     {
                         data: 'lapor_datetime',
                         name: 'lapor_datetime',
                         render: function(data) {
                             return data ? new Date(data).toLocaleDateString('id-ID') : '-';
-                        }
+                        },
+                        orderable: false,
                     },
                     {
                         data: null,
                         name: 'status',
                         render: function(data, type, row) {
-                            if (row.is_done && !row.is_verified) {
+                            if (row.status == 'rejected') {
                                 return '<span class="bg-red-500/20 text-red-900 text-xs px-2 py-1 rounded font-bold">Ditolak</span>';
-                            } else if (row.is_done) {
+                            } else if (row.status == 'completed') {
                                 return '<span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded font-bold">Selesai</span>';
-                            } else if (row.is_verified) {
+                            } else if (row.status == 'processed') {
                                 return '<span class="bg-blue-500/20 text-blue-900 text-xs px-2 py-1 rounded font-bold">Diproses</span>';
                             } else {
                                 return '<span class="bg-yellow-500/20 text-yellow-900 text-xs px-2 py-1 rounded font-bold">Menunggu Verifikasi</span>';
                             }
-                        }
+                        },
+                        orderable: false,
                     },
                     {
                         data: 'laporan_id',
                         orderable: false,
                         searchable: false,
+                        orderable: false,
                         render: function(data) {
                             return `
                                 <div class="flex gap-2">
