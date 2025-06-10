@@ -198,6 +198,12 @@ Route::group(['middleware' => ['auth.refresh', 'role:Teknisi'], 'prefix' => 'tek
         return view('teknisi.tugas');
     })->name('teknisi.tugas');
 
+    Route::post('/tugas/list', [LaporanController::class, 'listTeknisi'])->name('teknisi.tugas.list');
+
+    Route::get('/detail/{id}', [LaporanController::class, 'detail'])->name('detail');
+
+    Route::post('/tugas/kerjakan/{id}', [LaporanController::class, 'kerjakan'])->name('teknisi.tugas.kerjakan');
+
     Route::get('/perbarui', function () {
         return view('teknisi.perbarui');
     })->name('teknisi.perbarui');

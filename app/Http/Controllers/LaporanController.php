@@ -195,8 +195,117 @@ class LaporanController extends Controller
             $data = [];
             foreach ($laporans as $laporan) {
                 $status = 'pending';
+                
                 if ($laporan->is_verified == 1 && $laporan->is_done == 0) {
-                    $status = 'processed';
+                    if ($laporan->is_kerjakan == 1) {
+                        $status = 'kerjakan';
+                    } else {
+                        $status = 'processed';
+                    }
+                } else if ($laporan->is_verified == 1 && $laporan->is_done == 1) {
+                    $status = 'completed';
+                } else if ($laporan->is_verified == 0 && $laporan->is_done == 1) {
+                    $status = 'rejected';
+                }
+                $data[] = [
+                    'laporan_id' => $laporan->laporan_id,
+                    'fasilitas_ruang_id' => $laporan->fasilitas_ruang_id,
+                    'ruangan_nama' => $laporan->ruangan_nama,
+                    'fasilitas_nama' => $laporan->fasilitas_nama,
+                    'jumlah_laporan' => $laporan->jumlah_laporan,
+                    'oldest_lapor_datetime' => $laporan->oldest_lapor_datetime,
+                    'user_nama' => $laporan->user_nama,
+                    'lapor_datetime' => $laporan->lapor_datetime,
+                    'deskripsi_laporan' => $laporan->deskripsi_laporan,
+                    'status' => $status,
+                ];
+            }
+
+            return response()->json([
+                'draw' => intval($request->input('draw')),
+                'recordsTotal' => $totalData,
+                'recordsFiltered' => $totalFiltered,
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Gagal mengambil list laporan: ' . $e->getMessage());
+            return response()->json([
+                'error' => 'Terjadi kesalahan saat mengambil data'
+            ], 500);
+        }
+    }
+
+    public function listTeknisi(Request $request)
+    {
+        try {
+            $columns = [
+                0 => 't_laporan.fasilitas_ruang_id',
+                1 => 'jumlah_laporan',
+                2 => 'oldest_lapor_datetime',
+                3 => 'ruangan_nama',
+                4 => 'fasilitas_nama',
+            ];
+
+            $query = t_laporan::leftJoin('t_fasilitas_ruang', 't_laporan.fasilitas_ruang_id', '=', 't_fasilitas_ruang.fasilitas_ruang_id')
+                ->leftJoin('m_ruangan', 't_fasilitas_ruang.ruangan_id', '=', 'm_ruangan.ruangan_id')
+                ->leftJoin('m_fasilitas', 't_fasilitas_ruang.fasilitas_id', '=', 'm_fasilitas.fasilitas_id')
+                ->leftJoin('m_user', 't_laporan.user_id', '=', 'm_user.user_id')
+                ->where('t_laporan.teknisi_id', Auth::user()->user_id)
+                ->where('t_laporan.is_done', 0)
+                ->where('t_laporan.is_kerjakan', null)
+                ->select(
+                    't_laporan.laporan_id',
+                    't_fasilitas_ruang.fasilitas_ruang_id',
+                    DB::raw('count(*) as jumlah_laporan'),
+                    DB::raw('MIN(t_laporan.lapor_datetime) as oldest_lapor_datetime'),
+                    'm_ruangan.ruangan_nama as ruangan_nama',
+                    'm_fasilitas.fasilitas_nama as fasilitas_nama',
+                    'm_user.fullname as user_nama',
+                    't_laporan.lapor_datetime as lapor_datetime',
+                    't_laporan.deskripsi_laporan as deskripsi_laporan',
+                    't_laporan.is_verified as is_verified',
+                    't_laporan.is_done as is_done'
+                )
+                ->groupBy(
+                    't_laporan.laporan_id',
+                    't_fasilitas_ruang.fasilitas_ruang_id',
+                    'm_ruangan.ruangan_nama',
+                    'm_fasilitas.fasilitas_nama',
+                    'm_user.fullname',
+                    't_laporan.lapor_datetime',
+                    't_laporan.deskripsi_laporan'
+                );
+
+            $queryNew = $query;
+
+            $totalData = count($queryNew->get()->toArray());
+            
+            // Filter fasilitas
+            if ($request->has('fasilitas') && !empty($request->fasilitas)) {
+                $query->where('t_fasilitas_ruang.fasilitas_ruang_id', 'like', '%' . $request->fasilitas . '%');
+            }
+
+            $totalFiltered = count($query->get()->toArray());
+
+            $limit = $request->input('length', 10);
+            $start = $request->input('start', 0);
+            $orderColumn = $columns[$request->input('order.0.column', 2)]; // Default to oldest_lapor_datetime
+
+            $query->offset($start)
+                ->limit($limit)
+                ->orderBy('t_laporan.lapor_datetime', 'desc');
+
+            $laporans = $query->get();
+
+            $data = [];
+            foreach ($laporans as $laporan) {
+                $status = 'pending';
+                if ($laporan->is_verified == 1 && $laporan->is_done == 0) {
+                    if ($laporan->is_kerjakan == 1) {
+                        $status = 'kerjakan';
+                    } else {
+                        $status = 'processed';
+                    }
                 } else if ($laporan->is_verified == 1 && $laporan->is_done == 1) {
                     $status = 'completed';
                 } else if ($laporan->is_verified == 0 && $laporan->is_done == 1) {
@@ -405,6 +514,18 @@ class LaporanController extends Controller
         return response()->json([
             'success' => true,
             'data' => $laporan
+        ]);
+    }
+
+    public function kerjakan($id)
+    {
+        $laporan = t_laporan::findOrFail($id, 'laporan_id');
+        $laporan->is_kerjakan = 1;
+        $laporan->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Laporan berhasil dikerjakan'
         ]);
     }
 
