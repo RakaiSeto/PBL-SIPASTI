@@ -21,30 +21,6 @@
             scroll-behavior: smooth;
         }
 
-        /* Button ripple effect */
-        /* .btn-ripple {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-ripple::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s ease, height 0.4s ease;
-        }
-
-        .btn-ripple:hover::after {
-            width: 200px;
-            height: 200px;
-        } */
-
         body {
             overflow-x: hidden;
         }
@@ -129,9 +105,15 @@
                     </div>
                 </div>
             @else
-                <button class="block text-sm text-blue-800 py-2">Login</button>
-                <button
-                    class="block w-full bg-blue-800 text-white px-4 py-2 text-sm rounded-lg hover:bg-blue-900 btn-ripple">Register</button>
+                <a href="{{ route('login') }}"
+                    class="block w-full bg-white text-center text-blue-800 border border-blue-800 px-4 py-2 text-sm rounded-lg hover:bg-blue-800 hover:text-white btn-ripple">
+                    Login
+                </a>
+
+                <a href="{{ route('register') }}"
+                    class="block w-full bg-blue-800 text-center text-white px-4 py-2 text-sm rounded-lg hover:bg-blue-900 btn-ripple">
+                    Register
+                </a>
             @endif
         </div>
     </nav>
@@ -157,10 +139,10 @@
                 </p>
 
                 <div class="mt-8 flex flex-col sm:flex-row justify-center md:justify-start gap-4">
-                    <a href="#lapor"
+                    <a href="{{ route('login') }}"
                         class="bg-blue-800 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-blue-900 transition btn-ripple">Laporkan
                         Sekarang</a>
-                    <a href="#fitur"
+                    <a href="{{ route('login') }}"
                         class="text-blue-800 border border-blue-600 px-6 py-3 rounded-xl text-sm font-semibold hover:bg-blue-50 transition">Lihat
                         Fitur Lengkap</a>
                 </div>
@@ -175,18 +157,15 @@
         </div>
 
         <div class="mt-16 md:mt-36 overflow-hidden whitespace-nowrap w-full relative z-10">
-
-            <div id="logoScroll" class="inline-flex space-x-12 logo-slider">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg"
-                    alt="Stripe" class="h-10 opacity-70 grayscale" />
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google"
-                    class="h-10 opacity-70 grayscale" />
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft"
-                    class="h-10 opacity-70 grayscale" />
-                <img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Citibank.svg" alt="Citibank"
-                    class="h-10 opacity-70 grayscale" />
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopify_logo_2018.svg" alt="Shopify"
-                    class="h-10 opacity-70 grayscale" />
+            <div id="logoScroll" class="inline-flex space-x-12 logo-slider text-gray-400 text-3xl">
+                <i class="fas fa-school"></i>
+                <i class="fas fa-bolt"></i>
+                <i class="fas fa-chair"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-broom"></i>
+                <i class="fas fa-restroom"></i>
+                <i class="fas fa-print"></i>
+                <i class="fas fa-fan"></i>
             </div>
         </div>
     </section>
@@ -210,9 +189,9 @@
                     SIPASTI adalah platform inovatif untuk melaporkan kerusakan di kampus, diciptakan oleh tim Polinema
                     untuk menciptakan lingkungan belajar yang lebih nyaman dan efisien.
                 </p>
-                <button
+                <a href="{{ route('login') }}"
                     class="bg-blue-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-900 btn-ripple">Pelajari
-                    Lebih Lanjut</button>
+                    Lebih Lanjut</a>
                 <!-- Statistik -->
                 <div class="mt-8 grid grid-cols-3 gap-6">
                     <div data-aos="fade-up" data-aos-delay="300">
@@ -471,19 +450,33 @@
     <footer class="bg-blue-800 text-white py-12">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Tentang -->
-            <div data-aos="fade-up">
-                <img src="{{ asset('assets/image/sipasti.svg') }}" alt="Logo SIPASTI" class="h-10 mb-4">
+            <div data-aos="fade-up" class="text-white">
+                <img src="{{ asset('assets/image/sipasti.svg') }}" alt="Logo SIPASTI"
+                    class="h-10 mb-4 filter brightness-0 invert">
                 <p class="text-sm">
                     SIPASTI untuk laporan kerusakan kampus yang mudah dan efisien.
                 </p>
             </div>
+
             <!-- Kontak -->
             <div data-aos="fade-up" data-aos-delay="100">
-                <h4 class="text-lg font-semibold mb-4">Kontak Kami</h4>
-                <p class="text-sm">Jl. Soekarno Hatta No. 190, Malang</p>
-                <p class="text-sm">sipasti@polinema.ac.id</p>
-                <p class="text-sm">+62 822-9384-0090</p>
+                <h4 class="text-lg font-semibold mb-4 text-white">Kontak Kami</h4>
+
+                <p class="text-sm flex items-center space-x-2 text-white mb-2">
+                    <i class="fas fa-map-marker-alt text-white"></i>
+                    <span>Jl. Soekarno Hatta No. 190, Malang</span>
+                </p>
+                <p class="text-sm flex items-center space-x-2 text-white mb-2">
+                    <i class="fas fa-envelope text-white"></i>
+                    <span>sipasti@polinema.ac.id</span>
+                </p>
+                <p class="text-sm flex items-center space-x-2 text-white mb-2">
+                    <i class="fas fa-phone text-white"></i>
+                    <span>+62 822-9384-0090</span>
+                </p>
             </div>
+
+
             <!-- Newsletter -->
             <div data-aos="fade-up" data-aos-delay="200">
                 <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
@@ -497,7 +490,7 @@
         </div>
         <hr class="my-8 border-gray-400">
         <p class="text-center text-sm">
-            © 2025 SIPASTI | Dibuat oleh Tim JTI Polinema
+            © 2025 SIPASTI | Dibuat oleh Tim Trobos 01
         </p>
     </footer>
 

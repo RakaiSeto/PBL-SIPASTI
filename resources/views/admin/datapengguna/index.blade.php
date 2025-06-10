@@ -60,8 +60,6 @@
                         <th class="p-3 w-40">Nama Lengkap</th>
                         <th class="p-3 w-32">Username</th>
                         <th class="p-3 w-32">Role</th>
-                        {{-- <th class="p-3 w-32">Email</th>
-                        <th class="p-3 w-32">telp</th> --}}
                         <th class="p-3 w-28">Aksi</th>
                     </tr>
                 </thead>
