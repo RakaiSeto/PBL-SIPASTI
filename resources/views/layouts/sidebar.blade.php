@@ -99,7 +99,7 @@
         @endif
 
         @if (Auth::user()->role->role_nama == 'Civitas')
-            <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Main Menu</h2>
+            <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Laporan Fasilitas</h2>
 
             <a href="{{ route('civitas.laporkan') }}"
                 class="block p-3 rounded font-semibold
