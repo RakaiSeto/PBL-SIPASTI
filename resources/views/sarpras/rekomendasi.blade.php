@@ -104,27 +104,27 @@
                     const rankData = response.rank || [];
                     rankData.forEach((item, index) => {
                         const rank = index + 1;
-                        const cardClass = rank === 1 ? 'border-[#1652b7] bg-[#e6edf8]' :
-                            'border-gray-200';
                         const card = `
-                            <div class="relative bg-white border ${cardClass} rounded-lg shadow-md p-5 hover:shadow-lg transition-shadow duration-300">
+                            <div class="relative bg-white border border-gray-200 rounded-lg shadow-md p-5 hover:shadow-lg transition-shadow duration-300">
                                 <div class="flex items-start gap-3">
-                                    <button class="bg-[#1652b7] text-white p-2 rounded-full hover:bg-[#123d8f] transition-colors"
-                                        onclick="openModal('${item.id || ''}')" title="Tugaskan Teknisi">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                        </svg>
-                                    </button>
                                     <div class="flex-1">
                                         <div class="flex items-center justify-between mb-3">
                                             <h3 class="text-lg font-semibold text-slate-800">${item.name || 'Unknown'}</h3>
                                             <span class="text-sm font-bold text-[#1652b7] bg-[#e6edf8] px-2 py-1 rounded-full">Rank ${rank}</span>
                                         </div>
-                                        <p class="text-sm text-slate-600 mb-4"><strong>Ruang-Fasilitas:</strong> ${item.room || 'Tidak diketahui'}</p>
+                                        <p class="text-sm text-slate-600 mb-4"><strong>Skor DSS:</strong> ${item.value ? item.value.toFixed(3) : '-'}</p>
+                                        <div class="flex items-center gap-2">
                                         <button class="toggle-details bg-gray-200 text-gray-700 font-semibold py-1 px-3 rounded-lg hover:bg-gray-300 transition-colors w-full"
                                             onclick="toggleDetails(this, '${item.id}')">
                                             Lihat Detail
                                         </button>
+                                        <button class="bg-[#1652b7] text-white p-2 rounded-full hover:bg-[#123d8f] transition-colors"
+                                        onclick="openModal('${item.id || ''}')" title="Tugaskan Teknisi">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                            </svg>
+                                        </button>
+                                        </div>
                                         <div class="details hidden mt-4 text-sm border-t border-gray-200 pt-3">
                                             <div class="grid grid-cols-2 gap-3">
                                                 <p><strong>C1 (Kerusakan):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[0] : '-'}</p>
