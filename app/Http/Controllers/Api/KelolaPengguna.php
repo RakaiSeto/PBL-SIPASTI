@@ -187,17 +187,29 @@ class KelolaPengguna extends Controller
 
     public function detail(Request $request)
     {
-        $user = User::find($request->id);
+        // Load user dengan relasi role
+        $user = User::with('role')->find($request->id);
+
         if (!$user) {
             return response()->json([
                 'success' => false,
                 'message' => 'User not found'
             ], 404);
         }
+
+        // Format data untuk frontend
         return response()->json([
             'success' => true,
             'message' => 'Data berhasil diambil',
-            'data' => $user
+            'data' => [
+                'user_id' => $user->user_id,
+                'fullname' => $user->fullname,
+                'username' => $user->username,
+                'email' => $user->email,
+                'no_telp' => $user->no_telp,
+                'profile_picture' => $user->profile_picture,
+                'role_nama' => $user->role ? $user->role->role_nama : '-' // Ambil role_nama dari relasi
+            ]
         ]);
     }
 
