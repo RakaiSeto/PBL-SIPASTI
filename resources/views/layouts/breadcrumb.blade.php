@@ -1,6 +1,6 @@
 @php
     $pageTitles = [
-         'admin.dashboard' => 'Dashboard',
+        'admin.dashboard' => 'Dashboard',
         'admin.mahasiswa' => 'Data Mahasiswa',
         'admin.datapengguna' => 'Data Pengguna',
         'admin.fasilitas' => 'Data Fasilitas',
@@ -8,6 +8,7 @@
         'admin.ruanganfasilitas' => 'Ruangan & Fasilitas',
         'admin.laporanstatistik' => 'Laporan Statistik',
         'admin.datalaporan' => 'Data Laporan Kerusakan',
+        'admin.roleruangan' => 'Kelola Role Ruangan',
 
         'civitas.dashboard' => 'Dashboard',
         'civitas.laporkan' => 'Laporkan Kerusakan',

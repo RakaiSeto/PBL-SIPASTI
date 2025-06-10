@@ -67,6 +67,7 @@ Route::middleware(['auth', 'role:Sarpras'])->prefix('sarpras/laporan')->name('sa
         return response()->json(['message' => 'Export PDF belum diimplementasikan']);
     })->name('export_pdf');
     Route::post('/penilaian', [LaporanController::class, 'penilaian'])->name('penilaian');
+
 });
 
 // Group Admin
@@ -104,6 +105,8 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
     Route::get('ruangan/export_pdf', [RuanganController::class, 'exportPDF'])->name('admin.ruangan.export_pdf');
     Route::get('ruangan/export_excel', [RuanganController::class, 'exportExcel'])->name('admin.ruangan.export_excel');
 
+    Route::get('statistiklaporan/export_pdf', [StatistikController::class, 'exportPDF'])->name('admin.statistiklaporan.export_pdf');
+
     Route::get('/fasilitas', function () {
         return view('admin.fasilitas.index');
     })->name('admin.fasilitas');
@@ -121,6 +124,9 @@ Route::group(['middleware' => ['auth.refresh', 'role:Admin'], 'prefix' => 'admin
     Route::get('/datalaporan', function () {
         return view('admin.datalaporan.index');
     })->name('admin.datalaporan');
+
+    Route::get('/statistiklaporan/filter-tahun', [DashboardController::class, 'filterTahun']);
+
 });
 
 // Route tambahan admin (duplikat dashboard)

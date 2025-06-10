@@ -8,6 +8,7 @@
         'admin.ruanganfasilitas' => 'Ruangan & Fasilitas',
         'admin.laporanstatistik' => 'Laporan Statistik',
         'admin.datalaporan' => 'Data Laporan Kerusakan',
+        'admin.roleruangan' => 'Kelola Role Ruangan',
 
         'civitas.dashboard' => 'Dashboard',
         'civitas.laporkan' => 'Laporkan Kerusakan',
