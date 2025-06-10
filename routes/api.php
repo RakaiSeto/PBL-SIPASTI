@@ -77,3 +77,7 @@ Route::get('/moora', [DSSController::class, 'moora']);
 Route::group(['middleware' => ['auth.refresh.api', 'role.api:Civitas']], function () {
     Route::post('/laporkan', [LaporanController::class, 'store'])->name('laporkan.store');
 });
+
+Route::group(['middleware' => ['auth.refresh.api', 'role.api:Sarpras']], function () {
+    Route::post('/tugaskan-teknisi', [LaporanController::class, 'tugaskanTeknisi'])->name('tugaskan-teknisi.store');
+});

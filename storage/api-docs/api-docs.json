@@ -1838,6 +1838,46 @@
                     }
                 ]
             }
+        },
+        "/api/tugaskan-teknisi": {
+            "post": {
+                "tags": [
+                    "Laporan"
+                ],
+                "summary": "Tugaskan Teknisi",
+                "description": "Tugaskan Teknisi",
+                "operationId": "3bbdeff1582af04f607d1ae08d86a56c",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TugaskanTeknisiRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Teknisi berhasil ditugaskan"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": [
+                            "jwtToken"
+                        ]
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -2112,6 +2152,19 @@
                     },
                     "lapor_foto": {
                         "type": "binary",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
+            "TugaskanTeknisiRequest": {
+                "properties": {
+                    "fasilitas_ruang_id": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "teknisi_id": {
+                        "type": "string",
                         "example": ""
                     }
                 },

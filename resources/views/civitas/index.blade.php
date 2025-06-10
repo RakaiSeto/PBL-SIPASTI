@@ -98,7 +98,7 @@
     <!-- Tabel Laporan Terbaru -->
     <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md">
         <div class="overflow-x-auto">
-            <table id="laporanTable" class="w-full table-auto text-sm text-left">
+            <table class="w-full table-auto text-sm text-left">
                 <thead>
                     <tr class="bg-slate-100 border-b border-slate-300 font-bold">
                         <th class="p-3">No</th>
@@ -109,20 +109,47 @@
                         <th class="p-3">Aksi</th>
                     </tr>
                 </thead>
+                <tbody>
+                    @foreach ($laporanTerbaru as $index => $laporan)
+                        <tr>
+                            <td class="p-3">{{ $index + 1 }}</td>
+                            <td class="p-3">{{ $laporan->ruangan->ruangan_nama ?? '-' }}</td>
+                            <td class="p-3">{{ $laporan->fasilitas->fasilitas_nama ?? '-' }}</td>
+
+
+                            <td class="p-3">{{ \Carbon\Carbon::parse($laporan->lapor_datetime)->format('d-m-Y') }}</td>
+                            <td class="p-3">
+                                @if ($laporan->is_done && !$laporan->is_verified)
+                                    <span
+                                        class="bg-red-500/20 text-red-900 text-xs px-2 py-1 rounded uppercase font-bold">Ditolak</span>
+                                @elseif($laporan->is_done)
+                                    <span
+                                        class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded uppercase font-bold">Selesai</span>
+                                @elseif($laporan->is_verified)
+                                    <span
+                                        class="bg-blue-500/20 text-blue-900 text-xs px-2 py-1 rounded uppercase font-bold">Diproses</span>
+                                @else
+                                    <span
+                                        class="bg-yellow-500/20 text-yellow-900 text-xs px-2 py-1 rounded uppercase font-bold">Menunggu
+                                        Verifikasi</span>
+                                @endif
+                            </td>
+
+                            <td class="p-3">
+                                <a href="#" class="text-blue-500 hover:underline">Detail</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+
             </table>
+
         </div>
     </div>
 
-
-
-    <!--  -->
     </div>
 
     <script>
-        // Multiple Bar Chart (Income)
-
-
-        // Area Chart (Visitors)
         const visitorCtx = document.createElement("canvas");
         visitorCtx.style.width = "100%";
         visitorCtx.style.height = "100%";
@@ -156,8 +183,6 @@
                 },
             },
         });
-
-
 
         // Donut Chart
         const donutCtx = document.createElement("canvas");

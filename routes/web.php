@@ -14,6 +14,7 @@ use App\Http\Controllers\CivitasController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\StatistikController;
 use App\Http\Controllers\DSSController;
+use App\Models\m_user;
 
 // Halaman utama
 Route::get('/', function () {
@@ -35,7 +36,7 @@ Route::middleware(['auth.refresh'])->group(function () {
 
 Route::middleware(['auth', 'role:Admin'])->prefix('admin/laporan')->name('admin.laporan.')->group(function () {
     Route::get('/', [LaporanController::class, 'index'])->name('index');
-    Route::post('/list', [LaporanController::class, 'list'])->name('list');
+    Route::post('/list', [LaporanController::class, 'listAll'])->name('list');
     Route::get('/{id}', [LaporanController::class, 'show'])->name('show');
     Route::get('/detail/{id}', [LaporanController::class, 'detail'])->name('detail');
     Route::put('/verify/{id}', [LaporanController::class, 'verify'])->name('verify');
@@ -172,8 +173,11 @@ Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sar
     })->name('sarpras.tugaskan');
 
     Route::get('/rekomendasi', function () {
-        return view('sarpras.rekomendasi');
+        $teknisi = m_user::where('role_id', '3')->get();
+        return view('sarpras.rekomendasi', compact('teknisi'));
     })->name('sarpras.rekomendasi');
+
+    Route::post('/rekomendasi/tugaskan', [DSSController::class, 'tugaskanTeknisi'])->name('sarpras.rekomendasi.tugaskan');
 
     Route::get('/kategorisasi', function () {
         return view('sarpras.kategorisasi');
