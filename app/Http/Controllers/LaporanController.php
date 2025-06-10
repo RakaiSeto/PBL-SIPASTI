@@ -250,16 +250,15 @@ class LaporanController extends Controller
                 ->leftJoin('m_ruangan', 't_fasilitas_ruang.ruangan_id', '=', 'm_ruangan.ruangan_id')
                 ->leftJoin('m_fasilitas', 't_fasilitas_ruang.fasilitas_id', '=', 'm_fasilitas.fasilitas_id')
                 ->leftJoin('m_user', 't_laporan.user_id', '=', 'm_user.user_id')
-                ->where('t_laporan.teknisi_id', Auth::user()->user_id)
-                ->where('t_laporan.is_done', 0);
+                ->where('t_laporan.teknisi_id', Auth::user()->user_id);
 
             $status = $request->input('status', 'pending');
             if ($status == 'kerjakan') {
-                $query->where('t_laporan.is_kerjakan', 1);
-            } else if ($status == 'all') {
-                
+                $query->where('t_laporan.is_kerjakan', 1)->where('t_laporan.is_done', 0);
+            } else if ($status == 'done') {
+                $query->where('t_laporan.is_done', 1)->where('t_laporan.is_kerjakan', 1);
             } else {
-                $query->where('t_laporan.is_kerjakan', null);
+                $query->where('t_laporan.is_done', 0)->where('t_laporan.is_kerjakan', null);
             }
 
             $query->select(
@@ -274,7 +273,8 @@ class LaporanController extends Controller
                 't_laporan.deskripsi_laporan as deskripsi_laporan',
                 't_laporan.is_verified as is_verified',
                 't_laporan.is_done as is_done',
-                't_laporan.is_kerjakan as is_kerjakan'
+                't_laporan.is_kerjakan as is_kerjakan',
+                't_laporan.selesai_datetime as selesai_datetime'
             )
             ->groupBy(
                 't_laporan.laporan_id',
@@ -330,6 +330,7 @@ class LaporanController extends Controller
                     'oldest_lapor_datetime' => $laporan->oldest_lapor_datetime,
                     'user_nama' => $laporan->user_nama,
                     'lapor_datetime' => $laporan->lapor_datetime,
+                    'selesai_datetime' => $laporan->selesai_datetime,
                     'deskripsi_laporan' => $laporan->deskripsi_laporan,
                     'status' => $status,
                 ];
