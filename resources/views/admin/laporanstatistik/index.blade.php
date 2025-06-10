@@ -3,22 +3,19 @@
 @section('content')
 <!-- Container filter+download -->
 <div class="flex items-center justify-between py-4 px-4 mb-4 bg-white rounded shadow">
-    <div>
+<div>
 <label for="filterTahun" class="mr-2 font-semibold text-gray-700 text-sm">Filter Tahun:</label>
-<select id="filterTahun" name="tahun" class="border border-gray-300 rounded px-3 py-1 pr-8">
-    <option value="">Semua Tahun</option>
-    @php
-        $startYear = 2025;
-        $endYear = date('Y') + 3; // 3 tahun ke depan dari tahun sekarang
-    @endphp
+      <select id="filterTahun" name="tahun" class="border border-gray-300 rounded px-3 py-1 pr-8">
+          <option value="">Semua Tahun</option>
+          @php
+              $startYear = 2025;
+              $endYear = date('Y') + 3; 
+          @endphp
 
-    @for ($year = $startYear; $year <= $endYear; $year++)
-        <option value="{{ $year }}" {{ request('tahun') == $year ? 'selected' : '' }}>{{ $year }}</option>
-    @endfor
-</select>
-
-
-
+          @for ($year = $startYear; $year <= $endYear; $year++)
+              <option value="{{ $year }}" {{ request('tahun') == $year ? 'selected' : '' }}>{{ $year }}</option>
+          @endfor
+      </select>
     </div>
    <div>
   <form method="GET" action="{{ route('admin.statistiklaporan.export_pdf') }}">
@@ -110,25 +107,21 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
     <div
         class="p-4 md:p-5 min-h-[410px] flex flex-col bg-white border border-gray-200 rounded shadow lg:col-span-2 dark:bg-neutral-800 dark:border-neutral-700">
-        <!-- Header -->
         <div class="flex flex-wrap justify-between items-center gap-2">
             <div class="mb-4">
                 <h2 class="text-sm text-gray-500 dark:text-neutral-500">Laporan Kerusakan Bulanan</h2>
             </div>
         </div>
-        <!-- End Header -->
         <div id="charts-kerusakan" class="relative w-full h-full"></div>
     </div>
 
     <div
         class="p-4 md:p-5 min-h-[410px] flex flex-col bg-white border border-gray-200 rounded shadow dark:bg-neutral-800 dark:border-neutral-700">
-        <!-- Header -->
         <div class="flex flex-wrap justify-between items-center gap-2">
             <div class="mb-4">
                 <h2 class="text-sm text-gray-500 dark:text-neutral-500"> Status Laporan</h2>
             </div>
         </div>
-        <!-- End Header -->
         <div id="hs-statuslaporan" class="relative w-full h-full"></div>
     </div>
 </div>
@@ -136,13 +129,11 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
     <div
         class="p-4 md:p-5 min-h-[410px] flex flex-col bg-white border border-gray-200 rounded shadow lg:col-span-2 dark:bg-neutral-800 dark:border-neutral-700">
-        <!-- Header -->
         <div class="flex flex-wrap justify-between items-center gap-2">
             <div class="mb-4">
                 <h2 class="text-sm text-gray-500 dark:text-neutral-500">Laporan Jumlah Kerusakan Fasilitas</h2>
             </div>
         </div>
-        <!-- End Header -->
         <div id="charts-kategori" class="relative w-full h-full"></div>
     </div>
 
@@ -194,26 +185,24 @@
     </div>
 </div>
 
-
 @push('scripts')
 
 <script>
-document.getElementById('filterTahun').addEventListener('change', function () {
-    const selectedYear = this.value;
-    const url = new URL(window.location.href);
-    if (selectedYear) {
-        url.searchParams.set('tahun', selectedYear);
-    } else {
-        url.searchParams.delete('tahun');
-    }
-    // Update hidden input export tahun
-    const exportInput = document.getElementById('exportTahun');
-    if (exportInput) {
-        exportInput.value = selectedYear;
-    }
-    window.location.href = url.toString();
-});
-
+  document.getElementById('filterTahun').addEventListener('change', function () {
+      const selectedYear = this.value;
+      const url = new URL(window.location.href);
+      if (selectedYear) {
+          url.searchParams.set('tahun', selectedYear);
+      } else {
+          url.searchParams.delete('tahun');
+      }
+      // Update hidden input export tahun
+      const exportInput = document.getElementById('exportTahun');
+      if (exportInput) {
+          exportInput.value = selectedYear;
+      }
+      window.location.href = url.toString();
+  });
 
   const bulanLabels = @json($bulanLaporan);
   const totalKerusakan = @json($jumlahLaporan);
@@ -260,7 +249,7 @@ document.getElementById('filterTahun').addEventListener('change', function () {
   });
 
   // Donut Chart status laporan 
- const totalDiverifikasi = {{ $totalLaporanDiverifikasi ?? 0 }};
+const totalDiverifikasi = {{ $totalLaporanDiverifikasi ?? 0 }};
 const totalProses = {{ $totalLaporanProses ?? 0 }};
 const totalSelesai = {{ $totalLaporanSelesai ?? 0 }};
 const totalTolak = {{ $totalLaporanDitolak ?? 0 }};
@@ -338,7 +327,6 @@ new Chart(donutCtx, {
       scales: {
         y: {
           beginAtZero: true,
-          max: 16,
           ticks: { 
             color: '#6B7280',
             stepSize: 2
@@ -353,68 +341,65 @@ new Chart(donutCtx, {
     }
   });
 
-
   // chart kepuasan pengguna
-const rataKepuasan = @json($rataKepuasan ?? 0);
-const persenKepuasan = Math.round((rataKepuasan / 5) * 100);
-const validPersen = Math.min(Math.max(persenKepuasan, 0), 100);
+  const rataKepuasan = @json($rataKepuasan ?? 0);
+  const persenKepuasan = Math.round((rataKepuasan / 5) * 100);
+  const validPersen = Math.min(Math.max(persenKepuasan, 0), 100);
 
-const kepuasanCanvas = document.createElement('canvas');
-const container = document.getElementById('kepuasanChartContainer');
-container.innerHTML = '';
-container.appendChild(kepuasanCanvas);
+  const kepuasanCanvas = document.createElement('canvas');
+  const container = document.getElementById('kepuasanChartContainer');
+  container.innerHTML = '';
+  container.appendChild(kepuasanCanvas);
 
-// Jika nilai 0, tetap tampilkan 100% biru
-const dataValues = [validPersen > 0 ? validPersen : 100];
-const dataColors = ['#1652b7'];
+  // Jika nilai 0,  tampilkan 100% biru
+  const dataValues = [validPersen > 0 ? validPersen : 100];
+  const dataColors = ['#1652b7'];
 
-// Jika nilai > 0, tambahkan bagian abu-abu
-if (validPersen > 0) {
-  dataValues.push(100 - validPersen);
-  dataColors.push('#E5E7EB');
-}
+  // Jika nilai > 0,  bagian abu-abu
+  if (validPersen > 0) {
+    dataValues.push(100 - validPersen);
+    dataColors.push('#E5E7EB');
+  }
 
-new Chart(kepuasanCanvas.getContext('2d'), {
-  type: 'doughnut',
-  data: {
-    datasets: [{
-      data: dataValues,
-      backgroundColor: dataColors,
-      borderWidth: 0,
-      cutout: '70%',
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        enabled: true,
-        callbacks: {
-          label: function (context) {
-            return validPersen + '%';
+  new Chart(kepuasanCanvas.getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      datasets: [{
+        data: dataValues,
+        backgroundColor: dataColors,
+        borderWidth: 0,
+        cutout: '70%',
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          enabled: true,
+          callbacks: {
+            label: function (context) {
+              return validPersen + '%';
+            }
           }
         }
       }
-    }
-  },
-  plugins: [{
-    id: 'centerText',
-    beforeDraw(chart) {
-      const { ctx, width, height } = chart;
-      ctx.save();
-      ctx.font = 'bold 1.5rem sans-serif';
-      ctx.fillStyle = '#1652b7';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(validPersen + '%', width / 2, height / 2);
-      ctx.restore();
-    }
-  }]
-});
-
-
+    },
+    plugins: [{
+      id: 'centerText',
+      beforeDraw(chart) {
+        const { ctx, width, height } = chart;
+        ctx.save();
+        ctx.font = 'bold 1.5rem sans-serif';
+        ctx.fillStyle = '#1652b7';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(validPersen + '%', width / 2, height / 2);
+        ctx.restore();
+      }
+    }]
+  });
 
 </script>
 @endpush
