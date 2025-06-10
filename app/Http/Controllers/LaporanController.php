@@ -251,30 +251,40 @@ class LaporanController extends Controller
                 ->leftJoin('m_fasilitas', 't_fasilitas_ruang.fasilitas_id', '=', 'm_fasilitas.fasilitas_id')
                 ->leftJoin('m_user', 't_laporan.user_id', '=', 'm_user.user_id')
                 ->where('t_laporan.teknisi_id', Auth::user()->user_id)
-                ->where('t_laporan.is_done', 0)
-                ->where('t_laporan.is_kerjakan', null)
-                ->select(
-                    't_laporan.laporan_id',
-                    't_fasilitas_ruang.fasilitas_ruang_id',
-                    DB::raw('count(*) as jumlah_laporan'),
-                    DB::raw('MIN(t_laporan.lapor_datetime) as oldest_lapor_datetime'),
-                    'm_ruangan.ruangan_nama as ruangan_nama',
-                    'm_fasilitas.fasilitas_nama as fasilitas_nama',
-                    'm_user.fullname as user_nama',
-                    't_laporan.lapor_datetime as lapor_datetime',
-                    't_laporan.deskripsi_laporan as deskripsi_laporan',
-                    't_laporan.is_verified as is_verified',
-                    't_laporan.is_done as is_done'
-                )
-                ->groupBy(
-                    't_laporan.laporan_id',
-                    't_fasilitas_ruang.fasilitas_ruang_id',
-                    'm_ruangan.ruangan_nama',
-                    'm_fasilitas.fasilitas_nama',
-                    'm_user.fullname',
-                    't_laporan.lapor_datetime',
-                    't_laporan.deskripsi_laporan'
-                );
+                ->where('t_laporan.is_done', 0);
+
+            $status = $request->input('status', 'pending');
+            if ($status == 'kerjakan') {
+                $query->where('t_laporan.is_kerjakan', 1);
+            } else if ($status == 'all') {
+                
+            } else {
+                $query->where('t_laporan.is_kerjakan', null);
+            }
+
+            $query->select(
+                't_laporan.laporan_id',
+                't_fasilitas_ruang.fasilitas_ruang_id',
+                DB::raw('count(*) as jumlah_laporan'),
+                DB::raw('MIN(t_laporan.lapor_datetime) as oldest_lapor_datetime'),
+                'm_ruangan.ruangan_nama as ruangan_nama',
+                'm_fasilitas.fasilitas_nama as fasilitas_nama',
+                'm_user.fullname as user_nama',
+                't_laporan.lapor_datetime as lapor_datetime',
+                't_laporan.deskripsi_laporan as deskripsi_laporan',
+                't_laporan.is_verified as is_verified',
+                't_laporan.is_done as is_done',
+                't_laporan.is_kerjakan as is_kerjakan'
+            )
+            ->groupBy(
+                't_laporan.laporan_id',
+                't_fasilitas_ruang.fasilitas_ruang_id',
+                'm_ruangan.ruangan_nama',
+                'm_fasilitas.fasilitas_nama',
+                'm_user.fullname',
+                't_laporan.lapor_datetime',
+                't_laporan.deskripsi_laporan'
+            );
 
             $queryNew = $query;
 
@@ -526,6 +536,19 @@ class LaporanController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Laporan berhasil dikerjakan'
+        ]);
+    }
+
+    public function selesai($id)
+    {
+        $laporan = t_laporan::findOrFail($id, 'laporan_id');
+        $laporan->is_done = 1;
+        $laporan->selesai_datetime = now();
+        $laporan->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Laporan berhasil diselesaikan'
         ]);
     }
 
