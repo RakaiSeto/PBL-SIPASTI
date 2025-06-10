@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\t_laporan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 use function PHPSTORM_META\map;
 
@@ -192,15 +193,15 @@ class DSSController extends Controller
             }
 
             if ($original[$key]['values'][3] == 5) {
-                $ketAlt[] = 'Sangat Banyak';
+                $ketAlt[] = 'Sangat Banyak (' . $data[$key-1]['jumlah_laporan'] . ')';
             } else if ($original[$key]['values'][3] == 4) {
-                $ketAlt[] = 'Banyak';
+                $ketAlt[] = 'Banyak (' . $data[$key-1]['jumlah_laporan'] . ')';
             } else if ($original[$key]['values'][3] == 3) {
-                $ketAlt[] = 'Sedang';
+                $ketAlt[] = 'Sedang (' . $data[$key-1]['jumlah_laporan'] . ')';
             } else if ($original[$key]['values'][3] == 2) {
-                $ketAlt[] = 'Sedikit';
+                $ketAlt[] = 'Sedikit (' . $data[$key-1]['jumlah_laporan'] . ')';
             } else if ($original[$key]['values'][3] == 1) {
-                $ketAlt[] = 'Sangat Sedikit';
+                $ketAlt[] = 'Sangat Sedikit (' . $data[$key-1]['jumlah_laporan'] . ')';
             }
 
             if ($original[$key]['values'][4] == 5) {
@@ -296,6 +297,8 @@ class DSSController extends Controller
             6 => ['name' => 'Waktu Perbaikan', 'weight' => 0.1, 'type' => 'cost'],
         ];
 
+        // Log::info($data);
+
         foreach ($data as $key => $value) {
             $kerusakan = $value['spk_kerusakan'];
             $dampak = $value['spk_dampak'];
@@ -371,6 +374,7 @@ class DSSController extends Controller
 
         $rank = [];
         foreach ($preferensi as $key => $value) {
+            
             $ketAlt = [];
             if ($original[$key]['values'][0] == 5) {
                 $ketAlt[] = 'Sangat Berat';
@@ -409,15 +413,15 @@ class DSSController extends Controller
             }
 
             if ($original[$key]['values'][3] == 5) {
-                $ketAlt[] = 'Sangat Banyak';
+                $ketAlt[] = 'Sangat Banyak (' . $data[$key-1]['jumlah_laporan'] . ')';
             } else if ($original[$key]['values'][3] == 4) {
-                $ketAlt[] = 'Banyak';
+                $ketAlt[] = 'Banyak (' . $data[$key-1]['jumlah_laporan'] . ')';
             } else if ($original[$key]['values'][3] == 3) {
-                $ketAlt[] = 'Sedang';
+                $ketAlt[] = 'Sedang (' . $data[$key-1]['jumlah_laporan'] . ')';
             } else if ($original[$key]['values'][3] == 2) {
-                $ketAlt[] = 'Sedikit';
+                $ketAlt[] = 'Sedikit (' . $data[$key-1]['jumlah_laporan'] . ')';
             } else if ($original[$key]['values'][3] == 1) {
-                $ketAlt[] = 'Sangat Sedikit';
+                $ketAlt[] = 'Sangat Sedikit (' . $data[$key-1]['jumlah_laporan'] . ')';
             }
 
             if ($original[$key]['values'][4] == 5) {
