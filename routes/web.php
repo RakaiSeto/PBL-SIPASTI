@@ -189,9 +189,7 @@ Route::group(['middleware' => ['auth.refresh', 'role:Sarpras'], 'prefix' => 'sar
 
 // Group Teknisi
 Route::group(['middleware' => ['auth.refresh', 'role:Teknisi'], 'prefix' => 'teknisi'], function () {
-    Route::get('/', function () {
-        return view('teknisi.index');
-    })->name('teknisi.dashboard');
+    Route::get('/', [DashboardController::class, 'teknisi'])->name('teknisi.dashboard');
 
     Route::get('/tugas', function () {
         return view('teknisi.tugas');
