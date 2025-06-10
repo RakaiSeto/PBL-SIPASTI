@@ -33,7 +33,7 @@
                             class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md 
                             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:shadow-md 
                             hover:shadow-lg transition-shadow duration-300 text-gray-700">
-                            <option selected disabled>Pilih Level</option>
+                            <option selected disabled>Pilih Role</option>
                             <option value="mahasiswa">Mahasiswa</option>
                             <option value="dosen">Dosen</option>
                             <option value="tendik">Tenaga Kependidikan</option>
