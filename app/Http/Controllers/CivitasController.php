@@ -115,15 +115,14 @@ class CivitasController extends Controller
             $start = $request->input('start', 0);
             $orderColumn = $columns[$request->input('order.0.column', 3)];
             $orderDir = $request->input('order.0.dir', 'desc');
-            $status = $request->input('status'); // Ambil nilai status dari frontend
-            $search = $request->input('search'); // Ambil nilai pencarian
+            $status = $request->input('status');
+            $search = $request->input('search');
 
             $query = t_laporan::leftJoin('t_fasilitas_ruang', 't_laporan.fasilitas_ruang_id', '=', 't_fasilitas_ruang.fasilitas_ruang_id')
                 ->leftJoin('m_ruangan', 't_fasilitas_ruang.ruangan_id', '=', 'm_ruangan.ruangan_id')
                 ->leftJoin('m_fasilitas', 't_fasilitas_ruang.fasilitas_id', '=', 'm_fasilitas.fasilitas_id')
                 ->where('t_laporan.user_id', Auth::id());
 
-            // Terapkan filter status
             if ($status !== '') {
                 switch ($status) {
                     case '1': // Menunggu Verifikasi

@@ -73,12 +73,13 @@
                     @foreach ($last3tugas as $tugas)
                         <tr class="hover:bg-slate-50 border-b border-slate-200">
                             <td class="p-3 text-sm font-semibold text-slate-800">{{ $tugas->laporan_id }}</td>
-                            <td class="p-3 text-sm text-slate-600">{{ $tugas->fasilitas_ruang->fasilitas->fasilitas_nama }} -
+                            <td class="p-3 text-sm text-slate-600">{{ $tugas->fasilitas_ruang->fasilitas->fasilitas_nama }}
+                                -
                                 {{ $tugas->fasilitas_ruang->ruangan->ruangan_nama }}
                             </td>
                             <td class="p-3">
                                 <button
-                                    class="flex items-center gap-1 px-3 py-1 text-white bg-blue-600 hover:bg-blue-700 rounded"
+                                    class="flex items-center gap-1 px-3 py-1 text-white bg-primary hover:bg-blue-700 rounded"
                                     onclick="openDetail('{{ $tugas->laporan_id }}')">
                                     <i class="fas fa-eye"></i> Detail
                                 </button>
@@ -170,10 +171,18 @@
         new Chart(incomeCtx, {
             type: "line",
             data: {
-                labels: [@foreach ($bulanLaporan as $bulan) "{{ $bulan }}", @endforeach],
+                labels: [
+                    @foreach ($bulanLaporan as $bulan)
+                        "{{ $bulan }}",
+                    @endforeach
+                ],
                 datasets: [{
                     label: "Selesai Diperbaiki",
-                    data: [@foreach ($jumlahLaporanSelesai as $jumlah) {{ $jumlah }}, @endforeach],
+                    data: [
+                        @foreach ($jumlahLaporanSelesai as $jumlah)
+                            {{ $jumlah }},
+                        @endforeach
+                    ],
                     backgroundColor: "#1652B7",
                     borderRadius: 5,
                 }],
@@ -181,10 +190,14 @@
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { display: false },
+                    legend: {
+                        display: false
+                    },
                 },
                 scales: {
-                    y: { beginAtZero: true },
+                    y: {
+                        beginAtZero: true
+                    },
                 },
             },
         });
@@ -199,11 +212,11 @@
 
         function openDetail(id) {
             fetch(`/teknisi/detail/${id}`, {
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json'
-                }
-            })
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    }
+                })
                 .then(res => res.json())
                 .then(response => {
                     if (response.success) {
@@ -211,9 +224,11 @@
                         openModal('detailModal');
                         document.querySelector('.user_id').textContent = data.user.fullname ?? '-';
                         document.querySelector('.ruang').textContent = data.fasilitas_ruang.ruangan.ruangan_nama ?
-                            data.fasilitas_ruang.ruangan.ruangan_nama + ' - lantai ' + data.fasilitas_ruang.ruangan.lantai :
+                            data.fasilitas_ruang.ruangan.ruangan_nama + ' - lantai ' + data.fasilitas_ruang.ruangan
+                            .lantai :
                             '-';
-                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang.fasilitas.fasilitas_nama ??
+                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang.fasilitas
+                            .fasilitas_nama ??
                             '-';
                         document.querySelector('.deskripsi').textContent = data.deskripsi_laporan ?? '-';
                         document.querySelector('.tanggal').textContent = data.lapor_datetime ?
@@ -222,10 +237,10 @@
                         document.querySelector('.status').textContent = data.is_done && !data.is_verified ?
                             'Ditolak' :
                             data.is_done ?
-                                'Selesai' :
-                                data.is_verified ?
-                                    'Diproses' :
-                                    'Menunggu Verifikasi';
+                            'Selesai' :
+                            data.is_verified ?
+                            'Diproses' :
+                            'Menunggu Verifikasi';
 
                         document.getElementById('statusBaru').textContent = data.lapor_datetime ?? '-';
                         document.getElementById('statusProses').textContent = data.verifikasi_datetime ?? '-';

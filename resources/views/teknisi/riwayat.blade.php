@@ -115,73 +115,83 @@
             document.getElementById(id).classList.add('hidden');
         }
 
-        $(document).ready(function () {
-            table = $('#tugasTable').DataTable(
-                {
-                    processing: true,
-                    serverSide: true,
-                    ajax: {
-                        url: '/teknisi/tugas/list',
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            status: 'done'
-                        },
-                        dataSrc: function (json) {
-                            return json.data;
-                        },
-                        error: function (xhr, error, thrown) {
-                            console.log(xhr.responseText);
-                        }
+        $(document).ready(function() {
+            table = $('#tugasTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '/teknisi/tugas/list',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        status: 'done'
                     },
-                    columns: [
-                        {
-                            data: null,
-                            name: 'no',
-                            render: function (data, type, row, meta) {
-                                return meta.row + meta.settings._iDisplayStart + 1;
-                            },
-                            orderable: false,
+                    dataSrc: function(json) {
+                        return json.data;
+                    },
+                    error: function(xhr, error, thrown) {
+                        console.log(xhr.responseText);
+                    }
+                },
+                columns: [{
+                        data: null,
+                        name: 'no',
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
                         },
-                        { data: 'fasilitas_nama', orderable: false, searchable: false },
-                        { data: 'ruangan_nama', orderable: false, searchable: false },
-                        { data: 'selesai_datetime', orderable: false, searchable: false },
-                        {
-                            data: null,
-                            name: 'status',
-                            render: function (data, type, row) {
-                                if (row.status == 'rejected') {
-                                    return '<span class="bg-red-500/20 text-red-900 text-xs px-2 py-1 rounded font-bold">Ditolak</span>';
-                                } else if (row.status == 'completed') {
-                                    return '<span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded font-bold">Selesai</span>';
-                                } else if (row.status == 'processed') {
-                                    return '<span class="bg-blue-500/20 text-blue-900 text-xs px-2 py-1 rounded font-bold">Diproses</span>';
-                                } else {
-                                    return '<span class="bg-yellow-500/20 text-yellow-900 text-xs px-2 py-1 rounded font-bold">Menunggu Verifikasi</span>';
-                                }
-                            },
-                            orderable: false,
-                        },
-                        {
-                            data: 'laporan_id',
-                            orderable: false,
-                            searchable: false,
-                            render: function (data) {
-                                return `<button onclick="openDetail(${data})" class="bg-blue-500 text-white px-4 py-2 rounded">Detail</button>`;
+                        orderable: false,
+                    },
+                    {
+                        data: 'fasilitas_nama',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'ruangan_nama',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'selesai_datetime',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: null,
+                        name: 'status',
+                        render: function(data, type, row) {
+                            if (row.status == 'rejected') {
+                                return '<span class="bg-red-500/20 text-red-900 text-xs px-2 py-1 rounded font-bold">Ditolak</span>';
+                            } else if (row.status == 'completed') {
+                                return '<span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded font-bold">Selesai</span>';
+                            } else if (row.status == 'processed') {
+                                return '<span class="bg-blue-500/20 text-blue-900 text-xs px-2 py-1 rounded font-bold">Diproses</span>';
+                            } else {
+                                return '<span class="bg-yellow-500/20 text-yellow-900 text-xs px-2 py-1 rounded font-bold">Menunggu Verifikasi</span>';
                             }
+                        },
+                        orderable: false,
+                    },
+                    {
+                        data: 'laporan_id',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data) {
+                            return `<button onclick="openDetail(${data})" class="bg-primary text-white rounded py-2 px-4 hover:bg-blue-700 gap-x-4">
+                                        <i class="fas fa-eye"></i> Detail</button>`;
                         }
-                    ]
-                }
-            );
+                    }
+                ]
+            });
         });
 
         function openDetail(id) {
             fetch(`/teknisi/detail/${id}`, {
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json'
-                }
-            })
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    }
+                })
                 .then(res => res.json())
                 .then(response => {
                     if (response.success) {
@@ -189,9 +199,11 @@
                         openModal('detailModal');
                         document.querySelector('.user_id').textContent = data.user.fullname ?? '-';
                         document.querySelector('.ruang').textContent = data.fasilitas_ruang.ruangan.ruangan_nama ?
-                            data.fasilitas_ruang.ruangan.ruangan_nama + ' - lantai ' + data.fasilitas_ruang.ruangan.lantai :
+                            data.fasilitas_ruang.ruangan.ruangan_nama + ' - lantai ' + data.fasilitas_ruang.ruangan
+                            .lantai :
                             '-';
-                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang.fasilitas.fasilitas_nama ??
+                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang.fasilitas
+                            .fasilitas_nama ??
                             '-';
                         document.querySelector('.deskripsi').textContent = data.deskripsi_laporan ?? '-';
                         document.querySelector('.tanggal').textContent = data.lapor_datetime ?
@@ -200,10 +212,10 @@
                         document.querySelector('.status').textContent = data.is_done && !data.is_verified ?
                             'Ditolak' :
                             data.is_done ?
-                                'Selesai' :
-                                data.is_verified ?
-                                    'Diproses' :
-                                    'Menunggu Verifikasi';
+                            'Selesai' :
+                            data.is_verified ?
+                            'Diproses' :
+                            'Menunggu Verifikasi';
 
                         document.getElementById('statusBaru').textContent = data.lapor_datetime ?? '-';
                         document.getElementById('statusProses').textContent = data.verifikasi_datetime ?? '-';
@@ -228,5 +240,4 @@
                 });
         }
     </script>
-
 @endsection
