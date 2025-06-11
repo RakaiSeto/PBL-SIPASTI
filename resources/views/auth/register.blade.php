@@ -38,8 +38,6 @@
                             <option value="mahasiswa">Mahasiswa</option>
                             <option value="dosen">Dosen</option>
                             <option value="tendik">Tenaga Kependidikan</option>
-                            <option value="sarpras">Sarana Prasarana</option>
-                            <option value="teknisi">Teknisi</option>
                         </select>
                     </div>
                     <div class="relative">
