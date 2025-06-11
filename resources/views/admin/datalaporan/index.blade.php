@@ -41,7 +41,7 @@
                     class="w-full md:w-64 h-10 text-sm border border-slate-300 rounded px-3">
             </div>
 
-            <div class="flex gap-2">
+            {{-- <div class="flex gap-2">
                 <a href="{{ route('admin.laporan.export_excel') }}"
                     class="h-10 px-4 text-white bg-blue-500 rounded hover:bg-blue-600 transition inline-flex items-center justify-center">
                     Export Excel
@@ -50,7 +50,7 @@
                     class="h-10 px-4 text-white bg-red-500 rounded hover:bg-red-600 transition inline-flex items-center justify-center">
                     Export PDF
                 </a>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Tabel -->
@@ -178,9 +178,11 @@
                         openModal('detailModal');
                         document.querySelector('.user_id').textContent = data.user_id ?? '-';
                         document.querySelector('.ruang').textContent = data.fasilitas_ruang.ruangan.ruangan_nama ?
-                            data.fasilitas_ruang.ruangan.ruangan_nama + ' - lantai ' + data.fasilitas_ruang.ruangan.lantai :
+                            data.fasilitas_ruang.ruangan.ruangan_nama + ' - lantai ' + data.fasilitas_ruang.ruangan
+                            .lantai :
                             '-';
-                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang.fasilitas.fasilitas_nama ??
+                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang.fasilitas
+                            .fasilitas_nama ??
                             '-';
                         document.querySelector('.deskripsi').textContent = data.deskripsi_laporan ?? '-';
                         document.querySelector('.tanggal').textContent = data.lapor_datetime ?
@@ -257,14 +259,14 @@
                         orderable: false,
                     },
                     {
-                        data: 'fasilitas_ruang_id',
-                        name: 'fasilitas_ruang_id',
+                        data: 'ruangan_nama',
+                        name: 'ruangan_nama',
                         defaultContent: '-',
                         orderable: false,
                     },
                     {
-                        data: 'fasilitas_ruang_id',
-                        name: 'fasilitas_ruang_id',
+                        data: 'fasilitas_nama',
+                        name: 'fasilitas_nama',
                         defaultContent: '-',
                         orderable: false,
                     },
