@@ -74,11 +74,11 @@
 
         <!-- Modal Detail -->
 
-        <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden z-50">
             <div class="bg-white p-6 rounded shadow-lg w-[90%] max-w-2xl overflow-y-auto max-h-[90vh]">
                 <!-- Header -->
                 <div class="relative mb-4">
-                    <h2 class="text-2xl font-bold">Detail Laporan Sarpras</h2>
+                    <h2 class="text-2xl font-bold">Detail Laporan</h2>
                     <button class="absolute right-2 top-2 text-gray-500 hover:text-red-500"
                         onclick="closeModal('detailModal')">✕</button>
                 </div>
@@ -118,7 +118,7 @@
                         <div>
                             <h4 class="text-sm text-gray-500 font-medium mb-1">Foto Fasilitas</h4>
                             <div class="rounded overflow-hidden shadow border">
-                                <img id="detail-photo" src="/assets/image/placeholder.jpg" alt="Foto Fasilitas"
+                                <img id="detail-photo" src="/assets/image/AC_RUSAK.jpg" alt="Foto Fasilitas"
                                     class="w-full h-auto object-cover">
                             </div>
                         </div>
