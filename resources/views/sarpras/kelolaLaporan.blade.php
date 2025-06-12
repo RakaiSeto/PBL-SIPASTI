@@ -37,11 +37,11 @@
                     <option value="4">Lampu</option>
                 </select>
 
-                <input type="text" id="searchInput" placeholder="Cari Deskripsi..." onkeyup="filterTable()"
+                <input type="text" id="searchInput" placeholder="Cari ..." onkeyup="filterTable()"
                     class="w-full md:w-64 h-10 text-sm border border-slate-300 rounded px-3">
             </div>
 
-            <div class="flex gap-2">
+            {{-- <div class="flex gap-2">
                 <a href="{{ route('sarpras.laporan.export_excel') }}"
                     class="h-10 px-4 text-white bg-blue-500 rounded hover:bg-blue-600 transition inline-flex items-center justify-center">
                     Export Excel
@@ -50,7 +50,7 @@
                     class="h-10 px-4 text-white bg-red-500 rounded hover:bg-red-600 transition inline-flex items-center justify-center">
                     Export PDF
                 </a>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Tabel -->
@@ -168,21 +168,23 @@
 
         function openDetail(id) {
             fetch(`/sarpras/laporan/detail/${id}`, {
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
-                }
-            })
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
                 .then(res => res.json())
                 .then(response => {
                     if (response.success) {
                         const data = response.data;
                         openModal('detailModal');
-                        document.querySelector('.user_id').textContent = data.user_id ?? '-';
+                        document.querySelector('.user_id').textContent = data.user.fullname ?? '-';
                         document.querySelector('.ruang').textContent = data.fasilitas_ruang.ruangan.ruangan_nama ?
-                            data.fasilitas_ruang.ruangan.ruangan_nama + ' - lantai ' + data.fasilitas_ruang.ruangan.lantai :
+                            data.fasilitas_ruang.ruangan.ruangan_nama + ' - lantai ' + data.fasilitas_ruang.ruangan
+                            .lantai :
                             '-';
-                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang.fasilitas.fasilitas_nama ??
+                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang.fasilitas
+                            .fasilitas_nama ??
                             '-';
                         document.querySelector('.deskripsi').textContent = data.deskripsi_laporan ?? '-';
                         document.querySelector('.tanggal').textContent = data.lapor_datetime ?
@@ -191,10 +193,10 @@
                         document.querySelector('.status').textContent = data.is_done && !data.is_verified ?
                             'Ditolak' :
                             data.is_done ?
-                                'Selesai' :
-                                data.is_verified ?
-                                    'Diproses' :
-                                    'Menunggu Verifikasi';
+                            'Selesai' :
+                            data.is_verified ?
+                            'Diproses' :
+                            'Menunggu Verifikasi';
 
                         document.getElementById('statusBaru').textContent = data.lapor_datetime ?? '-';
                         document.getElementById('statusProses').textContent = data.verifikasi_datetime ?? '-';
@@ -202,7 +204,7 @@
 
                         // Ganti foto laporan
                         const img = document.getElementById('detail-photo');
-                        img.src = data.lapor_foto_url ?? '/assets/profile/default.jpg';
+                        img.src = data.lapor_foto_url ?? '/assets/image/AC_RUSAK.jpg';
 
                         // Susun tombol aksi
                         let leftActions = `
@@ -243,212 +245,212 @@
                         <div>${leftActions}</div>
                         <div class="flex gap-2">${rightActions}</div>
                     </div>`
-                        } else {
-                            showError(response.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Gagal ambil data:', error);
-                        showError('Gagal mengambil detail laporan');
-                    });
-            }
+                    } else {
+                        showError(response.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Gagal ambil data:', error);
+                    showError('Gagal mengambil detail laporan');
+                });
+        }
 
-            // DATA TABLE INITIALIZATION
-            $(document).ready(function() {
-                const table = $('#laporanTable').DataTable({
-                    searching: false,
-                    lengthChange: false,
-                    processing: true,
-                    serverSide: true,
-                    ajax: {
-                        type: "POST",
-                        url: '{{ route('sarpras.laporan.list') }}',
-                        data: function(d) {
-                            d.fasilitas = $('#filterFasilitas').val();
-                            d.search = $('#searchInput').val();
-                            d.status = 'pending';
-                        },
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        error: function(xhr) {
-                            showError('Gagal mengambil data laporan');
+        // DATA TABLE INITIALIZATION
+        $(document).ready(function() {
+            const table = $('#laporanTable').DataTable({
+                searching: false,
+                lengthChange: false,
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    type: "POST",
+                    url: '{{ route('sarpras.laporan.list') }}',
+                    data: function(d) {
+                        d.fasilitas = $('#filterFasilitas').val();
+                        d.search = $('#searchInput').val();
+                        d.status = 'pending';
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    error: function(xhr) {
+                        showError('Gagal mengambil data laporan');
+                    }
+                },
+                columns: [{
+                        data: null,
+                        name: 'no',
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
                         }
                     },
-                    columns: [{
-                            data: null,
-                            name: 'no',
-                            render: function(data, type, row, meta) {
-                                return meta.row + meta.settings._iDisplayStart + 1;
+                    {
+                        data: 'user_nama',
+                        name: 'user_nama',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'ruangan_nama',
+                        name: 'ruangan_nama',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'fasilitas_nama',
+                        name: 'fasilitas_nama',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'deskripsi_laporan',
+                        name: 'deskripsi_laporan'
+                    },
+                    {
+                        data: 'lapor_datetime',
+                        name: 'lapor_datetime',
+                        render: function(data) {
+                            return data ? new Date(data).toLocaleDateString('id-ID') : '-';
+                        }
+                    },
+                    {
+                        data: null,
+                        name: 'status',
+                        render: function(data, type, row) {
+                            if (row.is_done && !row.is_verified) {
+                                return '<span class="bg-red-500/20 text-red-900 text-xs px-2 py-1 rounded font-bold">Ditolak</span>';
+                            } else if (row.is_done) {
+                                return '<span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded font-bold">Selesai</span>';
+                            } else if (row.is_verified) {
+                                return '<span class="bg-blue-500/20 text-blue-900 text-xs px-2 py-1 rounded font-bold">Diproses</span>';
+                            } else {
+                                return '<span class="bg-yellow-500/20 text-yellow-900 text-xs px-2 py-1 rounded font-bold">Menunggu Verifikasi</span>';
                             }
-                        },
-                        {
-                            data: 'user_nama',
-                            name: 'user_nama',
-                            defaultContent: '-'
-                        },
-                        {
-                            data: 'ruangan_nama',
-                            name: 'ruangan_nama',
-                            defaultContent: '-'
-                        },
-                        {
-                            data: 'fasilitas_nama',
-                            name: 'fasilitas_nama',
-                            defaultContent: '-'
-                        },
-                        {
-                            data: 'deskripsi_laporan',
-                            name: 'deskripsi_laporan'
-                        },
-                        {
-                            data: 'lapor_datetime',
-                            name: 'lapor_datetime',
-                            render: function(data) {
-                                return data ? new Date(data).toLocaleDateString('id-ID') : '-';
-                            }
-                        },
-                        {
-                            data: null,
-                            name: 'status',
-                            render: function(data, type, row) {
-                                if (row.is_done && !row.is_verified) {
-                                    return '<span class="bg-red-500/20 text-red-900 text-xs px-2 py-1 rounded font-bold">Ditolak</span>';
-                                } else if (row.is_done) {
-                                    return '<span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded font-bold">Selesai</span>';
-                                } else if (row.is_verified) {
-                                    return '<span class="bg-blue-500/20 text-blue-900 text-xs px-2 py-1 rounded font-bold">Diproses</span>';
-                                } else {
-                                    return '<span class="bg-yellow-500/20 text-yellow-900 text-xs px-2 py-1 rounded font-bold">Menunggu Verifikasi</span>';
-                                }
-                            }
-                        },
-                        {
-                            data: null,
-                            orderable: false,
-                            searchable: false,
-                            render: function(data) {
-                                return `
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function(data) {
+                            return `
                             <div class="flex gap-2" >
                                 <button onclick="openDetail(${data.laporan_id})" title="Detail"
-                                    class="flex items-center gap-1 px-3 py-1 text-white bg-blue-600 hover:bg-blue-700 rounded">
+                                    class="flex items-center gap-1 px-3 py-1 text-white bg-primary hover:bg-blue-700 rounded">
                                     <i class="fas fa-eye"></i> Detail
                                 </button>
                                     </div>
                             `;
-                            }
                         }
-                    ]
-                });
-
-                window.filterTable = function() {
-                    table.ajax.reload();
-                };
+                    }
+                ]
             });
 
-            // NOTIFIKASI
-            function showSuccess(message) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Sukses',
-                    text: message,
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-            }
+            window.filterTable = function() {
+                table.ajax.reload();
+            };
+        });
 
-            function showError(message) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Kesalahan',
-                    text: message,
-                    timer: 3000,
-                    showConfirmButton: true
-                });
-            }
+        // NOTIFIKASI
+        function showSuccess(message) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Sukses',
+                text: message,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
 
-            // AKSI VERIFIKASI, SELESAI, DAN TOLAK
-            function verifyLaporan(laporanId) {
-                fetch(`/sarpras/laporan/verify/${ laporanId }`, {
-                        method: 'PUT',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(res => res.json())
-                    .then(result => {
-                        if (result.success) {
-                            closeModal('detailModal');
-                            showSuccess(result.message);
-                            $('#laporanTable').DataTable().ajax.reload();
-                        } else {
-                            showError(result.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Gagal memverifikasi:', error);
-                        showError('Terjadi kesalahan saat memverifikasi laporan');
-                    });
-            }
+        function showError(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Kesalahan',
+                text: message,
+                timer: 3000,
+                showConfirmButton: true
+            });
+        }
 
-            function completeLaporan(laporanId) {
-                fetch(`/sarpras/laporan/complete/${ laporanId }`, {
-                        method: 'PUT',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(res => res.json())
-                    .then(result => {
-                        if (result.success) {
-                            closeModal('detailModal');
-                            showSuccess(result.message);
-                            $('#laporanTable').DataTable().ajax.reload();
-                        } else {
-                            showError(result.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Gagal menyelesaikan:', error);
-                        showError('Terjadi kesalahan saat menyelesaikan laporan');
-                    });
-            }
-
-            function rejectLaporan(laporanId) {
-                Swal.fire({
-                    title: 'Konfirmasi',
-                    text: 'Apakah Anda yakin ingin menolak laporan ini?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Tolak',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch(`/sarpras/laporan/reject/${ laporanId }`, {
-                                method: 'PUT',
-                                headers: {
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                                    'Accept': 'application/json'
-                                }
-                            })
-                            .then(res => res.json())
-                            .then(result => {
-                                if (result.success) {
-                                    closeModal('detailModal');
-                                    showSuccess(result.message);
-                                    $('#laporanTable').DataTable().ajax.reload();
-                                } else {
-                                    showError(result.message);
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Penolakan gagal:', error);
-                                showError('Gagal menolak laporan');
-                            });
+        // AKSI VERIFIKASI, SELESAI, DAN TOLAK
+        function verifyLaporan(laporanId) {
+            fetch(`/sarpras/laporan/verify/${ laporanId }`, {
+                    method: 'PUT',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
                     }
+                })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        closeModal('detailModal');
+                        showSuccess(result.message);
+                        $('#laporanTable').DataTable().ajax.reload();
+                    } else {
+                        showError(result.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Gagal memverifikasi:', error);
+                    showError('Terjadi kesalahan saat memverifikasi laporan');
                 });
-            }
+        }
+
+        function completeLaporan(laporanId) {
+            fetch(`/sarpras/laporan/complete/${ laporanId }`, {
+                    method: 'PUT',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        closeModal('detailModal');
+                        showSuccess(result.message);
+                        $('#laporanTable').DataTable().ajax.reload();
+                    } else {
+                        showError(result.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Gagal menyelesaikan:', error);
+                    showError('Terjadi kesalahan saat menyelesaikan laporan');
+                });
+        }
+
+        function rejectLaporan(laporanId) {
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: 'Apakah Anda yakin ingin menolak laporan ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Tolak',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/sarpras/laporan/reject/${ laporanId }`, {
+                            method: 'PUT',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(res => res.json())
+                        .then(result => {
+                            if (result.success) {
+                                closeModal('detailModal');
+                                showSuccess(result.message);
+                                $('#laporanTable').DataTable().ajax.reload();
+                            } else {
+                                showError(result.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Penolakan gagal:', error);
+                            showError('Gagal menolak laporan');
+                        });
+                }
+            });
+        }
     </script>
 @endsection

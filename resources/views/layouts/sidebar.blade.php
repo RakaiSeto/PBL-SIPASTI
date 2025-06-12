@@ -139,53 +139,56 @@
 
         @if (Auth::user()->role->role_nama == 'Sarpras')
             <h2 class="text-xs mt-6 mb-2 uppercase font-semibold">Data Perbaikan</h2>
+
             <a href="{{ route('sarpras.kelolaLaporan') }}"
                 class="block p-3 rounded font-semibold
-              {{ request()->routeIs('sarpras.kelolaLaporan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-                <i class="fa-solid fa-wrench mr-2"></i> Kelola Laporan
+        {{ request()->routeIs('sarpras.kelolaLaporan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+                <i class="fa-solid fa-clipboard-list mr-2"></i> Kelola Laporan
             </a>
+
             <a href="{{ route('sarpras.kategorisasi') }}"
                 class="block p-3 rounded font-semibold
-          {{ request()->routeIs('sarpras.kategorisasi') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-                <i class="fa-solid fa-list mr-2"></i> Kategorisasi Laporan
+        {{ request()->routeIs('sarpras.kategorisasi') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+                <i class="fa-solid fa-tags mr-2"></i> Kategorisasi Laporan
             </a>
 
             <a href="{{ route('sarpras.proses_spk') }}"
                 class="block p-3 rounded font-semibold
-          {{ request()->routeIs('sarpras.proses_spk') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-                <i class="fa-solid fa-list mr-2"></i> Proses SPK
+        {{ request()->routeIs('sarpras.proses_spk') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+                <i class="fa-solid fa-cogs mr-2"></i> Proses SPK
             </a>
 
             <a href="{{ route('sarpras.rekomendasi') }}"
                 class="block p-3 rounded font-semibold
-          {{ request()->routeIs('sarpras.rekomendasi') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+        {{ request()->routeIs('sarpras.rekomendasi') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
                 <i class="fa-solid fa-lightbulb mr-2"></i> Rekomendasi Perbaikan
             </a>
 
             {{-- <a href="{{ route('sarpras.tugaskan') }}"
-                class="block p-3 rounded font-semibold
-          {{ request()->routeIs('sarpras.tugaskan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-                <i class="fa-solid fa-user-cog mr-2"></i> Tugaskan Teknisi
-            </a> --}}
+        class="block p-3 rounded font-semibold
+        {{ request()->routeIs('sarpras.tugaskan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+        <i class="fa-solid fa-user-cog mr-2"></i> Tugaskan Teknisi
+    </a> --}}
 
             <a href="{{ route('sarpras.status') }}"
                 class="block p-3 rounded font-semibold
-          {{ request()->routeIs('sarpras.status') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+        {{ request()->routeIs('sarpras.status') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
                 <i class="fa-solid fa-circle-check mr-2"></i> Status Perbaikan
             </a>
 
             <a href="{{ route('sarpras.riwayatlaporan') }}"
                 class="block p-3 rounded font-semibold
-          {{ request()->routeIs('sarpras.riwayatlaporan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
-                <i class="fa-solid fa-circle-check mr-2"></i> Riwayat Laporan
+        {{ request()->routeIs('sarpras.riwayatlaporan') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+                <i class="fa-solid fa-clock-rotate-left mr-2"></i> Riwayat Laporan
             </a>
 
             <a href="{{ route('sarpras.statistik') }}"
                 class="block p-3 rounded font-semibold
-          {{ request()->routeIs('sarpras.statistik') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
+        {{ request()->routeIs('sarpras.statistik') ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-500' }}">
                 <i class="fa-solid fa-chart-column mr-2"></i> Statistik
             </a>
         @endif
+
     </nav>
 </aside>
 
