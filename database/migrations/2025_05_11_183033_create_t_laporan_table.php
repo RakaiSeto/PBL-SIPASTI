@@ -17,11 +17,19 @@ return new class extends Migration
             $table->foreignId('fasilitas_ruang_id')->references('fasilitas_ruang_id')->on('t_fasilitas_ruang');
             $table->foreignId('teknisi_id')->references('user_id')->on('m_user')->nullable();
             $table->text('deskripsi_laporan')->nullable();
-            $table->binary('lapor_foto')->nullable();
+            $table->longBinary('lapor_foto')->nullable();
             $table->datetime('lapor_datetime');
             $table->integer('review_pelapor')->nullable();
+            $table->text('review_komentar')->nullable();
             $table->boolean('is_verified');
             $table->boolean('is_done');
+            $table->integer('spk_kerusakan')->nullable();
+            $table->integer('spk_dampak')->nullable();
+            $table->integer('spk_frekuensi')->nullable();
+            $table->integer('spk_waktu_perbaikan')->nullable();
+            $table->datetime('verifikasi_datetime')->nullable();
+            $table->datetime('selesai_datetime')->nullable();
+            $table->boolean('is_kerjakan')->nullable();
         });
     }
 
