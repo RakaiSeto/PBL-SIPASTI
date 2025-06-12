@@ -30,11 +30,11 @@
                     <option value="4">Lampu</option>
                 </select>
 
-                <input type="text" id="searchInput" placeholder="Cari Deskripsi..." onkeyup="filterTable()"
+                <input type="text" id="searchInput" placeholder="Cari..." onkeyup="filterTable()"
                     class="w-full md:w-64 h-10 text-sm border border-slate-300 rounded px-3">
             </div>
 
-            <div class="flex items-center gap-2">
+            {{-- <div class="flex items-center gap-2">
                 <label for="tampilData" class="text-slate-700">Tampilkan:</label>
                 <select id="tampilData" onchange="filterTable()" class="border border-slate-300 rounded px-2 py-1 text-sm">
                     <option value="5">5</option>
@@ -42,7 +42,7 @@
                     <option value="25">25</option>
                     <option value="50">50</option>
                 </select>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Table -->
@@ -54,8 +54,8 @@
                         <th class="p-3 w-10">No</th>
                         <th class="p-3 w-32">Ruang</th>
                         <th class="p-3 w-32">Fasilitas</th>
-                        <th class="p-3 w-28">Tanggal Laporan Tertua</th>
-                        <th class="p-3 w-28">Jumlah</th>
+                        <th class="p-3 w-28">Tanggal Laporan</th>
+                        <th class="p-3 w-28">Jumlah Pelapor</th>
                         <th class="p-3 w-28">Aksi</th>
                     </tr>
                 </thead>
@@ -64,8 +64,8 @@
 
         <!-- Modal Detail -->
         <div id="detailModal"
-            class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50 transition-opacity duration-300">
-            <div class="bg-white rounded-xl p-6 w-[95%] max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col">
+            class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden z-50 transition-opacity duration-300">
+            <div class="bg-white rounded p-6 w-[95%] max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col">
                 <!-- Header -->
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold text-gray-800">Penilaian SPK</h2>
@@ -86,7 +86,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
                     <!-- Kiri: Info Kerusakan -->
                     <div class="space-y-4">
-                        <img id="detail-photo" src="{{ asset('assets/image/placeholder.jpg') }}" alt="Foto Kerusakan"
+                        <img id="detail-photo" src="{{ asset('assets/image/AC_RUSAK.jpg') }}" alt="Foto Kerusakan"
                             class="rounded border w-full object-cover h-60 shadow-sm">
                         <div>
                             <p class="text-sm text-gray-500">Nama Fasilitas</p>
@@ -103,8 +103,8 @@
                     </div>
 
                     <!-- Kanan: Form Penilaian -->
-                    <div class="grid grid-cols-1 gap-3">
-                        <div>
+                    <div class="">
+                        <div class="mb-5">
                             <label class="block mb-1 text-gray-600 font-medium">Kerusakan</label>
                             <select name="kerusakan" id="kerusakan"
                                 class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
@@ -116,7 +116,7 @@
                                 <option value="5">Sangat berat (5)</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="mb-5">
                             <label class="block mb-1 text-gray-600 font-medium">Dampak</label>
                             <select name="dampak" id="dampak"
                                 class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
@@ -128,7 +128,7 @@
                                 <option value="5">Sangat tinggi (5)</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="mb-5">
                             <label class="block mb-1 text-gray-600 font-medium">Frekuensi</label>
                             <select name="frekuensi" id="frekuensi"
                                 class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
@@ -140,7 +140,7 @@
                                 <option value="5">Selalu digunakan (5)</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="mb-5">
                             <label class="block mb-1 text-gray-600 font-medium">Waktu Perbaikan</label>
                             <select name="waktu_perbaikan" id="waktu_perbaikan"
                                 class="w-full border rounded px-3 py-2 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
@@ -182,21 +182,23 @@
 
         function openDetail(id) {
             fetch(`/sarpras/laporan/${id}`, {
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
-                }
-            })
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
                 .then(res => res.json())
                 .then(response => {
                     if (response.success) {
                         const data = response.data;
                         openModal('detailModal');
-                        document.querySelector('.fasilitas').textContent = data[0].fasilitas_nama + ' - ' + data[0].ruangan_nama ?? '-';
+                        document.querySelector('.fasilitas').textContent = data[0].fasilitas_nama + ' - ' + data[0]
+                            .ruangan_nama ?? '-';
                         document.querySelector('.deskripsi').textContent = data[0].deskripsi_laporan ?? '-';
                         document.querySelector('.tanggal').textContent = data[0].lapor_datetime ?
                             new Date(data[0].lapor_datetime).toLocaleDateString('id-ID') : '-';
-                        document.getElementById('detail-photo').src = data[0].lapor_foto_url ?? '{{ asset('assets/image/placeholder.jpg') }}';
+                        document.getElementById('detail-photo').src = '{{ asset('assets/image/AC_RUSAK.jpg') }}';
+
                         document.getElementById('laporan_id').value = data[0].laporan_id;
                         currentLaporanId = data[0].laporan_id;
                         dataLaporan = data;
@@ -206,9 +208,11 @@
                         for (let i = 0; i < data.length; i++) {
                             const element = data[i];
                             if (element.laporan_id !== currentLaporanId) {
-                                document.getElementById('laporan_id').innerHTML += `<option value="${element.laporan_id}">${element.user_nama} - ${element.lapor_datetime}</option>`;
+                                document.getElementById('laporan_id').innerHTML +=
+                                    `<option value="${element.laporan_id}">${element.user_nama} - ${element.lapor_datetime}</option>`;
                             } else {
-                                document.getElementById('laporan_id').innerHTML += `<option value="${element.laporan_id}" selected>${element.user_nama} - ${element.lapor_datetime}</option>`;
+                                document.getElementById('laporan_id').innerHTML +=
+                                    `<option value="${element.laporan_id}" selected>${element.user_nama} - ${element.lapor_datetime}</option>`;
                             }
                         }
 
@@ -222,14 +226,16 @@
                 });
         }
 
-        document.getElementById('laporan_id').addEventListener('change', function () {
+        document.getElementById('laporan_id').addEventListener('change', function() {
             console.log(this.value);
             const laporanId = this.value;
             const laporan = dataLaporan.find((laporan) => laporan.laporan_id == laporanId);
             console.log(laporan);
             if (laporan) {
-                document.getElementById('detail-photo').src = laporan.lapor_foto_url ?? '{{ asset('assets/image/placeholder.jpg') }}';
-                document.querySelector('.fasilitas').textContent = laporan.fasilitas_nama + ' - ' + laporan.ruangan_nama ?? '-';
+                document.getElementById('detail-photo').src = laporan.lapor_foto_url ??
+                    '{{ asset('assets/image/placeholder.jpg') }}';
+                document.querySelector('.fasilitas').textContent = laporan.fasilitas_nama + ' - ' + laporan
+                    .ruangan_nama ?? '-';
                 document.querySelector('.deskripsi').textContent = laporan.deskripsi_laporan ?? '-';
                 document.querySelector('.tanggal').textContent = laporan.lapor_datetime ?
                     new Date(laporan.lapor_datetime).toLocaleDateString('id-ID') : '-';
@@ -249,11 +255,11 @@
                     frekuensi: document.getElementById('frekuensi').value,
                     waktu_perbaikan: document.getElementById('waktu_perbaikan').value,
                 },
-                success: function (response) {
+                success: function(response) {
                     console.log(response);
                     window.location.reload();
                 },
-                error: function (xhr) {
+                error: function(xhr) {
                     showError('Gagal mengirim data penilaian');
                 }
             });
@@ -293,7 +299,7 @@
         }
 
         // DATA TABLE INITIALIZATION
-        $(document).ready(function () {
+        $(document).ready(function() {
             const table = $('#kategorisasiTable').DataTable({
                 searching: false,
                 lengthChange: false,
@@ -303,7 +309,7 @@
                 ajax: {
                     type: "POST",
                     url: '{{ route('sarpras.laporan.listKategorisasi') }}',
-                    data: function (d) {
+                    data: function(d) {
                         d.fasilitas = $('#filterFasilitas').val();
                         d.search = $('#searchInput').val();
                         d.status = 'processed'; // Tambahkan parameter status
@@ -311,57 +317,57 @@
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         showError('Gagal mengambil data laporan');
                     }
                 },
                 columns: [{
-                    data: null,
-                    name: 'no',
-                    render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    }
-                },
-                {
-                    data: 'ruangan_nama',
-                    name: 'ruangan_nama',
-                    defaultContent: '-'
-                },
-                {
-                    data: 'fasilitas_nama',
-                    name: 'fasilitas_nama',
-                    defaultContent: '-'
-                },
-                {
-                    data: 'oldest_lapor_datetime',
-                    name: 'oldest_lapor_datetime',
-                    render: function (data) {
-                        return data ? new Date(data).toLocaleDateString('id-ID') : '-';
-                    }
-                },
-                {
-                    data: 'jumlah_laporan',
-                    name: 'jumlah_laporan',
-                },
-                {
-                    data: null,
-                    orderable: false,
-                    searchable: false,
-                    render: function (data) {
-                        return `
+                        data: null,
+                        name: 'no',
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'ruangan_nama',
+                        name: 'ruangan_nama',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'fasilitas_nama',
+                        name: 'fasilitas_nama',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'oldest_lapor_datetime',
+                        name: 'oldest_lapor_datetime',
+                        render: function(data) {
+                            return data ? new Date(data).toLocaleDateString('id-ID') : '-';
+                        }
+                    },
+                    {
+                        data: 'jumlah_laporan',
+                        name: 'jumlah_laporan',
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function(data) {
+                            return `
                                     <button onclick="openDetail('${data.fasilitas_ruang_id}')"
                                         class="bg-primary text-white rounded py-2 px-4 hover:bg-blue-700">Beri Nilai</button>
                                 `;
+                        }
                     }
-                }
                 ]
             });
 
-            window.filterTable = function () {
+            window.filterTable = function() {
                 table.ajax.reload();
             };
 
-            $('#tampilData').on('change', function () {
+            $('#tampilData').on('change', function() {
                 table.page.len($(this).val()).draw();
             });
         });

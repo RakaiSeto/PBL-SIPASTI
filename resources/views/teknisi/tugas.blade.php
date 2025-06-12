@@ -5,7 +5,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <div class="bg-white p-4 rounded shadow">
+    <div class="bg-white p-4 rounded shadow text-sm">
         <div class="overflow-x-auto">
             <table class="min-w-full table-auto text-sm text-left" id="tugasTable">
                 <thead class="bg-slate-100">
@@ -259,7 +259,7 @@
                                 <div class="space-x-2">
                                     ${data.is_verified && !data.is_done
                                 ? `<button onclick="kerjakan(${id})" class="flex items-center gap-2 bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700 transition">
-                                                    <i class="fas fa-check"></i>Kerjakan</button>`
+                                                        <i class="fas fa-check"></i>Kerjakan</button>`
                                 : ''}
                                 </div>
                             </div>

@@ -63,7 +63,7 @@
         </div>
 
         <!-- Modal Detail -->
-        <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden z-50">
             <div class="bg-white p-6 rounded shadow-lg w-[90%] max-w-2xl overflow-y-auto max-h-[90vh]">
                 <!-- Header -->
                 <div class="relative mb-4">
@@ -155,21 +155,23 @@
 
         function openDetail(id) {
             fetch(`/sarpras/laporan/detail/${id}`, {
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
-                }
-            })
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
                 .then(res => res.json())
                 .then(response => {
                     if (response.success) {
                         const data = response.data;
                         openModal('detailModal');
-                        document.querySelector('.user_id').textContent = data.user_id ?? '-';
+                        document.querySelector('.user_id').textContent = data.user.fullname ?? '-';
                         document.querySelector('.ruang').textContent = data.fasilitas_ruang.ruangan.ruangan_nama ?
-                            data.fasilitas_ruang.ruangan.ruangan_nama + ' - lantai ' + data.fasilitas_ruang.ruangan.lantai :
+                            data.fasilitas_ruang.ruangan.ruangan_nama + ' - lantai ' + data.fasilitas_ruang.ruangan
+                            .lantai :
                             '-';
-                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang.fasilitas.fasilitas_nama ??
+                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang.fasilitas
+                            .fasilitas_nama ??
                             '-';
                         document.querySelector('.deskripsi').textContent = data.deskripsi_laporan ?? '-';
                         document.querySelector('.tanggal').textContent = data.lapor_datetime ?
@@ -178,10 +180,10 @@
                         document.querySelector('.status').textContent = data.is_done && !data.is_verified ?
                             'Ditolak' :
                             data.is_done ?
-                                'Selesai' :
-                                data.is_verified ?
-                                    'Diproses' :
-                                    'Menunggu Verifikasi';
+                            'Selesai' :
+                            data.is_verified ?
+                            'Diproses' :
+                            'Menunggu Verifikasi';
 
                         document.getElementById('statusBaru').textContent = data.lapor_datetime ?? '-';
                         document.getElementById('statusProses').textContent = data.verifikasi_datetime ?? '-';
@@ -189,7 +191,8 @@
 
                         // Ganti foto laporan
                         const img = document.getElementById('detail-photo');
-                        img.src = data.lapor_foto_url ?? '/assets/profile/default.jpg';
+                        img.src = '/assets/image/AC_RUSAK.jpg';
+
 
                         document.getElementById('modalActions').innerHTML = `
                             <button onclick="closeModal('detailModal')"
@@ -247,7 +250,7 @@
         }
 
         // DATA TABLE INITIALIZATION
-        $(document).ready(function () {
+        $(document).ready(function() {
             const table = $('#kategorisasiTable').DataTable({
                 searching: false,
                 lengthChange: false,
@@ -257,7 +260,7 @@
                 ajax: {
                     type: "POST",
                     url: '{{ route('sarpras.laporan.list') }}',
-                    data: function (d) {
+                    data: function(d) {
                         d.fasilitas = $('#filterFasilitas').val();
                         d.search = $('#searchInput').val();
                         d.status = 'completed,rejected'; // Filter untuk Selesai dan Ditolak
@@ -265,54 +268,54 @@
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         showError('Gagal mengambil data laporan');
                     }
                 },
                 columns: [{
-                    data: null,
-                    name: 'no',
-                    render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    }
-                },
-                {
-                    data: 'ruangan_nama',
-                    name: 'ruangan_nama',
-                    defaultContent: '-'
-                },
-                {
-                    data: 'fasilitas_nama',
-                    name: 'fasilitas_nama',
-                    defaultContent: '-'
-                },
-                {
-                    data: 'lapor_datetime',
-                    name: 'lapor_datetime',
-                    render: function (data) {
-                        return data ? new Date(data).toLocaleDateString('id-ID') : '-';
-                    }
-                },
-                {
-                    data: null,
-                    name: 'status',
-                    render: function (data, type, row) {
-                        if (row.status == 'completed') {
-                            return '<span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded uppercase font-bold">Selesai</span>';
-                        } else if (row.status == 'rejected') {
-                            return '<span class="bg-red-500/20 text-red-900 text-xs px-2 py-1 rounded uppercase font-bold">Ditolak</span>';
-                        } else if (row.status == 'processed') {
-                            return '<span class="bg-yellow-500/20 text-yellow-900 text-xs px-2 py-1 rounded uppercase font-bold">Diproses</span>';
+                        data: null,
+                        name: 'no',
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
                         }
-                        return '-';
-                    }
-                },
-                {
-                    data: null,
-                    orderable: false,
-                    searchable: false,
-                    render: function (data) {
-                        return `
+                    },
+                    {
+                        data: 'ruangan_nama',
+                        name: 'ruangan_nama',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'fasilitas_nama',
+                        name: 'fasilitas_nama',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'lapor_datetime',
+                        name: 'lapor_datetime',
+                        render: function(data) {
+                            return data ? new Date(data).toLocaleDateString('id-ID') : '-';
+                        }
+                    },
+                    {
+                        data: null,
+                        name: 'status',
+                        render: function(data, type, row) {
+                            if (row.status == 'completed') {
+                                return '<span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded uppercase font-bold">Selesai</span>';
+                            } else if (row.status == 'rejected') {
+                                return '<span class="bg-red-500/20 text-red-900 text-xs px-2 py-1 rounded uppercase font-bold">Ditolak</span>';
+                            } else if (row.status == 'processed') {
+                                return '<span class="bg-yellow-500/20 text-yellow-900 text-xs px-2 py-1 rounded uppercase font-bold">Diproses</span>';
+                            }
+                            return '-';
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function(data) {
+                            return `
                                 <div class="flex gap-2" >
                                     <button onclick="openDetail(${data.laporan_id})" title="Detail"
                                         class="flex items-center gap-1 px-3 py-1 text-white bg-blue-600 hover:bg-blue-700 rounded">
@@ -320,16 +323,16 @@
                                     </button>
                                         </div>
                                 `;
+                        }
                     }
-                }
                 ]
             });
 
-            window.filterTable = function () {
+            window.filterTable = function() {
                 table.ajax.reload();
             };
 
-            $('#tampilData').on('change', function () {
+            $('#tampilData').on('change', function() {
                 table.page.len($(this).val()).draw();
             });
         });

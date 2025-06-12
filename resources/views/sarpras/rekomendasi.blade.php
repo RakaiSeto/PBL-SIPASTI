@@ -31,7 +31,7 @@
     </div>
 
     <!-- Modal Teknisi -->
-    <div id="modal-teknisi" class="fixed inset-0 bg-black/60 flex items-center justify-center hidden z-50">
+    <div id="modal-teknisi" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden z-50">
         <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
             <h2 class="text-xl font-semibold mb-4 text-slate-800">Pilih Teknisi</h2>
             <select id="teknisi-select-modal"
@@ -52,13 +52,13 @@
 
     <script>
         var currentKasus = null;
-        $(document).ready(function () {
+        $(document).ready(function() {
             showTab('saw');
             loadCards('saw');
             loadCards('moora');
 
             // Event listener untuk filter dan pencarian
-            $('#filterFasilitas, #tampilData, #searchInput').on('change keyup', function () {
+            $('#filterFasilitas, #tampilData, #searchInput').on('change keyup', function() {
                 loadCards('saw');
                 loadCards('moora');
             });
@@ -100,7 +100,7 @@
                     length: pageLength,
                     search: searchQuery
                 },
-                success: function (response) {
+                success: function(response) {
                     container.empty();
                     const rankData = response.rank || [];
                     rankData.forEach((item, index) => {
@@ -113,9 +113,9 @@
                                                 <h3 class="text-lg font-semibold text-slate-800">${item.name || 'Unknown'}</h3>
                                                 <span class="text-sm font-bold text-[#1652b7] bg-[#e6edf8] px-2 py-1 rounded-full">Rank ${rank}</span>
                                             </div>
-                                            <p class="text-sm text-slate-600 mb-4"><strong>Skor DSS:</strong> ${item.value ? item.value.toFixed(3) : '-'}</p>
+                                            <p class="text-sm text-slate-600 mb-4">Skor DSS:<strong> ${item.value ? item.value.toFixed(3) : '-'}</strong></p>
                                             <div class="flex items-center gap-2">
-                                            <button class="toggle-details bg-gray-200 text-gray-700 font-semibold py-1 px-3 rounded-lg hover:bg-gray-300 transition-colors w-full"
+                                            <button class="toggle-details bg-gray-100 text-gray-700 font-semibold py-1 px-3 rounded hover:bg-gray-300 transition-colors w-full"
                                                 onclick="toggleDetails(this, '${item.id}')">
                                                 Lihat Detail
                                             </button>
@@ -128,14 +128,13 @@
                                             </div>
                                             <div class="details hidden mt-4 text-sm border-t border-gray-200 pt-3" id="details-${item.id}">
                                                 <div class="grid grid-cols-2 gap-3">
-                                                    <p><strong>C1 (Kerusakan):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[0] : '-'}</p>
-                                                    <p><strong>C2 (Dampak):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[1] : '-'}</p>
-                                                    <p><strong>C3 (Frekuensi):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[2] : '-'}</p>
-                                                    <p><strong>C4 (Laporan):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[3] : '-'}</p>
-                                                    <p><strong>C5 (Waktu Kerusakan):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[4] : '-'}</p>
-                                                    <p><strong>C6 (Waktu Perbaikan):</strong> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[5] : '-'}</p>
+                                                    <p><strong>C1 (Kerusakan)</strong><br> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[0] : '-'}</p>
+                                                    <p><strong>C2 (Dampak)</strong><br> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[1] : '-'}</p>
+                                                    <p><strong>C3 (Frekuensi)</strong><br> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[2] : '-'}</p>
+                                                    <p><strong>C4 (Laporan)</strong><br> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[3] : '-'}</p>
+                                                    <p><strong>C5 (Waktu Kerusakan)</strong><br> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[4] : '-'}</p>
+                                                    <p><strong>C6 (Waktu Perbaikan)</strong><br> ${item.alternatif && Array.isArray(item.alternatif) ? item.alternatif[5] : '-'}</p>
                                                 </div>
-                                                <p class="mt-3 font-semibold"><strong>Skor DSS:</strong> ${item.value ? item.value.toFixed(3) : '-'}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -144,7 +143,7 @@
                         container.append(card);
                     });
                 },
-                error: function () {
+                error: function() {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
@@ -193,7 +192,7 @@
                     fasilitas_ruang_id: currentKasus,
                     teknisi_id: teknisiId
                 },
-                success: function (response) {
+                success: function(response) {
                     console.log(response);
                     Swal.fire({
                         icon: 'success',
@@ -202,7 +201,7 @@
                     });
                     window.location.reload();
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     console.log(xhr.responseText);
                     Swal.fire({
                         icon: 'error',
