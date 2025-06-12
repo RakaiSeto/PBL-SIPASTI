@@ -77,9 +77,10 @@ class DashboardController extends Controller
 
         // get last 6 months name
         $bulanLaporan = [];
-        for ($i = 5; $i >= 0; $i--) {
-            $bulanLaporan[] = date('M', strtotime('-' . $i . ' months'));
+        for ($i = 1; $i <= 7; $i++) {
+            $bulanLaporan[] = date('M', mktime(0, 0, 0, $i, 1));
         }
+
 
         $jumlahLaporan = [];
         for ($i = 5; $i >= 0; $i--) {
@@ -101,6 +102,10 @@ class DashboardController extends Controller
             $jumlahLaporanMingguan[] = Laporan::where('lapor_datetime', 'like', date('Y-m-d', strtotime('-' . $i . ' days')) . '%')->count();
         }
 
-        return view('sarpras.index', compact('totalFasilitas', 'totalLaporan', 'totalLaporanSelesai', 'bulanLaporan', 'jumlahLaporan', 'jumlahLaporanSelesai', 'jumlahLaporanMingguan', 'hariLaporan'));
+        // Ambil 5 laporan terakhir
+        $laporanTerbaru = Laporan::latest('lapor_datetime')->take(5)->get();
+
+
+        return view('sarpras.index', compact('totalFasilitas', 'totalLaporan', 'totalLaporanSelesai', 'bulanLaporan', 'jumlahLaporan', 'jumlahLaporanSelesai', 'jumlahLaporanMingguan', 'hariLaporan', 'laporanTerbaru'));
     }
 }
