@@ -57,8 +57,10 @@
                             </span>
                         </td>
                         <td class="p-3">
-                            <button class="text-blue-600 hover:underline open-modal" data-id="1" data-fasilitas="AC"
-                                data-teknisi="Budi" data-status="Ditugaskan">Detail</button>
+                            <button
+                                class="flex items-center gap-1 px-3 py-1 text-white bg-primary hover:bg-blue-700 rounded open-modal"
+                                data-id="1" data-fasilitas="AC" data-teknisi="Budi" data-status="Ditugaskan"><i
+                                    class="fas fa-eye"></i> Detail</button>
                         </td>
                     </tr>
                     <tr class="hover:bg-slate-50 border-b">
@@ -66,14 +68,15 @@
                         <td class="p-3">Kipas Angin</td>
                         <td class="p-3">Andi</td>
                         <td class="p-3">
-                            <span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded uppercase font-bold">
+                            <span class="bg-green-500/20 text-green-900 text-xs px-2 py-1 rounded uppercase font-bold ">
                                 Selesai dikerjakan
                             </span>
                         </td>
                         <td class="p-3">
-                            <button class="text-blue-600 hover:underline open-modal" data-id="2"
-                                data-fasilitas="Kipas Angin" data-teknisi="Andi"
-                                data-status="Selesai dikerjakan">Detail</button>
+                            <button
+                                class="flex items-center gap-1 px-3 py-1 text-white bg-primary hover:bg-blue-700 rounded open-modal"
+                                data-id="2" data-fasilitas="Kipas Angin" data-teknisi="Andi"
+                                data-status="Selesai dikerjakan"><i class="fas fa-eye"></i> Detail</button>
                         </td>
                     </tr>
                     <tr class="hover:bg-slate-50 border-b">
@@ -86,8 +89,10 @@
                             </span>
                         </td>
                         <td class="p-3">
-                            <button class="text-blue-600 hover:underline open-modal" data-id="3" data-fasilitas="Lampu"
-                                data-teknisi="Sari" data-status="Sedang Dikerjakan">Detail</button>
+                            <button
+                                class="flex items-center gap-1 px-3 py-1 text-white bg-primary hover:bg-blue-700 rounded open-modal"
+                                data-id="3" data-fasilitas="Lampu" data-teknisi="Sari" data-status="Sedang Dikerjakan">
+                                <i class="fas fa-eye"></i> Detail</button>
                         </td>
                     </tr>
                 </tbody>
