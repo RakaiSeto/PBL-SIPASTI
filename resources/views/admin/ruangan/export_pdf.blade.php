@@ -54,7 +54,7 @@
         <table class="header-table border-bottom-header">
             <tr>
                 <td width="15%" class="text-center">
-                    <img src="{{ public_path('polinema-bw.png') }}" class="image">
+                    <img src="{{ public_path('assets/image/polinema-bw.jpeg') }}" class="image">
                 </td>
                 <td width="85%">
                     <span class="text-center d-block font-11 font-bold mb-1">KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI</span>
@@ -66,7 +66,7 @@
             </tr>
         </table>
 
-        <h3 class="text-center" style="margin: 20px 0;">LAPORAN DATA PENGGUNA</h3>
+        <h3 class="text-center" style="margin: 20px 0;">LAPORAN DATA RUANGAN</h3>
 
        <table>
     <thead>

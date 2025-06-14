@@ -118,6 +118,12 @@
                 return;
             }
 
+            // check mime
+            if (file.type !== "image/jpeg" && file.type !== "image/png" && file.type !== "image/jpg") {
+                alert("Format foto harus JPG, PNG, atau JPEG");
+                return;
+            }
+
             const formData = new FormData();
 
             formData.append("fasilitas_ruang_id", document.getElementById("fasilitasSelect").value);
