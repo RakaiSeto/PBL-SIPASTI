@@ -58,21 +58,21 @@
         </div>
         <div
             class="relative flex flex-col w-full h-full text-gray-800 bg-white shadow-md rounded-lg bg-clip-border overflow-auto p-4">
-            <h3 class="text-sm text-gray-500 mb-3 font-semibold">Tugas Perbaikan</h3>
+            <h3 class="text-sm text-gray-500 mb-3">Tugas Perbaikan</h3>
             <table class="w-full text-left table-auto min-w-max border-collapse">
-                <thead>
+                <thead class="text-semibold">
                     <tr>
-                        <th class="p-3 border-b border-slate-200 bg-slate-100 text-sm font-medium text-slate-600">ID Laporan
+                        <th class="p-3 border-b border-slate-200 bg-slate-100 text-sm text-slate-600">NO
                         </th>
-                        <th class="p-3 border-b border-slate-200 bg-slate-100 text-sm font-medium text-slate-600">Nama
+                        <th class="p-3 border-b border-slate-200 bg-slate-100 text-sm text-slate-600">Nama
                             Fasilitas</th>
-                        <th class="p-3 border-b border-slate-200 bg-slate-100 text-sm font-medium text-slate-600">Aksi</th>
+                        <th class="p-3 border-b border-slate-200 bg-slate-100 text-sm text-slate-600">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($last3tugas as $tugas)
                         <tr class="hover:bg-slate-50 border-b border-slate-200">
-                            <td class="p-3 text-sm font-semibold text-slate-800">{{ $tugas->laporan_id }}</td>
+                            <td class="p-3 text-sm font-semibold text-slate-800">{{ $loop->iteration }}</td>
                             <td class="p-3 text-sm text-slate-600">{{ $tugas->fasilitas_ruang->fasilitas->fasilitas_nama }}
                                 -
                                 {{ $tugas->fasilitas_ruang->ruangan->ruangan_nama }}
@@ -183,24 +183,27 @@
                             {{ $jumlah }},
                         @endforeach
                     ],
-                    backgroundColor: "#1652B7",
-                    borderRadius: 5,
+                    fill: true,
+                    backgroundColor: "rgba(22, 82, 183, 0.1)",
+                    borderColor: "#1652B7",
+                    tension: 0.4,
                 }],
             },
             options: {
                 responsive: true,
                 plugins: {
                     legend: {
-                        display: false
+                        display: false,
                     },
                 },
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
                     },
                 },
             },
         });
+
 
         function openModal(id) {
             document.getElementById(id).classList.remove('hidden');
