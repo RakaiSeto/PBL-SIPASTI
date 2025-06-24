@@ -1,5 +1,5 @@
 <!-- Sidebar -->
-<aside id="sidebar" class="w-64 fixed inset-y-0 left-0 bg-white p-4 shadow-md hidden md:block">
+<aside id="sidebar" class="w-64 fixed inset-y-0 left-0 bg-white p-4 shadow-md hidden md:block z-50">
 
     <div class="flex justify-between items-center mb-4 md:hidden">
         <!-- Logo + Text - Diletakkan di tengah -->
