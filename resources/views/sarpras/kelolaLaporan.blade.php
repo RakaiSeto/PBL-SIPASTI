@@ -178,14 +178,9 @@
                     if (response.success) {
                         const data = response.data;
                         openModal('detailModal');
-                        document.querySelector('.user_id').textContent = data.user.fullname ?? '-';
-                        document.querySelector('.ruang').textContent = data.fasilitas_ruang.ruangan.ruangan_nama ?
-                            data.fasilitas_ruang.ruangan.ruangan_nama + ' - lantai ' + data.fasilitas_ruang.ruangan
-                            .lantai :
-                            '-';
-                        document.querySelector('.fasilitas').textContent = data.fasilitas_ruang.fasilitas
-                            .fasilitas_nama ??
-                            '-';
+                        document.querySelector('.user_id').textContent = data.user_nama ?? '-';
+                        document.querySelector('.ruang').textContent = data.ruangan_nama ?? '-';
+                        document.querySelector('.fasilitas').textContent = data.fasilitas_nama ?? '-';
                         document.querySelector('.deskripsi').textContent = data.deskripsi_laporan ?? '-';
                         document.querySelector('.tanggal').textContent = data.lapor_datetime ?
                             new Date(data.lapor_datetime).toLocaleDateString('id-ID') :
